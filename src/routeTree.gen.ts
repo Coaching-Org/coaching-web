@@ -15,6 +15,8 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthusersUsersImport } from './routes/_auth/(users)/users'
+import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/profile'
+import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
 
 // Create/Update Routes
@@ -36,6 +38,16 @@ const IndexRoute = IndexImport.update({
 
 const AuthusersUsersRoute = AuthusersUsersImport.update({
   path: '/users',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthprofileProfileRoute = AuthprofileProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthdashboardDashboardRoute = AuthdashboardDashboardImport.update({
+  path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -77,6 +89,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthappointmentsAppointmentsImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(dashboard)/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthdashboardDashboardImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(profile)/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthprofileProfileImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/(users)/users': {
       id: '/_auth/users'
       path: '/users'
@@ -91,11 +117,15 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthappointmentsAppointmentsRoute: typeof AuthappointmentsAppointmentsRoute
+  AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
+  AuthprofileProfileRoute: typeof AuthprofileProfileRoute
   AuthusersUsersRoute: typeof AuthusersUsersRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentsAppointmentsRoute: AuthappointmentsAppointmentsRoute,
+  AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
+  AuthprofileProfileRoute: AuthprofileProfileRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
 }
 
@@ -106,6 +136,8 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/dashboard': typeof AuthdashboardDashboardRoute
+  '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
 }
 
@@ -114,6 +146,8 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/dashboard': typeof AuthdashboardDashboardRoute
+  '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
 }
 
@@ -123,20 +157,38 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/_auth/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/_auth/dashboard': typeof AuthdashboardDashboardRoute
+  '/_auth/profile': typeof AuthprofileProfileRoute
   '/_auth/users': typeof AuthusersUsersRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/appointments' | '/users'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/appointments'
+    | '/dashboard'
+    | '/profile'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/appointments' | '/users'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/appointments'
+    | '/dashboard'
+    | '/profile'
+    | '/users'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/login'
     | '/_auth/appointments'
+    | '/_auth/dashboard'
+    | '/_auth/profile'
     | '/_auth/users'
   fileRoutesById: FileRoutesById
 }
@@ -177,6 +229,8 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/appointments",
+        "/_auth/dashboard",
+        "/_auth/profile",
         "/_auth/users"
       ]
     },
@@ -185,6 +239,14 @@ export const routeTree = rootRoute
     },
     "/_auth/appointments": {
       "filePath": "_auth/(appointments)/appointments.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/dashboard": {
+      "filePath": "_auth/(dashboard)/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/profile": {
+      "filePath": "_auth/(profile)/profile.tsx",
       "parent": "/_auth"
     },
     "/_auth/users": {

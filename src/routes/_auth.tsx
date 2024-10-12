@@ -12,6 +12,8 @@ import {
   Search,
   User,
   WashingMachine,
+  LayoutDashboard,
+  UserCircle,
 } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
@@ -26,7 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -47,6 +49,7 @@ function AuthLayout() {
   const navigate = Route.useNavigate();
   const auth = useAuth();
   const [openLogout, setOpenLogout] = React.useState(false);
+  const currentPath = router.state.location.pathname;
 
   const handleLogout = () => {
     auth.logout().then(() => {
@@ -56,22 +59,48 @@ function AuthLayout() {
     });
   };
 
+  useEffect(() => {
+    console.log('Current Path', currentPath)
+  }, [currentPath])
+
+  const isActive = (path: string) => {
+    return currentPath === path ? "bg-gray-200" : "text-muted-foreground";
+  }
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Sidebar handleLogout={() => setOpenLogout(true)}>
+        {/* Dashboard */}
+        <Link
+          to="/dashboard"
+          className={`${isActive("/dashboard")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+        >
+          <LayoutDashboard className="h-4 w-4" />
+          Dashboard
+        </Link>
+        {/* Coach/Coachee */}
         <Link
           to="/users"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          className={`${isActive('/users')} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <User className="h-4 w-4" />
-          Users
+          Coachee
         </Link>
+        {/* Appointments */}
         <Link
           to="/appointments"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          className={`${isActive('/appointments')} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <Calendar className="h-4 w-4" />
           Appointments
+        </Link>
+        {/* Profile */}
+        <Link
+          to="/profile"
+          className={`${isActive('/profile')} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+        >
+          <UserCircle className="h-4 w-4" />
+          Profile
         </Link>
       </Sidebar>
       <div className="flex flex-col">
