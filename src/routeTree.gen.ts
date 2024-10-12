@@ -17,6 +17,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthusersUsersImport } from './routes/_auth/(users)/users'
 import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/profile'
 import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
+import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
 
 // Create/Update Routes
@@ -48,6 +49,11 @@ const AuthprofileProfileRoute = AuthprofileProfileImport.update({
 
 const AuthdashboardDashboardRoute = AuthdashboardDashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthcalendarCalendarRoute = AuthcalendarCalendarImport.update({
+  path: '/calendar',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -89,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthappointmentsAppointmentsImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(calendar)/calendar': {
+      id: '/_auth/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthcalendarCalendarImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/(dashboard)/dashboard': {
       id: '/_auth/dashboard'
       path: '/dashboard'
@@ -117,6 +130,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthappointmentsAppointmentsRoute: typeof AuthappointmentsAppointmentsRoute
+  AuthcalendarCalendarRoute: typeof AuthcalendarCalendarRoute
   AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
   AuthprofileProfileRoute: typeof AuthprofileProfileRoute
   AuthusersUsersRoute: typeof AuthusersUsersRoute
@@ -124,6 +138,7 @@ interface AuthRouteChildren {
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentsAppointmentsRoute: AuthappointmentsAppointmentsRoute,
+  AuthcalendarCalendarRoute: AuthcalendarCalendarRoute,
   AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
   AuthprofileProfileRoute: AuthprofileProfileRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
@@ -136,6 +151,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/calendar': typeof AuthcalendarCalendarRoute
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
@@ -146,6 +162,7 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/calendar': typeof AuthcalendarCalendarRoute
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
@@ -157,6 +174,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/_auth/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/_auth/calendar': typeof AuthcalendarCalendarRoute
   '/_auth/dashboard': typeof AuthdashboardDashboardRoute
   '/_auth/profile': typeof AuthprofileProfileRoute
   '/_auth/users': typeof AuthusersUsersRoute
@@ -169,6 +187,7 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/appointments'
+    | '/calendar'
     | '/dashboard'
     | '/profile'
     | '/users'
@@ -178,6 +197,7 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/appointments'
+    | '/calendar'
     | '/dashboard'
     | '/profile'
     | '/users'
@@ -187,6 +207,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/login'
     | '/_auth/appointments'
+    | '/_auth/calendar'
     | '/_auth/dashboard'
     | '/_auth/profile'
     | '/_auth/users'
@@ -229,6 +250,7 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/appointments",
+        "/_auth/calendar",
         "/_auth/dashboard",
         "/_auth/profile",
         "/_auth/users"
@@ -239,6 +261,10 @@ export const routeTree = rootRoute
     },
     "/_auth/appointments": {
       "filePath": "_auth/(appointments)/appointments.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/calendar": {
+      "filePath": "_auth/(calendar)/calendar.tsx",
       "parent": "/_auth"
     },
     "/_auth/dashboard": {
