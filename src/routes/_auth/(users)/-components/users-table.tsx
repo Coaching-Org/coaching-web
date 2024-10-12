@@ -47,6 +47,17 @@ import {
 import { cn } from "@/lib/utils";
 import { User } from "@/interfaces/user";
 
+const tempDataUser: User[] = [
+  {
+    createdAt: new Date(),
+    email: "tatasfachrul@gmail.com",
+    id: "#1",
+    name: "Tatas Fachrul",
+    role: "user",
+    updatedAt: new Date(),
+  },
+];
+
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
@@ -137,7 +148,7 @@ export function UsersTable() {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: [],
+    data: tempDataUser,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

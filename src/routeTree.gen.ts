@@ -19,6 +19,7 @@ import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/prof
 import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
 import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
+import { Route as AuthappointmentscreateCreateImport } from './routes/_auth/(appointments)/(create)/create'
 
 // Create/Update Routes
 
@@ -60,6 +61,12 @@ const AuthcalendarCalendarRoute = AuthcalendarCalendarImport.update({
 const AuthappointmentsAppointmentsRoute =
   AuthappointmentsAppointmentsImport.update({
     path: '/appointments',
+    getParentRoute: () => AuthRoute,
+  } as any)
+
+const AuthappointmentscreateCreateRoute =
+  AuthappointmentscreateCreateImport.update({
+    path: '/create',
     getParentRoute: () => AuthRoute,
   } as any)
 
@@ -123,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthusersUsersImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(appointments)/(create)/create': {
+      id: '/_auth/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof AuthappointmentscreateCreateImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -134,6 +148,7 @@ interface AuthRouteChildren {
   AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
   AuthprofileProfileRoute: typeof AuthprofileProfileRoute
   AuthusersUsersRoute: typeof AuthusersUsersRoute
+  AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -142,6 +157,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
   AuthprofileProfileRoute: AuthprofileProfileRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
+  AuthappointmentscreateCreateRoute: AuthappointmentscreateCreateRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -155,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
+  '/create': typeof AuthappointmentscreateCreateRoute
 }
 
 export interface FileRoutesByTo {
@@ -166,6 +183,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
+  '/create': typeof AuthappointmentscreateCreateRoute
 }
 
 export interface FileRoutesById {
@@ -178,6 +196,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthdashboardDashboardRoute
   '/_auth/profile': typeof AuthprofileProfileRoute
   '/_auth/users': typeof AuthusersUsersRoute
+  '/_auth/create': typeof AuthappointmentscreateCreateRoute
 }
 
 export interface FileRouteTypes {
@@ -191,6 +210,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/users'
+    | '/create'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -201,6 +221,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/users'
+    | '/create'
   id:
     | '__root__'
     | '/'
@@ -211,6 +232,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/profile'
     | '/_auth/users'
+    | '/_auth/create'
   fileRoutesById: FileRoutesById
 }
 
@@ -253,7 +275,8 @@ export const routeTree = rootRoute
         "/_auth/calendar",
         "/_auth/dashboard",
         "/_auth/profile",
-        "/_auth/users"
+        "/_auth/users",
+        "/_auth/create"
       ]
     },
     "/login": {
@@ -277,6 +300,10 @@ export const routeTree = rootRoute
     },
     "/_auth/users": {
       "filePath": "_auth/(users)/users.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/create": {
+      "filePath": "_auth/(appointments)/(create)/create.tsx",
       "parent": "/_auth"
     }
   }

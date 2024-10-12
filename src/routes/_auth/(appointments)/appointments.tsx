@@ -1,19 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppointmentsTable } from "./-components/appointments-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,
 });
 
 function AppointmentsLayout() {
+  const navigate = useNavigate();
+
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">
-          Manage Appointments
-        </h1>
-      </div>
-      <AppointmentsTable />
-    </main>
+    <div className="gap-4 p-4 lg:gap-6 lg:p-6">
+      <Card>
+        <CardHeader className="flex-row flex-1 justify-between">
+          <CardTitle>Manage Appointments</CardTitle>
+          <Button
+            onClick={() => {
+              navigate({ to: "/create" });
+            }}
+          >
+            <Plus className="mr-2 h-4 w-4" /> Add Appointment
+          </Button>
+        </CardHeader>
+        <CardContent>{/* <AppointmentsTable /> */}</CardContent>
+      </Card>
+    </div>
   );
 }
