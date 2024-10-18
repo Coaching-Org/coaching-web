@@ -15,11 +15,11 @@ export default function Sidebar({ handleLogout, children }: ISidebarProps) {
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <Link to="/users" className="flex items-center gap-2 font-semibold">
             <Dumbbell className="h-6 w-6" />
-            <span className="">Coaching</span>
+            <span className="text-2xl">Coaching</span>
           </Link>
         </div>
         <div className="flex-1">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+          <nav className="grid items-start px-2 text-2xl font-medium lg:px-4">
             {children}
           </nav>
         </div>

@@ -16,7 +16,7 @@ function AppointmentsLayout() {
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       <Card>
         <CardHeader className="flex-row flex-1 justify-between">
-          <CardTitle>Manage Appointments</CardTitle>
+          <CardTitle className="text-2xl">Manage Appointments</CardTitle>
           <Button
             onClick={() => {
               navigate({ to: "/create" });

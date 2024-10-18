@@ -50,7 +50,7 @@ function DashboardLayout() {
       <Card>
         {/* Appointments Section */}
         <CardHeader className="flex-row flex-1 justify-between">
-          <CardTitle>Dashboard</CardTitle>
+          <CardTitle className="text-2xl">Dashboard</CardTitle>
           <DateRangePicker />
         </CardHeader>
         <CardContent>
