@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import { useAppointmentsUtils } from "./-utils/appointments.utils";
 
 export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/_auth/(appointments)/appointments")({
 
 function AppointmentsLayout() {
   const navigate = useNavigate();
+  const {} = useAppointmentsUtils();
 
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
@@ -25,7 +27,9 @@ function AppointmentsLayout() {
             <Plus className="mr-2 h-4 w-4" /> Add Appointment
           </Button>
         </CardHeader>
-        <CardContent>{/* <AppointmentsTable /> */}</CardContent>
+        <CardContent>
+          <AppointmentsTable />
+        </CardContent>
       </Card>
     </div>
   );

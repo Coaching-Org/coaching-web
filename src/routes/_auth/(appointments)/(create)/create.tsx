@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -67,11 +67,12 @@ const tempAppointmentTime = [
 ];
 
 function AppointmentCreateLayout() {
+  const navigate = useNavigate();
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       <Card className="p-4 flex-row">
         <CardHeader>
-          <CardTitle>Add Appointment</CardTitle>
+          <CardTitle className="text-2xl">Add Appointment</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-1 flex-row justify-between">
@@ -130,8 +131,14 @@ function AppointmentCreateLayout() {
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button>Create</Button>
+        <CardFooter className="justify-end">
+          <Button
+            onClick={() => {
+              navigate({ to: "/appointments" });
+            }}
+          >
+            Create
+          </Button>
         </CardFooter>
       </Card>
     </div>
