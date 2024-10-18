@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLoginQuery } from "@/hooks/query/auth/auth.query";
 
 export const Route = createFileRoute("/login")({
   validateSearch: z.object({
@@ -46,7 +47,7 @@ const formSchema = z.object({
   email: z.string().email({ message: "Email is not valid" }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" })
+    .min(4, { message: "Password must be at least 4 characters" })
     .max(50, { message: "Password must be at most 50 characters" }),
 });
 
@@ -64,6 +65,8 @@ function Login() {
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
+  const { mutateAsync } = useLoginQuery();
+
   const search = Route.useSearch();
 
   const onFormSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -71,6 +74,7 @@ function Login() {
 
     try {
       if (!values) return;
+      await mutateAsync({ email: values.email, password: values.password });
       await auth.login(values);
 
       await router.invalidate();
