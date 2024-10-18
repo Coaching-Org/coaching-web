@@ -14,6 +14,10 @@ function AppointmentsLayout() {
   const navigate = useNavigate();
   const {} = useAppointmentsUtils();
 
+  const goToReview = () => {
+    navigate({ to: "/review" });
+  };
+
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       <Card>
@@ -28,7 +32,7 @@ function AppointmentsLayout() {
           </Button>
         </CardHeader>
         <CardContent>
-          <AppointmentsTable />
+          <AppointmentsTable navigate={goToReview} />
         </CardContent>
       </Card>
     </div>

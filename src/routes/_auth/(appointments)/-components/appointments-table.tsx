@@ -30,6 +30,36 @@ import {
 import { Info } from "lucide-react";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "@tanstack/react-router";
+
+const tempAppointments = [
+  {
+    id: 1,
+    coacheeId: 1,
+    coachId: 2,
+    courseId: 1,
+    coacheeName: "Tatas Fachrul",
+    coachName: "Marcel",
+    courseName: "Professional Coaching",
+    status: "confirm",
+    createdAt: new Date(),
+    date: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 1,
+    coacheeId: 2,
+    coachId: 2,
+    courseId: 1,
+    coacheeName: "Iwan",
+    coachName: "Marcel",
+    courseName: "Professional Coaching",
+    status: "confirm",
+    createdAt: new Date(),
+    date: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -46,7 +76,7 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Coachee",
     cell: ({ row }) => (
       <div className="capitalize flex flex-row items-center gap-2">
-        {row.original.coachName}
+        {row.original.coacheeName}
       </div>
     ),
   },
@@ -111,24 +141,19 @@ export const columns: ColumnDef<Appointment>[] = [
   // },
 ];
 
-export function AppointmentsTable() {
+export function AppointmentsTable({ navigate }: { navigate: () => void }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
 
   const table = useReactTable({
-    data: [],
+    data: tempAppointments,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters,
     },
   });
 
@@ -170,6 +195,7 @@ export function AppointmentsTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={navigate}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

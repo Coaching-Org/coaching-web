@@ -19,6 +19,7 @@ import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/prof
 import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
 import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
+import { Route as AuthappointmentsreviewReviewImport } from './routes/_auth/(appointments)/(review)/review'
 import { Route as AuthappointmentscreateCreateImport } from './routes/_auth/(appointments)/(create)/create'
 
 // Create/Update Routes
@@ -61,6 +62,12 @@ const AuthcalendarCalendarRoute = AuthcalendarCalendarImport.update({
 const AuthappointmentsAppointmentsRoute =
   AuthappointmentsAppointmentsImport.update({
     path: '/appointments',
+    getParentRoute: () => AuthRoute,
+  } as any)
+
+const AuthappointmentsreviewReviewRoute =
+  AuthappointmentsreviewReviewImport.update({
+    path: '/review',
     getParentRoute: () => AuthRoute,
   } as any)
 
@@ -137,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthappointmentscreateCreateImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(appointments)/(review)/review': {
+      id: '/_auth/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof AuthappointmentsreviewReviewImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -149,6 +163,7 @@ interface AuthRouteChildren {
   AuthprofileProfileRoute: typeof AuthprofileProfileRoute
   AuthusersUsersRoute: typeof AuthusersUsersRoute
   AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
+  AuthappointmentsreviewReviewRoute: typeof AuthappointmentsreviewReviewRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -158,6 +173,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthprofileProfileRoute: AuthprofileProfileRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
   AuthappointmentscreateCreateRoute: AuthappointmentscreateCreateRoute,
+  AuthappointmentsreviewReviewRoute: AuthappointmentsreviewReviewRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -172,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
+  '/review': typeof AuthappointmentsreviewReviewRoute
 }
 
 export interface FileRoutesByTo {
@@ -184,6 +201,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthprofileProfileRoute
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
+  '/review': typeof AuthappointmentsreviewReviewRoute
 }
 
 export interface FileRoutesById {
@@ -197,6 +215,7 @@ export interface FileRoutesById {
   '/_auth/profile': typeof AuthprofileProfileRoute
   '/_auth/users': typeof AuthusersUsersRoute
   '/_auth/create': typeof AuthappointmentscreateCreateRoute
+  '/_auth/review': typeof AuthappointmentsreviewReviewRoute
 }
 
 export interface FileRouteTypes {
@@ -211,6 +230,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/users'
     | '/create'
+    | '/review'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -222,6 +242,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/users'
     | '/create'
+    | '/review'
   id:
     | '__root__'
     | '/'
@@ -233,6 +254,7 @@ export interface FileRouteTypes {
     | '/_auth/profile'
     | '/_auth/users'
     | '/_auth/create'
+    | '/_auth/review'
   fileRoutesById: FileRoutesById
 }
 
@@ -276,7 +298,8 @@ export const routeTree = rootRoute
         "/_auth/dashboard",
         "/_auth/profile",
         "/_auth/users",
-        "/_auth/create"
+        "/_auth/create",
+        "/_auth/review"
       ]
     },
     "/login": {
@@ -304,6 +327,10 @@ export const routeTree = rootRoute
     },
     "/_auth/create": {
       "filePath": "_auth/(appointments)/(create)/create.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/review": {
+      "filePath": "_auth/(appointments)/(review)/review.tsx",
       "parent": "/_auth"
     }
   }

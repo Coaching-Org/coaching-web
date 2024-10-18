@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useNavigate } from "@tanstack/react-router";
 
 export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
   {
@@ -125,7 +126,10 @@ export function DashboardAppointmentsTable({
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+              key={row.id}
+              onClick={() => console.log("row", row.original.id)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

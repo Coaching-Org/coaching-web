@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DateRangePicker } from "./-components/date-range-picker";
 import { cn } from "@/lib/utils";
 import { DashboardAppointmentsTable } from "./-components/dashboard-appointments-table";

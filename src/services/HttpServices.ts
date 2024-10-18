@@ -14,14 +14,16 @@ export abstract class HttpService {
     const token = getToken();
 
     const apiHost = "https://api-service-coaching.tatas.id/";
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${token}`,
-    };
+    // config.headers = {
+    //   ...config.headers,
+    //   Authorization: `Bearer ${token}`,
+    // };
 
-    if (type !== "MOCK") {
-      config.baseURL = apiHost;
-    }
+    // if (type !== "MOCK") {
+    //   config.baseURL = apiHost;
+    // }
+
+    config.baseURL = apiHost;
 
     return config;
   }
