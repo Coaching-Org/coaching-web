@@ -11,19 +11,15 @@ export abstract class HttpService {
     config: AxiosRequestConfig,
     type: string | undefined
   ) {
-    const token = getToken();
-
     const apiHost = "https://api-service-coaching.tatas.id/";
-    // config.headers = {
-    //   ...config.headers,
-    //   Authorization: `Bearer ${token}`,
-    // };
-
-    // if (type !== "MOCK") {
-    //   config.baseURL = apiHost;
-    // }
 
     config.baseURL = apiHost;
+    config.headers = {
+      ...config.headers,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
 
     return config;
   }
