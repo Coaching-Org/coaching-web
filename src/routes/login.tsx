@@ -74,7 +74,7 @@ function Login() {
 
     try {
       if (!values) return;
-      // await mutateAsync({ email: values.email, password: values.password });
+      await mutateAsync({ email: values.email, password: values.password });
       await auth.login(values);
 
       await router.invalidate();

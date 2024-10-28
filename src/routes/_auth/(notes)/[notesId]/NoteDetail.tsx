@@ -69,30 +69,31 @@ function NoteDetailLayout() {
   const navigate = useNavigate();
   // const test = router.
 
+  // Text weight 700 600 500 400
+
   return (
     <div className="gap-4 lg:p-6">
       <Card className="px-2">
         <CardHeader className="flex-row flex-1 justify-between">
           <div>
             <CardTitle className="text-2xl text-primary">
+              {/* 24px */}
               Session Notes
-            </CardTitle>
-            <CardTitle className="mt-4 text-sm font-normal">
-              View and manage all your sessions that you have scheduled with
-              your coachees.
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           <div className="w-1/2">
-            <CardTitle className="text-xl">Session Details</CardTitle>
+            <CardTitle className="text-xl">
+              {/* 20px */}
+              Session Details
+            </CardTitle>
             <div className="flex flex-1 flex-row justify-between">
               {/* Form Service */}
               <div className="flex-col flex mt-4 min-w-[250px]">
-                {/* Size 12 */}
-                Session Date
+                <span className="text-base">Session Date</span>
                 <div>
-                  <span className="font-semibold mt-4 text-xs text-muted-foreground">
+                  <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     October 2nd, 2024
                   </span>
                 </div>
@@ -102,7 +103,7 @@ function NoteDetailLayout() {
                 {/* Size 12 */}
                 Session Type
                 <div>
-                  <span className="font-semibold mt-4 text-xs text-muted-foreground">
+                  <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     Professional Coaching
                   </span>
                 </div>
@@ -112,7 +113,7 @@ function NoteDetailLayout() {
                 {/* Size 12 */}
                 Coachee
                 <div>
-                  <span className="font-semibold mt-4 text-xs text-muted-foreground">
+                  <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     Tatas Fachrul
                   </span>
                 </div>
@@ -120,6 +121,7 @@ function NoteDetailLayout() {
             </div>
             <CardTitle className="text-xl mt-8">Note Details</CardTitle>
             <div className="mt-4">
+              {/* min height - 200 */}
               <Label>Goals</Label>
               <Textarea />
             </div>
@@ -140,18 +142,25 @@ function NoteDetailLayout() {
               <Textarea />
             </div>
             <div className="mt-4">
+              {/* Resize bordernya, with icon upload ditengah, multiple file, pdf, png, jpg, jpeg doc docx xls xlsx ppt pptx, rar zip 7zip max 5mb */}
+              {/* Can we make it universal? */}
               <Label>File</Label>
-              <Input type="file" />
+              <Input
+                type="file"
+                multiple
+                accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
+              />
             </div>
           </div>
         </CardContent>
         <CardFooter className="justify-end">
+          {/* Add validation for GROW*/}
           <Button
             onClick={() => {
               navigate({ to: "/dashboard" });
             }}
           >
-            Create
+            Save
           </Button>
         </CardFooter>
       </Card>

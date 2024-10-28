@@ -56,9 +56,11 @@ function NotesLayout() {
         <CardHeader className="flex-row flex-1 justify-between">
           <div>
             <CardTitle className="text-2xl text-primary">
+              {/* 20px */}
               Session Notes
             </CardTitle>
             <CardTitle className="mt-4 text-sm font-normal">
+              {/*  14 */}
               View all of your past/ongoing notes from session that you have
               scheduled with your coachees.
             </CardTitle>
