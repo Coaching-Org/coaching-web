@@ -34,6 +34,16 @@ function ProfileLayout() {
               <Label>Name</Label>
               <Input type="text" placeholder="Name" disabled value={"Marcel"} />
             </div>
+
+            <div className="mt-4">
+              <Label>Phone Number</Label>
+              <Input
+                type="text"
+                placeholder="Phone"
+                disabled
+                value={"08123123123"}
+              />
+            </div>
           </div>
           <div className="w-1/2 ml-1">
             <div>
