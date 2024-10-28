@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -27,57 +26,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: "Session Name",
     cell: ({ row }) => (
-      <div className="text-muted-foreground">#{row.original.id}</div>
-    ),
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => (
-      <div className="text-muted-foreground">
-        {moment(row.original.date).format("MMMM DD, YYYY HH:MM")} -{" "}
-        {row.original.duration} Mins
+      <div className="">
+        {row.original.course} - {row.original.coachee}{" "}
+        {moment(row.original.date).format("DD/MM/YYYY")}
       </div>
     ),
   },
   {
     accessorKey: "course",
-    header: "Course",
+    header: "Session Type",
+    cell: ({ row }) => <div className="">{row.original.course}</div>,
+  },
+  {
+    accessorKey: "date",
+    header: "Session Date",
     cell: ({ row }) => (
-      <div className="text-muted-foreground">{row.original.course}</div>
+      <div className="">{moment(row.original.date).format("DD/MM/YYYY")}</div>
     ),
   },
   {
-    accessorKey: "coachee",
-    header: "Coachee",
-    cell: ({ row }) => (
-      <div className="text-muted-foreground">{row.original.coachee}</div>
-    ),
+    accessorKey: "sessionTime",
+    header: "Session Time",
+    cell: ({ row }) => <div className="">{row.original.sessionTime}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "id",
+    header: "Action",
     cell: ({ row }) => (
-      <div className="text-muted-foreground">
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Pending" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="decline">Decline</SelectItem>
-              <SelectItem value="accept">Accept</SelectItem>
-              <SelectItem value="done">Done</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className="">
+        <Link to={`/appointments/${row.original.id}/review`}>
+          <Button variant="link" className="-m-4 underline">
+            View Details
+          </Button>
+        </Link>
       </div>
     ),
   },
@@ -102,49 +91,54 @@ export function DashboardAppointmentsTable({
     },
   });
   return (
-    <Table>
-      {/* Render Table Header */}
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      {/* Render Table Body */}
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              onClick={() => console.log("row", row.original.id)}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
+    <div className="rounded-md border">
+      <Table>
+        {/* Render Table Header */}
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead
+                    key={header.id}
+                    className="px-4 py-2 text-muted-foreground"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          ))}
+        </TableHeader>
+        {/* Render Table Body */}
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                onClick={() => console.log("row", row.original.id)}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="px-4 py-2 text-black">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

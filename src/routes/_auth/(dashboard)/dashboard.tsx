@@ -13,6 +13,7 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
     duration: 30,
     status: "pending",
     coachee: "Tatas Fachrul",
+    sessionTime: "10:00 - 11:00",
   },
   {
     id: 2,
@@ -20,7 +21,8 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
     date: String(new Date()),
     duration: 30,
     status: "pending",
-    coachee: "Marcel",
+    coachee: "Iwan",
+    sessionTime: "10:00 - 11:00",
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
     duration: 30,
     status: "pending",
     coachee: "Tatas Fachrul",
+    sessionTime: "10:00 - 11:00",
   },
   {
     id: 4,
@@ -36,7 +39,8 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
     date: String(new Date()),
     duration: 30,
     status: "pending",
-    coachee: "Marcel",
+    coachee: "Iwan",
+    sessionTime: "10:00 - 11:00",
   },
 ];
 
@@ -46,18 +50,18 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 
 function DashboardLayout() {
   return (
-    <div className="gap-4 p-4 lg:gap-6 lg:p-6">
-      <Card>
+    <div className="gap-4 lg:gap-6 lg:p-6">
+      <Card className="px-8 py-4">
         {/* Appointments Section */}
         <CardHeader className="flex-row flex-1 justify-between">
-          <CardTitle className="text-2xl">Dashboard</CardTitle>
+          <CardTitle className="text-2xl text-primary">Dashboard</CardTitle>
           <DateRangePicker />
         </CardHeader>
         <CardContent>
           <div className="flex flex-1 flex-row justify-evenly">
             <div
               className={cn(
-                "p-4 rounded-lg border max-w-52 flex-col flex justify-center items-center gap-4"
+                "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
               <p className={cn("text-black text-4xl text-center")}>2</p>
@@ -68,7 +72,7 @@ function DashboardLayout() {
 
             <div
               className={cn(
-                "p-4 rounded-lg border max-w-52 flex-col flex justify-center items-center gap-4"
+                "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
               <p className={cn("text-green-400 text-4xl text-center")}>1</p>
@@ -79,7 +83,7 @@ function DashboardLayout() {
 
             <div
               className={cn(
-                "p-4 rounded-lg border max-w-52 flex-col flex justify-center items-center gap-4"
+                "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
               <p className={cn("text-orange-400 text-4xl text-center")}>1</p>

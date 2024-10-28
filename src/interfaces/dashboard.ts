@@ -5,4 +5,5 @@ export interface DashboardUpcomingAppointments {
   status: string;
   duration: number;
   coachee: string;
+  sessionTime: string;
 }

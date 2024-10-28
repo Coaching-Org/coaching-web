@@ -14,7 +14,7 @@ import {
   WashingMachine,
   LayoutDashboard,
   UserCircle,
-  CalendarDays
+  CalendarDays,
 } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
@@ -67,7 +67,9 @@ function AuthLayout() {
   }, [router.state.location.pathname]);
 
   const isActive = (path: string) => {
-    return currentPath === path ? "bg-gray-200" : "text-muted-foreground";
+    return currentPath === path
+      ? "bg-primary text-white"
+      : "text-muted-foreground";
   };
 
   return (
@@ -83,20 +85,20 @@ function AuthLayout() {
           Dashboard
         </Link>
         {/* Calendar */}
-        <Link
+        {/* <Link
           to="/calendar"
           className={`${isActive("/calendar")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <Calendar className="h-4 w-4" />
           Calendar
-        </Link>
+        </Link> */}
         {/* Appointments */}
         <Link
           to="/appointments"
           className={`${isActive("/appointments")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
-          <CalendarDays className="h-4 w-4" />
-          Appointments
+          <Calendar className="h-4 w-4" />
+          Sessions
         </Link>
         {/* Coach/Coachee */}
         <Link

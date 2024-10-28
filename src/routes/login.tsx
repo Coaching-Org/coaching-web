@@ -83,7 +83,7 @@ function Login() {
       // in a real app, you'd want to use a more robust solution
       await sleep(1);
 
-      await navigate({ to: search.redirect || "/appointments" });
+      await navigate({ to: search.redirect || "/dashboard" });
     } catch (error) {
       console.error("Error logging in: ", error);
     } finally {

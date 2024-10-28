@@ -10,5 +10,6 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler"
-  }
+  },
+  "include": ["src/**/*", "src/custom.d.ts"]
 }

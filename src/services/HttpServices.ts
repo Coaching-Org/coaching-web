@@ -20,6 +20,7 @@ export abstract class HttpService {
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
     };
+    config.withCredentials = true;
 
     return config;
   }
