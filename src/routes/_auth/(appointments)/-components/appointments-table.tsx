@@ -162,7 +162,7 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter appointments..."
+          placeholder="Search coachee, notes, session"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

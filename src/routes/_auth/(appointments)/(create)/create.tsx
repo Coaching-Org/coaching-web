@@ -73,68 +73,54 @@ function AppointmentCreateLayout() {
       {/* Padding Card => 32 */}
       <Card className="p-4 flex-row">
         <CardHeader>
-          <CardTitle className="text-2xl">Add Appointment</CardTitle>
+          <CardTitle className="text-2xl text-primary">Add Session</CardTitle>
           {/* Heading 16px */}
         </CardHeader>
         <CardContent>
-          <div className="flex flex-1 flex-row justify-between">
-            {/* Form Service */}
-            <div className="flex-col flex">
-              {/* Size 12 */}
-              Session Type
-              <Combobox
-                data={tempCourse}
-                defaultValue={{ label: "Professional Coaching", value: "1" }}
-                // Size 12
-                // Padding placeholder 4
-              />
+          <div className="w-1/2">
+            <CardTitle className="text-xl">Session Details</CardTitle>
+            <div className="flex flex-1 flex-row justify-between">
+              {/* Form Service */}
+              <div className="flex-col flex mt-4 min-w-[250px]">
+                {/* Size 12 */}
+                Session Type
+                <div className="text-xs">
+                  <Combobox
+                    data={tempCourse}
+                    defaultValue={{
+                      label: "Professional Coaching",
+                      value: "1",
+                    }}
+                    // Size 12
+                    // Padding placeholder 4
+                  />
+                </div>
+              </div>
+
+              {/* Form Coachee */}
+              <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
+                Coachee
+                <div className="text-xs">
+                  <Combobox data={tempCoachee} />
+                </div>
+              </div>
             </div>
 
-            {/* Form Coach */}
-            <div className="flex-col flex">
-              Coach
-              <Combobox
-                data={tempCoach}
-                defaultValue={{ label: "Marcel", value: "1" }}
-                disabled={true}
-              />
-            </div>
-
-            {/* Form Coachee */}
-            <div className="flex-col flex">
-              Coachee
-              <Combobox data={tempCoachee} />
+            <CardTitle className="text-xl mt-4">Session Schedule</CardTitle>
+            <div className="flex flex-1 flex-row justify-between">
+              {/* Form Appointments Date */}
+              <div className="flex-col flex mt-4 min-w-[250px]">
+                Appointment Date
+                <DatePicker />
+              </div>
+              {/* Form Appointments Time */}
+              <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
+                Appointment Time
+                <Combobox data={tempAppointmentTime} />
+              </div>
             </div>
           </div>
-
-          <div className="flex flex-1 flex-row justify-between mt-8">
-            {/* Form Appointments Date */}
-            <div className="flex-col flex">
-              Appointment Date
-              <DatePicker />
-            </div>
-            {/* Form Appointments Time */}
-            <div className="flex-col flex">
-              Appointment Time
-              <Combobox data={tempAppointmentTime} />
-            </div>
-            {/* Form Status */}
-            {/* <div className="flex-col flex">
-              Select Status
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Pending" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="decline">Decline</SelectItem>
-                    <SelectItem value="accept">Accept</SelectItem>
-                    <SelectItem value="done">Done</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div> */}
-          </div>
+          <div className="w-1/2"></div>
         </CardContent>
         <CardFooter className="justify-end">
           <Button

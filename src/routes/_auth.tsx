@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useMemo, useState } from "react";
+import { FileTextIcon } from "@radix-ui/react-icons";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -99,6 +100,14 @@ function AuthLayout() {
         >
           <Calendar className="h-4 w-4" />
           Sessions
+        </Link>
+        {/* Notes */}
+        <Link
+          to="/notes"
+          className={`${isActive("/notes")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+        >
+          <FileTextIcon className="h-4 w-4" />
+          Notes
         </Link>
         {/* Coach/Coachee */}
         <Link

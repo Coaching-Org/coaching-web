@@ -1,15 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AppointmentsTable } from "./-components/appointments-table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
-import { useAppointmentsUtils } from "./-utils/appointments.utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 
-export const Route = createFileRoute("/_auth/(appointments)/appointments")({
-  component: AppointmentsLayout,
+export const Route = createFileRoute("/_auth/(notes)/notes")({
+  component: NotesLayout,
 });
 
 const tempDataTable: DashboardUpcomingAppointments[] = [
@@ -51,13 +47,8 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
   },
 ];
 
-function AppointmentsLayout() {
+function NotesLayout() {
   const navigate = useNavigate();
-  const {} = useAppointmentsUtils();
-
-  const goToReview = (appointmentId: string) => {
-    navigate({ to: `appointments/${appointmentId}/review` });
-  };
 
   return (
     <div className="gap-4 lg:p-6">
@@ -65,24 +56,15 @@ function AppointmentsLayout() {
         <CardHeader className="flex-row flex-1 justify-between">
           <div>
             <CardTitle className="text-2xl text-primary">
-              Manage Session
+              Session Notes
             </CardTitle>
             <CardTitle className="mt-4 text-sm font-normal">
-              View and managae all your sessions that you have scheduled with
-              your coachees.
+              View all of your past/ongoing notes from session that you have
+              scheduled with your coachees.
             </CardTitle>
           </div>
-          <Button
-            onClick={() => {
-              navigate({ to: "/create" });
-            }}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add Session
-          </Button>
-          {/* Add Button export */}
         </CardHeader>
         <CardContent>
-          {/* <AppointmentsTable navigate={() => goToReview("1")} /> */}
           <DashboardAppointmentsTable data={tempDataTable} />
         </CardContent>
       </Card>

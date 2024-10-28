@@ -10,270 +10,314 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as LoginImport } from "./routes/login";
-import { Route as AuthImport } from "./routes/_auth";
-import { Route as IndexImport } from "./routes/index";
-import { Route as AuthusersUsersImport } from "./routes/_auth/(users)/users";
-import { Route as AuthprofileProfileImport } from "./routes/_auth/(profile)/profile";
-import { Route as AuthdashboardDashboardImport } from "./routes/_auth/(dashboard)/dashboard";
-import { Route as AuthcalendarCalendarImport } from "./routes/_auth/(calendar)/calendar";
-import { Route as AuthappointmentsAppointmentsImport } from "./routes/_auth/(appointments)/appointments";
-import { Route as AuthappointmentsappointmentIdReviewImport } from "./routes/_auth/(appointments)/[appointmentId]/review";
-import { Route as AuthappointmentscreateCreateImport } from "./routes/_auth/(appointments)/(create)/create";
+import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as IndexImport } from './routes/index'
+import { Route as AuthusersUsersImport } from './routes/_auth/(users)/users'
+import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/profile'
+import { Route as AuthnotesNotesImport } from './routes/_auth/(notes)/notes'
+import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
+import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
+import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
+import { Route as AuthnotesnotesIdNoteDetailImport } from './routes/_auth/(notes)/[notesId]/NoteDetail'
+import { Route as AuthappointmentsappointmentIdReviewImport } from './routes/_auth/(appointments)/[appointmentId]/review'
+import { Route as AuthappointmentscreateCreateImport } from './routes/_auth/(appointments)/(create)/create'
 
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
-  path: "/login",
+  path: '/login',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthRoute = AuthImport.update({
-  id: "/_auth",
+  id: '/_auth',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  path: "/",
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthusersUsersRoute = AuthusersUsersImport.update({
-  path: "/users",
+  path: '/users',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 
 const AuthprofileProfileRoute = AuthprofileProfileImport.update({
-  path: "/profile",
+  path: '/profile',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
+
+const AuthnotesNotesRoute = AuthnotesNotesImport.update({
+  path: '/notes',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 const AuthdashboardDashboardRoute = AuthdashboardDashboardImport.update({
-  path: "/dashboard",
+  path: '/dashboard',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 
 const AuthcalendarCalendarRoute = AuthcalendarCalendarImport.update({
-  path: "/calendar",
+  path: '/calendar',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 
 const AuthappointmentsAppointmentsRoute =
   AuthappointmentsAppointmentsImport.update({
-    path: "/appointments",
+    path: '/appointments',
     getParentRoute: () => AuthRoute,
-  } as any);
+  } as any)
+
+const AuthnotesnotesIdNoteDetailRoute = AuthnotesnotesIdNoteDetailImport.update(
+  {
+    path: '/[notesId]/NoteDetail',
+    getParentRoute: () => AuthRoute,
+  } as any,
+)
 
 const AuthappointmentsappointmentIdReviewRoute =
   AuthappointmentsappointmentIdReviewImport.update({
-    path: "/[appointmentId]/review",
+    path: '/[appointmentId]/review',
     getParentRoute: () => AuthRoute,
-  } as any);
+  } as any)
 
 const AuthappointmentscreateCreateRoute =
   AuthappointmentscreateCreateImport.update({
-    path: "/create",
+    path: '/create',
     getParentRoute: () => AuthRoute,
-  } as any);
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/_auth": {
-      id: "/_auth";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AuthImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/_auth/(appointments)/appointments": {
-      id: "/_auth/appointments";
-      path: "/appointments";
-      fullPath: "/appointments";
-      preLoaderRoute: typeof AuthappointmentsAppointmentsImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(calendar)/calendar": {
-      id: "/_auth/calendar";
-      path: "/calendar";
-      fullPath: "/calendar";
-      preLoaderRoute: typeof AuthcalendarCalendarImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(dashboard)/dashboard": {
-      id: "/_auth/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof AuthdashboardDashboardImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(profile)/profile": {
-      id: "/_auth/profile";
-      path: "/profile";
-      fullPath: "/profile";
-      preLoaderRoute: typeof AuthprofileProfileImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(users)/users": {
-      id: "/_auth/users";
-      path: "/users";
-      fullPath: "/users";
-      preLoaderRoute: typeof AuthusersUsersImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(appointments)/(create)/create": {
-      id: "/_auth/create";
-      path: "/create";
-      fullPath: "/create";
-      preLoaderRoute: typeof AuthappointmentscreateCreateImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/(appointments)/[appointmentId]/review": {
-      id: "/_auth/[appointmentId]/review";
-      path: "/[appointmentId]/review";
-      fullPath: "/[appointmentId]/review";
-      preLoaderRoute: typeof AuthappointmentsappointmentIdReviewImport;
-      parentRoute: typeof AuthImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/(appointments)/appointments': {
+      id: '/_auth/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AuthappointmentsAppointmentsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(calendar)/calendar': {
+      id: '/_auth/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthcalendarCalendarImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(dashboard)/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthdashboardDashboardImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(notes)/notes': {
+      id: '/_auth/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof AuthnotesNotesImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(profile)/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthprofileProfileImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(users)/users': {
+      id: '/_auth/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthusersUsersImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(appointments)/(create)/create': {
+      id: '/_auth/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof AuthappointmentscreateCreateImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(appointments)/[appointmentId]/review': {
+      id: '/_auth/[appointmentId]/review'
+      path: '/[appointmentId]/review'
+      fullPath: '/[appointmentId]/review'
+      preLoaderRoute: typeof AuthappointmentsappointmentIdReviewImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(notes)/[notesId]/NoteDetail': {
+      id: '/_auth/[notesId]/NoteDetail'
+      path: '/[notesId]/NoteDetail'
+      fullPath: '/[notesId]/NoteDetail'
+      preLoaderRoute: typeof AuthnotesnotesIdNoteDetailImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthappointmentsAppointmentsRoute: typeof AuthappointmentsAppointmentsRoute;
-  AuthcalendarCalendarRoute: typeof AuthcalendarCalendarRoute;
-  AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute;
-  AuthprofileProfileRoute: typeof AuthprofileProfileRoute;
-  AuthusersUsersRoute: typeof AuthusersUsersRoute;
-  AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute;
-  AuthappointmentsappointmentIdReviewRoute: typeof AuthappointmentsappointmentIdReviewRoute;
+  AuthappointmentsAppointmentsRoute: typeof AuthappointmentsAppointmentsRoute
+  AuthcalendarCalendarRoute: typeof AuthcalendarCalendarRoute
+  AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
+  AuthnotesNotesRoute: typeof AuthnotesNotesRoute
+  AuthprofileProfileRoute: typeof AuthprofileProfileRoute
+  AuthusersUsersRoute: typeof AuthusersUsersRoute
+  AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
+  AuthappointmentsappointmentIdReviewRoute: typeof AuthappointmentsappointmentIdReviewRoute
+  AuthnotesnotesIdNoteDetailRoute: typeof AuthnotesnotesIdNoteDetailRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentsAppointmentsRoute: AuthappointmentsAppointmentsRoute,
   AuthcalendarCalendarRoute: AuthcalendarCalendarRoute,
   AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
+  AuthnotesNotesRoute: AuthnotesNotesRoute,
   AuthprofileProfileRoute: AuthprofileProfileRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
   AuthappointmentscreateCreateRoute: AuthappointmentscreateCreateRoute,
   AuthappointmentsappointmentIdReviewRoute:
     AuthappointmentsappointmentIdReviewRoute,
-};
+  AuthnotesnotesIdNoteDetailRoute: AuthnotesnotesIdNoteDetailRoute,
+}
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "": typeof AuthRouteWithChildren;
-  "/login": typeof LoginRoute;
-  "/appointments": typeof AuthappointmentsAppointmentsRoute;
-  "/calendar": typeof AuthcalendarCalendarRoute;
-  "/dashboard": typeof AuthdashboardDashboardRoute;
-  "/profile": typeof AuthprofileProfileRoute;
-  "/users": typeof AuthusersUsersRoute;
-  "/create": typeof AuthappointmentscreateCreateRoute;
-  "/[appointmentId]/review": typeof AuthappointmentsappointmentIdReviewRoute;
+  '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/calendar': typeof AuthcalendarCalendarRoute
+  '/dashboard': typeof AuthdashboardDashboardRoute
+  '/notes': typeof AuthnotesNotesRoute
+  '/profile': typeof AuthprofileProfileRoute
+  '/users': typeof AuthusersUsersRoute
+  '/create': typeof AuthappointmentscreateCreateRoute
+  '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
+  '/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "": typeof AuthRouteWithChildren;
-  "/login": typeof LoginRoute;
-  "/appointments": typeof AuthappointmentsAppointmentsRoute;
-  "/calendar": typeof AuthcalendarCalendarRoute;
-  "/dashboard": typeof AuthdashboardDashboardRoute;
-  "/profile": typeof AuthprofileProfileRoute;
-  "/users": typeof AuthusersUsersRoute;
-  "/create": typeof AuthappointmentscreateCreateRoute;
-  "/[appointmentId]/review": typeof AuthappointmentsappointmentIdReviewRoute;
+  '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/calendar': typeof AuthcalendarCalendarRoute
+  '/dashboard': typeof AuthdashboardDashboardRoute
+  '/notes': typeof AuthnotesNotesRoute
+  '/profile': typeof AuthprofileProfileRoute
+  '/users': typeof AuthusersUsersRoute
+  '/create': typeof AuthappointmentscreateCreateRoute
+  '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
+  '/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/_auth": typeof AuthRouteWithChildren;
-  "/login": typeof LoginRoute;
-  "/_auth/appointments": typeof AuthappointmentsAppointmentsRoute;
-  "/_auth/calendar": typeof AuthcalendarCalendarRoute;
-  "/_auth/dashboard": typeof AuthdashboardDashboardRoute;
-  "/_auth/profile": typeof AuthprofileProfileRoute;
-  "/_auth/users": typeof AuthusersUsersRoute;
-  "/_auth/create": typeof AuthappointmentscreateCreateRoute;
-  "/_auth/[appointmentId]/review": typeof AuthappointmentsappointmentIdReviewRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_auth/appointments': typeof AuthappointmentsAppointmentsRoute
+  '/_auth/calendar': typeof AuthcalendarCalendarRoute
+  '/_auth/dashboard': typeof AuthdashboardDashboardRoute
+  '/_auth/notes': typeof AuthnotesNotesRoute
+  '/_auth/profile': typeof AuthprofileProfileRoute
+  '/_auth/users': typeof AuthusersUsersRoute
+  '/_auth/create': typeof AuthappointmentscreateCreateRoute
+  '/_auth/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
+  '/_auth/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | ""
-    | "/login"
-    | "/appointments"
-    | "/calendar"
-    | "/dashboard"
-    | "/profile"
-    | "/users"
-    | "/create"
-    | "/[appointmentId]/review";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | ''
+    | '/login'
+    | '/appointments'
+    | '/calendar'
+    | '/dashboard'
+    | '/notes'
+    | '/profile'
+    | '/users'
+    | '/create'
+    | '/[appointmentId]/review'
+    | '/[notesId]/NoteDetail'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | ""
-    | "/login"
-    | "/appointments"
-    | "/calendar"
-    | "/dashboard"
-    | "/profile"
-    | "/users"
-    | "/create"
-    | "/[appointmentId]/review";
+    | '/'
+    | ''
+    | '/login'
+    | '/appointments'
+    | '/calendar'
+    | '/dashboard'
+    | '/notes'
+    | '/profile'
+    | '/users'
+    | '/create'
+    | '/[appointmentId]/review'
+    | '/[notesId]/NoteDetail'
   id:
-    | "__root__"
-    | "/"
-    | "/_auth"
-    | "/login"
-    | "/_auth/appointments"
-    | "/_auth/calendar"
-    | "/_auth/dashboard"
-    | "/_auth/profile"
-    | "/_auth/users"
-    | "/_auth/create"
-    | "/_auth/[appointmentId]/review";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/_auth/appointments'
+    | '/_auth/calendar'
+    | '/_auth/dashboard'
+    | '/_auth/notes'
+    | '/_auth/profile'
+    | '/_auth/users'
+    | '/_auth/create'
+    | '/_auth/[appointmentId]/review'
+    | '/_auth/[notesId]/NoteDetail'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AuthRoute: typeof AuthRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -297,10 +341,12 @@ export const routeTree = rootRoute
         "/_auth/appointments",
         "/_auth/calendar",
         "/_auth/dashboard",
+        "/_auth/notes",
         "/_auth/profile",
         "/_auth/users",
         "/_auth/create",
-        "/_auth/[appointmentId]/review"
+        "/_auth/[appointmentId]/review",
+        "/_auth/[notesId]/NoteDetail"
       ]
     },
     "/login": {
@@ -318,6 +364,10 @@ export const routeTree = rootRoute
       "filePath": "_auth/(dashboard)/dashboard.tsx",
       "parent": "/_auth"
     },
+    "/_auth/notes": {
+      "filePath": "_auth/(notes)/notes.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/profile": {
       "filePath": "_auth/(profile)/profile.tsx",
       "parent": "/_auth"
@@ -332,6 +382,10 @@ export const routeTree = rootRoute
     },
     "/_auth/[appointmentId]/review": {
       "filePath": "_auth/(appointments)/[appointmentId]/review.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/[notesId]/NoteDetail": {
+      "filePath": "_auth/(notes)/[notesId]/NoteDetail.tsx",
       "parent": "/_auth"
     }
   }

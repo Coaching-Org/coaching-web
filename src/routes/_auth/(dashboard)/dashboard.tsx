@@ -51,7 +51,7 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 function DashboardLayout() {
   return (
     <div className="gap-4 lg:gap-6 lg:p-6">
-      <Card className="px-8 py-4">
+      <Card className="px-2">
         {/* Appointments Section */}
         <CardHeader className="flex-row flex-1 justify-between">
           <CardTitle className="text-2xl text-primary">Dashboard</CardTitle>
