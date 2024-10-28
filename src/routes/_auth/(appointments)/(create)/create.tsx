@@ -70,24 +70,29 @@ function AppointmentCreateLayout() {
   const navigate = useNavigate();
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
+      {/* Padding Card => 32 */}
       <Card className="p-4 flex-row">
         <CardHeader>
           <CardTitle className="text-2xl">Add Appointment</CardTitle>
+          {/* Heading 16px */}
         </CardHeader>
         <CardContent>
           <div className="flex flex-1 flex-row justify-between">
             {/* Form Service */}
             <div className="flex-col flex">
-              Select Service
+              {/* Size 12 */}
+              Session Type
               <Combobox
                 data={tempCourse}
                 defaultValue={{ label: "Professional Coaching", value: "1" }}
+                // Size 12
+                // Padding placeholder 4
               />
             </div>
 
             {/* Form Coach */}
             <div className="flex-col flex">
-              Select Coach
+              Coach
               <Combobox
                 data={tempCoach}
                 defaultValue={{ label: "Marcel", value: "1" }}
@@ -97,7 +102,7 @@ function AppointmentCreateLayout() {
 
             {/* Form Coachee */}
             <div className="flex-col flex">
-              Select Coachee
+              Coachee
               <Combobox data={tempCoachee} />
             </div>
           </div>
@@ -114,7 +119,7 @@ function AppointmentCreateLayout() {
               <Combobox data={tempAppointmentTime} />
             </div>
             {/* Form Status */}
-            <div className="flex-col flex">
+            {/* <div className="flex-col flex">
               Select Status
               <Select>
                 <SelectTrigger className="w-[180px]">
@@ -128,7 +133,7 @@ function AppointmentCreateLayout() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
         </CardContent>
         <CardFooter className="justify-end">

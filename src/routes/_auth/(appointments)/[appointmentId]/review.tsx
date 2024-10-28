@@ -1,9 +1,11 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { createFileRoute } from "@tanstack/react-router";
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/_auth/(appointments)/(review)/review")({
+export const Route = createFileRoute(
+  '/_auth/(appointments)/[appointmentId]/review',
+)({
   component: () => ReviewLayout,
-});
+})
 
 function ReviewLayout() {
   return (
@@ -14,5 +16,5 @@ function ReviewLayout() {
         </CardHeader>
       </Card>
     </div>
-  );
+  )
 }

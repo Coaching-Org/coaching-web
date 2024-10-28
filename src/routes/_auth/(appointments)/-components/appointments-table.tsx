@@ -67,6 +67,7 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Coach",
     cell: ({ row }) => (
       <div className="capitalize flex flex-row items-center gap-2">
+        {/* Padding text to table 20 */}
         {row.original.coachName}
       </div>
     ),
@@ -82,7 +83,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "courseName",
-    header: "Course",
+    header: "Session Type",
     cell: ({ row }) => (
       <div className="capitalize text-center">{row.getValue("courseName")}</div>
     ),

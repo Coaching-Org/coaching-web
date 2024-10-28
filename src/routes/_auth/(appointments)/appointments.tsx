@@ -14,8 +14,8 @@ function AppointmentsLayout() {
   const navigate = useNavigate();
   const {} = useAppointmentsUtils();
 
-  const goToReview = () => {
-    navigate({ to: "/review" });
+  const goToReview = (appointmentId: string) => {
+    navigate({ to: `appointments/${appointmentId}/review` });
   };
 
   return (
@@ -30,9 +30,10 @@ function AppointmentsLayout() {
           >
             <Plus className="mr-2 h-4 w-4" /> Add Appointment
           </Button>
+          {/* Add Button export */}
         </CardHeader>
         <CardContent>
-          <AppointmentsTable navigate={goToReview} />
+          <AppointmentsTable navigate={() => goToReview("1")} />
         </CardContent>
       </Card>
     </div>
