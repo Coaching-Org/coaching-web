@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   app:
-    image: ${DOCKER_IMAGE}
+    image: ${DOCKER_IMAGE_NAME}
     restart: always
     ports:
-      - ${EXPOSED_PORT:-3001}:80
+      - ${EXPOSED_PORT:-4000}:80
     extra_hosts:
       - "host.docker.internal:host-gateway"
     deploy:
