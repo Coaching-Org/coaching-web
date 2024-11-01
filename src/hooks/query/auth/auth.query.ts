@@ -1,7 +1,13 @@
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { AuthKey } from "../query-key";
 import { AuthServices } from "@/services/auth/auth.service";
 import { PostLoginRequest, PostLoginResponse } from "@/services/auth/auth.type";
+import { AuthMeResponse } from "@/interfaces";
 
 export const useLoginQuery = (): UseMutationResult<
   PostLoginResponse,
@@ -25,5 +31,33 @@ export const useLoginQuery = (): UseMutationResult<
       console.log("variables", variables);
       console.log("context", context);
     },
+  });
+};
+
+export const useMeQuery = (): UseQueryResult<AuthMeResponse, Error> => {
+  return useQuery({
+    queryKey: [AuthKey.authMe],
+    queryFn: async ({ signal }) => {
+      try {
+        const response = await AuthServices.getMe(signal);
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+    enabled: true,
+  });
+};
+
+export const useLogoutQuery = (): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: [AuthKey.authLogout],
+    queryFn: async ({ signal }) => {
+      await AuthServices.logout(signal);
+    },
+    retry: 0,
+    enabled: true,
   });
 };
