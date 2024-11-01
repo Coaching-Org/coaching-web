@@ -37,7 +37,16 @@ function App() {
 
 const rootElement = document.getElementById("app")!;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: true,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: true,
+      retry: 0,
+    },
+  },
+});
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
