@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { User } from "@/interfaces/user";
+import { CoacheeDetail } from "@/interfaces";
+import moment from "moment";
 
 const tempDataUser: User[] = [
   {
@@ -122,7 +124,7 @@ const tempDataUser: User[] = [
   },
 ];
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<CoacheeDetail>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -142,7 +144,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "role",
     header: "Role",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
+    cell: ({ row }) => <div className="capitalize">{"Coachee"}</div>,
   },
   {
     accessorKey: "createdAt",
@@ -161,22 +163,16 @@ export const columns: ColumnDef<User>[] = [
       const date = row.getValue("createdAt") as string;
 
       // Format the ISO string to dd-mm-yyyy hh:mm
-      const formatted = new Date(date)
-        .toLocaleString("id-ID", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-        .replace(",", "");
+      const formatted = moment(row.original.recentAppointment).format(
+        "DD-MMM-YYYY HH:mm"
+      );
 
       return <div className="text-left font-medium">{formatted}</div>;
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "numberOfAppointments",
+    header: "Appointments",
     cell: ({ row }) => (
       <div
         className={cn(
@@ -188,21 +184,13 @@ export const columns: ColumnDef<User>[] = [
           "capitalize"
         )}
       >
-        {row.getValue("status")}
+        {row.getValue("numberOfAppointments")}
       </div>
     ),
   },
-  // {
-  //   id: 'actions',
-  //   enableHiding: false,
-  //   cell: ({row}) => {
-  //     const user = row.original
-  //     return <UsersTableAction user={user} />
-  //   },
-  // },
 ];
 
-export function UsersTable() {
+export function UsersTable({ data }: { data: CoacheeDetail[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -212,7 +200,7 @@ export function UsersTable() {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: tempDataUser,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

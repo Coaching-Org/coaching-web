@@ -46,7 +46,7 @@ export const useMeQuery = (): UseQueryResult<AuthMeResponse, Error> => {
         throw error;
       }
     },
-    enabled: false,
+    enabled: true,
   });
 };
 

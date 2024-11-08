@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useProfileUtils } from "./-utils/profile.utils";
 
 export const Route = createFileRoute("/_auth/(profile)/profile")({
   component: ProfileLayout,
@@ -18,12 +19,17 @@ export const Route = createFileRoute("/_auth/(profile)/profile")({
 
 function ProfileLayout() {
   const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
+  const {
+    state: { data },
+  } = useProfileUtils();
+  console.log("Profile Data", data);
+
   return (
     <Card className="m-4">
       <CardHeader>
         <h1 className="text-2xl font-semibold md:text-2xl">Profile</h1>
         <Avatar className="size-36">
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={data?.picture ?? "https://github.com/shadcn.png"} />
           <AvatarFallback>MS</AvatarFallback>
         </Avatar>
       </CardHeader>
@@ -32,7 +38,12 @@ function ProfileLayout() {
           <div className="w-1/2 mr-1">
             <div>
               <Label>Name</Label>
-              <Input type="text" placeholder="Name" disabled value={"Marcel"} />
+              <Input
+                type="text"
+                placeholder="Name"
+                disabled
+                value={data?.name ?? "-"}
+              />
             </div>
 
             <div className="mt-4">
@@ -41,7 +52,7 @@ function ProfileLayout() {
                 type="text"
                 placeholder="Phone"
                 disabled
-                value={"08123123123"}
+                value={data?.email ?? "-"}
               />
             </div>
           </div>
@@ -52,7 +63,7 @@ function ProfileLayout() {
                 type="text"
                 placeholder="Email"
                 disabled
-                value={"marcel@coaching.id"}
+                value={data?.email ?? "-"}
               />
             </div>
           </div>
@@ -65,7 +76,7 @@ function ProfileLayout() {
                 type="password"
                 placeholder="Old Password"
                 disabled
-                value={"marcel@coaching.id"}
+                value={"coaching"}
               />
             </div>
             <div className="mt-4">
@@ -74,7 +85,7 @@ function ProfileLayout() {
                 type="password"
                 placeholder="New Password"
                 disabled
-                value={"marcel@coaching.id"}
+                value={"coaching"}
               />
             </div>
             <div className="mt-4">
@@ -83,7 +94,7 @@ function ProfileLayout() {
                 type="password"
                 placeholder="Re-password"
                 disabled
-                value={"marcel@coaching.id"}
+                value={"coaching"}
               />
             </div>
             {/* Form Phone number */}

@@ -1,9 +1,9 @@
 export interface GetAppointmentsListRequest {
   page: number;
   perPage: number;
-  keyword: string;
-  sort: string;
-  sortBy: string;
+  keyword?: string;
+  sort?: string;
+  sortBy?: string;
 }
 
 export interface AppointmentDetail {

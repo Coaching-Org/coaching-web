@@ -29,14 +29,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
+import { AppointmentDetail } from "@/services/appointments/appointments.type";
 
-export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
+export const columns: ColumnDef<AppointmentDetail>[] = [
   {
     accessorKey: "id",
     header: "Session Name",
     cell: ({ row }) => (
       <div className="">
-        {row.original.course} - {row.original.coachee}{" "}
+        {row.original.courseName} - {row.original.coacheeName}{" "}
         {moment(row.original.date).format("DD/MM/YYYY")}
       </div>
     ),
@@ -44,7 +45,7 @@ export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
   {
     accessorKey: "course",
     header: "Session Type",
-    cell: ({ row }) => <div className="">{row.original.course}</div>,
+    cell: ({ row }) => <div className="">{row.original.courseName}</div>,
   },
   {
     accessorKey: "date",
@@ -56,7 +57,7 @@ export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
   {
     accessorKey: "sessionTime",
     header: "Session Time",
-    cell: ({ row }) => <div className="">{row.original.sessionTime}</div>,
+    cell: ({ row }) => <div className="">{row.original.duration}</div>,
   },
   {
     accessorKey: "id",
@@ -76,7 +77,7 @@ export const columns: ColumnDef<DashboardUpcomingAppointments>[] = [
 export function DashboardAppointmentsTable({
   data,
 }: {
-  data: DashboardUpcomingAppointments[];
+  data: AppointmentDetail[];
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
