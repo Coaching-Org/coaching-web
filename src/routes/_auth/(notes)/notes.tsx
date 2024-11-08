@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
+import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -50,6 +51,10 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
 function NotesLayout() {
   const navigate = useNavigate();
 
+  const {
+    state: { data },
+  } = useAppointmentsUtils();
+
   return (
     <div className="gap-4 lg:p-6">
       <Card className="px-2">
@@ -67,7 +72,7 @@ function NotesLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={tempDataTable} />
+          <DashboardAppointmentsTable data={data?.data || []} />
         </CardContent>
       </Card>
     </div>

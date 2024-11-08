@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { CoacheeKey } from "../query-key";
 import {
+  GetCoacheeResponse,
   GetCoachListResponse,
   PostCoacheeRequest,
   PostCoacheeResponse,
@@ -19,7 +20,7 @@ export const useCoacheeListQuery = ({
 }: {
   enabled: boolean;
   params: ParamsPaginationRequest;
-}): UseQueryResult<GetCoachListResponse, Error> => {
+}): UseQueryResult<GetCoacheeResponse, Error> => {
   return useQuery({
     queryKey: [CoacheeKey.coacheeList],
     queryFn: async ({ signal }) => {

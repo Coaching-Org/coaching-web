@@ -4,6 +4,7 @@ import { DateRangePicker } from "./-components/date-range-picker";
 import { cn } from "@/lib/utils";
 import { DashboardAppointmentsTable } from "./-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
+import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 
 const tempDataTable: DashboardUpcomingAppointments[] = [
   {
@@ -49,6 +50,10 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 });
 
 function DashboardLayout() {
+  const {
+    state: { data },
+  } = useAppointmentsUtils();
+
   return (
     <div className="gap-4 lg:gap-6 lg:p-6">
       <Card className="px-2">
@@ -99,7 +104,7 @@ function DashboardLayout() {
           <CardTitle>Upcoming Appointments</CardTitle>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={tempDataTable} />
+          <DashboardAppointmentsTable data={data?.data || []} />
         </CardContent>
       </Card>
     </div>

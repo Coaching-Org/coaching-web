@@ -53,11 +53,15 @@ const tempDataTable: DashboardUpcomingAppointments[] = [
 
 function AppointmentsLayout() {
   const navigate = useNavigate();
-  const {} = useAppointmentsUtils();
+  const {
+    state: { data },
+  } = useAppointmentsUtils();
 
   const goToReview = (appointmentId: string) => {
     navigate({ to: `appointments/${appointmentId}/review` });
   };
+
+  console.log("data: ", data);
 
   return (
     <div className="gap-4 lg:p-6">
@@ -83,7 +87,7 @@ function AppointmentsLayout() {
         </CardHeader>
         <CardContent>
           {/* <AppointmentsTable navigate={() => goToReview("1")} /> */}
-          <DashboardAppointmentsTable data={tempDataTable} />
+          <DashboardAppointmentsTable data={data?.data || []} />
         </CardContent>
       </Card>
     </div>

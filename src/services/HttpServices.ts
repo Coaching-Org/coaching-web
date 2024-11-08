@@ -1,19 +1,18 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import Cookies from "universal-cookie";
 
-export const getToken = () => {
-  const cookies = new Cookies();
-  const token = cookies.get("coaching-token");
-  return token;
-};
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "https://api-service-coaching.tatas.id/";
+
 export abstract class HttpService {
   private static initConfig(
     config: AxiosRequestConfig,
     type: string | undefined
   ) {
-    const apiHost = "https://api-service-coaching.tatas.id/";
+    console.log("Cookies", Cookies);
+    // const apiHost = "https://api-service-coaching.tatas.id/";
 
-    config.baseURL = apiHost;
+    // config.baseURL = apiHost;
     config.headers = {
       ...config.headers,
       "Content-Type": "application/json",
@@ -30,11 +29,12 @@ export abstract class HttpService {
     try {
       return await requestFn();
     } catch (error) {
+      console.log("error: ", error);
       if (error instanceof AxiosError && error.response?.status === 401) {
         // Token is invalid or expired
-        const cookies = new Cookies();
-        cookies.remove("coaching-token"); // Remove invalid token
-        window.location.href = "/login"; // Redirect to login page
+        // const cookies = new Cookies();
+        // cookies.remove("coaching-token"); // Remove invalid token
+        // window.location.href = "/login"; // Redirect to login page
       }
       throw error;
     }
@@ -47,7 +47,10 @@ export abstract class HttpService {
   ): Promise<any> {
     return this.handleRequest(async () => {
       const newConfig = this.initConfig(config, type);
-      return axios.get(url, newConfig);
+      return axios.get(url, {
+        ...newConfig,
+        withCredentials: true,
+      });
     });
   }
 
@@ -59,7 +62,7 @@ export abstract class HttpService {
   ): Promise<any> {
     return this.handleRequest(async () => {
       const newConfig = this.initConfig(config, type);
-      return axios.post(url, data, newConfig);
+      return axios.post(url, data, { ...newConfig, withCredentials: true });
     });
   }
 
@@ -71,7 +74,7 @@ export abstract class HttpService {
   ): Promise<any> {
     return this.handleRequest(async () => {
       const newConfig = this.initConfig(config, type);
-      return axios.patch(url, data, newConfig);
+      return axios.patch(url, data, { ...newConfig, withCredentials: true });
     });
   }
 
@@ -86,7 +89,7 @@ export abstract class HttpService {
       if (body) {
         newConfig.data = body;
       }
-      return axios.delete(url, newConfig);
+      return axios.delete(url, { ...newConfig, withCredentials: true });
     });
   }
 }

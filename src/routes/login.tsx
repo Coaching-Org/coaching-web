@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useLoginQuery } from "@/hooks/query/auth/auth.query";
+import { useLoginQuery, useMeQuery } from "@/hooks/query/auth/auth.query";
 
 export const Route = createFileRoute("/login")({
   validateSearch: z.object({
@@ -66,6 +66,7 @@ function Login() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { mutateAsync } = useLoginQuery();
+  const validateMe = useMeQuery();
 
   const search = Route.useSearch();
 

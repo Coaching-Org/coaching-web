@@ -11,11 +11,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
+export function DatePicker({
+  onDateSelect,
+}: {
+  onDateSelect: (date: Date | null) => void;
+}) {
   const [date, setDate] = React.useState<Date>();
+  const [open, setOpen] = React.useState<boolean>(false);
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -34,6 +39,11 @@ export function DatePicker() {
           selected={date}
           onSelect={setDate}
           initialFocus
+          onDayClick={(date) => {
+            onDateSelect(date);
+            setDate(date);
+            setOpen(false);
+          }}
         />
       </PopoverContent>
     </Popover>

@@ -21,20 +21,26 @@ interface ComboboxProps {
   data: Array<ItemDetailProps>;
   defaultValue?: ItemDetailProps;
   disabled?: boolean;
+  onValueChange?: (value: any) => void;
 }
 
 interface ItemDetailProps {
-  value: string;
-  label: string;
+  value: string | number;
+  label: string | number;
 }
 
 export function Combobox({
   data,
   defaultValue,
   disabled = false,
+  onValueChange,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+  console.log("data", data);
+  console.log("defaultValue", defaultValue);
+  console.log("value", value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -63,10 +69,12 @@ export function Combobox({
               {data.map((item) => (
                 <CommandItem
                   key={item.value}
-                  value={item.value}
+                  value={item.value.toString()}
                   onSelect={(currentValue) => {
+                    console.log("currentValue", currentValue);
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    onValueChange?.(currentValue);
                   }}
                 >
                   <Check

@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useCreateAppointmentUtils } from "./-utils/create.utils";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -24,50 +25,40 @@ export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
 
 const tempCourse = [
   {
-    value: "1",
+    value: 1,
     label: "Professional Coaching",
   },
 ];
 
 const tempCoach = [
   {
-    value: "1",
+    value: 1,
     label: "Marcel",
   },
 ];
 
 const tempCoachee = [
   {
-    value: "1",
+    value: 1,
     label: "Tatas",
   },
   {
-    value: "2",
+    value: 2,
     label: "Iwan",
-  },
-];
-
-const tempAppointmentTime = [
-  {
-    value: "1",
-    label: "09.00 - 09.30",
-  },
-  {
-    value: "2",
-    label: "09.30 - 10.00",
-  },
-  {
-    value: "3",
-    label: "10.00 - 10.30",
-  },
-  {
-    value: "4",
-    label: "10.30 - 11.00",
   },
 ];
 
 function AppointmentCreateLayout() {
   const navigate = useNavigate();
+  const {
+    event: {
+      onDateSelect,
+      onTimeSlotSelect,
+      onSubmitAppointment,
+      onCoacheeSelect,
+    },
+    state: { timeSlots, selectedDate, selectedTimeSlot, coacheeData },
+  } = useCreateAppointmentUtils({ coachId: tempCoach[0].value });
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       {/* Padding Card => 32 */}
@@ -77,8 +68,8 @@ function AppointmentCreateLayout() {
           {/* Heading 16px */}
         </CardHeader>
         <CardContent>
-          <div className="w-1/2">
-            <CardTitle className="text-xl">Session Details</CardTitle>
+          <CardTitle className="text-xl">Session Details</CardTitle>
+          <div className="">
             <div className="flex flex-1 flex-row justify-between">
               {/* Form Service */}
               <div className="flex-col flex mt-4 min-w-[250px]">
@@ -88,11 +79,10 @@ function AppointmentCreateLayout() {
                   <Combobox
                     data={tempCourse}
                     defaultValue={{
-                      label: "Professional Coaching",
-                      value: "1",
+                      label: tempCoach[0].label,
+                      value: tempCoach[0].value,
                     }}
-                    // Size 12
-                    // Padding placeholder 4
+                    disabled={true}
                   />
                 </div>
               </div>
@@ -101,7 +91,15 @@ function AppointmentCreateLayout() {
               <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
                 Coachee
                 <div className="text-xs">
-                  <Combobox data={tempCoachee} />
+                  <Combobox
+                    data={
+                      coacheeData?.data.map((item) => ({
+                        label: item.name,
+                        value: item.id,
+                      })) || []
+                    }
+                    onValueChange={onCoacheeSelect}
+                  />
                 </div>
               </div>
             </div>
@@ -111,12 +109,20 @@ function AppointmentCreateLayout() {
               {/* Form Appointments Date */}
               <div className="flex-col flex mt-4 min-w-[250px]">
                 Appointment Date
-                <DatePicker />
+                <DatePicker onDateSelect={onDateSelect} />
               </div>
               {/* Form Appointments Time */}
               <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
                 Appointment Time
-                <Combobox data={tempAppointmentTime} />
+                <Combobox
+                  onValueChange={onTimeSlotSelect}
+                  data={timeSlots.map((item) => {
+                    return {
+                      label: item.label,
+                      value: item.id,
+                    };
+                  })}
+                />
               </div>
             </div>
           </div>
@@ -125,7 +131,8 @@ function AppointmentCreateLayout() {
         <CardFooter className="justify-end">
           <Button
             onClick={() => {
-              navigate({ to: "/appointments" });
+              onSubmitAppointment();
+              // navigate({ to: "/appointments" });
             }}
           >
             Create
