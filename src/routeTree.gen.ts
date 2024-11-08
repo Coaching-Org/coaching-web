@@ -15,6 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthusersUsersImport } from './routes/_auth/(users)/users'
+import { Route as AuthusersCreateCoacheeImport } from './routes/_auth/(users)/create-coachee'
 import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/profile'
 import { Route as AuthnotesNotesImport } from './routes/_auth/(notes)/notes'
 import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
@@ -43,6 +44,11 @@ const IndexRoute = IndexImport.update({
 
 const AuthusersUsersRoute = AuthusersUsersImport.update({
   path: '/users',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthusersCreateCoacheeRoute = AuthusersCreateCoacheeImport.update({
+  path: '/create-coachee',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -151,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthprofileProfileImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(users)/create-coachee': {
+      id: '/_auth/create-coachee'
+      path: '/create-coachee'
+      fullPath: '/create-coachee'
+      preLoaderRoute: typeof AuthusersCreateCoacheeImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/(users)/users': {
       id: '/_auth/users'
       path: '/users'
@@ -190,6 +203,7 @@ interface AuthRouteChildren {
   AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
   AuthnotesNotesRoute: typeof AuthnotesNotesRoute
   AuthprofileProfileRoute: typeof AuthprofileProfileRoute
+  AuthusersCreateCoacheeRoute: typeof AuthusersCreateCoacheeRoute
   AuthusersUsersRoute: typeof AuthusersUsersRoute
   AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
   AuthappointmentsappointmentIdReviewRoute: typeof AuthappointmentsappointmentIdReviewRoute
@@ -202,6 +216,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
   AuthnotesNotesRoute: AuthnotesNotesRoute,
   AuthprofileProfileRoute: AuthprofileProfileRoute,
+  AuthusersCreateCoacheeRoute: AuthusersCreateCoacheeRoute,
   AuthusersUsersRoute: AuthusersUsersRoute,
   AuthappointmentscreateCreateRoute: AuthappointmentscreateCreateRoute,
   AuthappointmentsappointmentIdReviewRoute:
@@ -220,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/notes': typeof AuthnotesNotesRoute
   '/profile': typeof AuthprofileProfileRoute
+  '/create-coachee': typeof AuthusersCreateCoacheeRoute
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
@@ -235,6 +251,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/notes': typeof AuthnotesNotesRoute
   '/profile': typeof AuthprofileProfileRoute
+  '/create-coachee': typeof AuthusersCreateCoacheeRoute
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
@@ -251,6 +268,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthdashboardDashboardRoute
   '/_auth/notes': typeof AuthnotesNotesRoute
   '/_auth/profile': typeof AuthprofileProfileRoute
+  '/_auth/create-coachee': typeof AuthusersCreateCoacheeRoute
   '/_auth/users': typeof AuthusersUsersRoute
   '/_auth/create': typeof AuthappointmentscreateCreateRoute
   '/_auth/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
@@ -268,6 +286,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notes'
     | '/profile'
+    | '/create-coachee'
     | '/users'
     | '/create'
     | '/[appointmentId]/review'
@@ -282,6 +301,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notes'
     | '/profile'
+    | '/create-coachee'
     | '/users'
     | '/create'
     | '/[appointmentId]/review'
@@ -296,6 +316,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/notes'
     | '/_auth/profile'
+    | '/_auth/create-coachee'
     | '/_auth/users'
     | '/_auth/create'
     | '/_auth/[appointmentId]/review'
@@ -343,6 +364,7 @@ export const routeTree = rootRoute
         "/_auth/dashboard",
         "/_auth/notes",
         "/_auth/profile",
+        "/_auth/create-coachee",
         "/_auth/users",
         "/_auth/create",
         "/_auth/[appointmentId]/review",
@@ -370,6 +392,10 @@ export const routeTree = rootRoute
     },
     "/_auth/profile": {
       "filePath": "_auth/(profile)/profile.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/create-coachee": {
+      "filePath": "_auth/(users)/create-coachee.tsx",
       "parent": "/_auth"
     },
     "/_auth/users": {
