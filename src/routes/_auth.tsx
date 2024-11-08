@@ -69,8 +69,8 @@ function AuthLayout() {
 
   const isActive = (path: string) => {
     return currentPath === path
-      ? "bg-primary text-white"
-      : "text-muted-foreground";
+      ? "bg-primary text-white hover:text-white"
+      : "text-muted-foreground hover:text-primary";
   };
 
   return (
@@ -80,6 +80,7 @@ function AuthLayout() {
         {/* Dashboard */}
         <Link
           to="/dashboard"
+          onClick={() => setCurrentPath("/dashboard")}
           className={`${isActive("/dashboard")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <LayoutDashboard className="h-4 w-4" />
@@ -96,6 +97,7 @@ function AuthLayout() {
         {/* Appointments */}
         <Link
           to="/appointments"
+          onClick={() => setCurrentPath("/appointments")}
           className={`${isActive("/appointments")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <Calendar className="h-4 w-4" />
@@ -104,6 +106,7 @@ function AuthLayout() {
         {/* Notes */}
         <Link
           to="/notes"
+          onClick={() => setCurrentPath("/notes")}
           className={`${isActive("/notes")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <FileTextIcon className="h-4 w-4" />
@@ -112,6 +115,7 @@ function AuthLayout() {
         {/* Coach/Coachee */}
         <Link
           to="/users"
+          onClick={() => setCurrentPath("/users")}
           className={`${isActive("/users")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <User className="h-4 w-4" />
@@ -120,6 +124,7 @@ function AuthLayout() {
         {/* Profile */}
         <Link
           to="/profile"
+          onClick={() => setCurrentPath("/profile")}
           className={`${isActive("/profile")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <UserCircle className="h-4 w-4" />
@@ -131,6 +136,7 @@ function AuthLayout() {
         <Header handleLogout={() => setOpenLogout(true)}>
           <Link
             to="/users"
+            onClick={() => setCurrentPath("/users")}
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <User className="h-5 w-5" />
@@ -138,6 +144,7 @@ function AuthLayout() {
           </Link>
           <Link
             to="/appointments"
+            onClick={() => setCurrentPath("/appointments")}
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <Calendar className="h-5 w-5" />

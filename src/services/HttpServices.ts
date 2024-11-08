@@ -9,7 +9,7 @@ export abstract class HttpService {
     config: AxiosRequestConfig,
     type: string | undefined
   ) {
-    console.log("Cookies", Cookies);
+    // console.log("Cookies", Cookies);
     // const apiHost = "https://api-service-coaching.tatas.id/";
 
     // config.baseURL = apiHost;
