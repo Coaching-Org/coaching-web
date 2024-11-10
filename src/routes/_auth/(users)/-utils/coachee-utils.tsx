@@ -6,9 +6,6 @@ export const useCoacheeUtils = () => {
     params: { page: 1, perPage: 10 },
     enabled: true,
   });
-  useEffect(() => {
-    console.log("coachee utils");
-  }, []);
 
   return {
     state: { data },

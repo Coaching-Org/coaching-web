@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCoacheeUtils } from "./-utils/coachee-utils";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export const Route = createFileRoute("/_auth/(users)/users")({
   component: UsersLayout,
@@ -24,7 +25,11 @@ function UsersLayout() {
             <CardTitle className="text-2xl text-primary">Coachee</CardTitle>
           </div>
           <div>
-            <Button onClick={() => navigate({ to: "/create-coachee" })}>
+            <Button
+              onClick={() => {
+                navigate({ to: "/create-coachee" });
+              }}
+            >
               <Plus className="mr-2 h-4 w-4" /> Add Coachee
             </Button>
           </div>

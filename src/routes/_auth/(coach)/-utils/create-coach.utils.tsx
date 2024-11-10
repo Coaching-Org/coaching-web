@@ -1,19 +1,20 @@
-import { useCreateCoacheeQuery } from "@/hooks/query/coachee/coachee.query";
+import { useCreateCoachQuery } from "@/hooks/query/coach/coach.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const useCreateCoacheeUtils = () => {
-  const navigate = useNavigate();
+export const useCreateCoachUtils = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<number>(2);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
-  const { mutateAsync: createCoachee } = useCreateCoacheeQuery();
+  const { mutateAsync: createCoach } = useCreateCoachQuery();
 
   const isPasswordMatch = () => {
     return password === confirmPassword;
@@ -37,18 +38,22 @@ export const useCreateCoacheeUtils = () => {
     return false;
   };
 
-  const onSaveCoachee = async () => {
+  const onSaveCoach = async () => {
+    setIsButtonLoading(true);
     try {
-      await createCoachee({
+      await createCoach({
         name,
         email,
         phoneNumber,
         password,
       });
-      toast({ title: "Coachee created successfully", variant: "success" });
-      navigate({ to: "/users" });
+
+      toast({ title: "Coach created successfully", variant: "success" });
+      navigate({ to: "/coach" });
     } catch (error) {
-      toast({ title: "Coachee creation failed", variant: "destructive" });
+      toast({ title: "Coach creation failed", variant: "destructive" });
+    } finally {
+      setIsButtonLoading(false);
     }
   };
 
@@ -61,6 +66,7 @@ export const useCreateCoacheeUtils = () => {
       confirmPassword,
       role,
       isButtonDisabled,
+      isButtonLoading,
     },
     event: {
       setName,
@@ -69,7 +75,7 @@ export const useCreateCoacheeUtils = () => {
       setPassword,
       setConfirmPassword,
       setRole,
-      onSaveCoachee,
+      onSaveCoach,
     },
   };
 };
