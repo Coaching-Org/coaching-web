@@ -69,60 +69,70 @@ function AppointmentCreateLayout() {
         </CardHeader>
         <CardContent>
           <CardTitle className="text-xl">Session Details</CardTitle>
-          <div className="">
-            <div className="flex flex-1 flex-row justify-between">
+          <div className="w-1/2">
+            <div className="flex flex-1 flex-row">
               {/* Form Service */}
-              <div className="flex-col flex mt-4 min-w-[250px]">
-                {/* Size 12 */}
-                Session Type
-                <div className="text-xs">
-                  <Combobox
-                    data={tempCourse}
-                    defaultValue={{
-                      label: tempCoach[0].label,
-                      value: tempCoach[0].value,
-                    }}
-                    disabled={true}
-                  />
+              <div className="w-1/2">
+                {/* Form Service */}
+                <div className="flex-col flex mt-4 min-w-[250px]">
+                  {/* Size 12 */}
+                  Session Type
+                  <div className="text-xs">
+                    <Combobox
+                      data={tempCourse}
+                      defaultValue={{
+                        label: tempCoach[0].label,
+                        value: tempCoach[0].value,
+                      }}
+                      disabled={true}
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Form Coachee */}
-              <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                Coachee
-                <div className="text-xs">
-                  <Combobox
-                    data={
-                      coacheeData?.data.map((item) => ({
-                        label: item.name,
-                        value: item.id,
-                      })) || []
-                    }
-                    onValueChange={onCoacheeSelect}
-                  />
+              <div className="w-1/2">
+                {/* Form Coachee */}
+                <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
+                  Coachee
+                  <div className="text-xs">
+                    <Combobox
+                      data={
+                        coacheeData?.data.map((item) => ({
+                          label: item.name,
+                          value: item.id,
+                        })) || []
+                      }
+                      onValueChange={onCoacheeSelect}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
             <CardTitle className="text-xl mt-4">Session Schedule</CardTitle>
-            <div className="flex flex-1 flex-row justify-between">
-              {/* Form Appointments Date */}
-              <div className="flex-col flex mt-4 min-w-[250px]">
-                Appointment Date
-                <DatePicker onDateSelect={onDateSelect} />
+            <div className="flex flex-1 flex-row">
+              <div className="w-1/2">
+                {/* Form Appointments Date */}
+                <div className="flex-col flex mt-4 min-w-[250px]">
+                  Appointment Date
+                  <DatePicker onDateSelect={onDateSelect} />
+                </div>
               </div>
-              {/* Form Appointments Time */}
-              <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                Appointment Time
-                <Combobox
-                  onValueChange={onTimeSlotSelect}
-                  data={timeSlots.map((item) => {
-                    return {
-                      label: item.label,
-                      value: item.id,
-                    };
-                  })}
-                />
+
+              <div className="w-1/2">
+                {/* Form Appointments Time */}
+                <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
+                  Appointment Time
+                  <Combobox
+                    onValueChange={onTimeSlotSelect}
+                    data={timeSlots.map((item) => {
+                      return {
+                        label: item.label,
+                        value: item.id,
+                      };
+                    })}
+                  />
+                </div>
               </div>
             </div>
           </div>

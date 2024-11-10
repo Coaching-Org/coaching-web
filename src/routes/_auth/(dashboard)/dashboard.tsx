@@ -69,7 +69,7 @@ function DashboardLayout() {
                 "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
-              <p className={cn("text-black text-4xl text-center")}>2</p>
+              <p className={cn("text-black text-4xl text-center")}>{"0"}</p>
               <p className={cn("text-muted-foreground text-center")}>
                 Total Appointments
               </p>
@@ -80,7 +80,7 @@ function DashboardLayout() {
                 "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
-              <p className={cn("text-green-400 text-4xl text-center")}>1</p>
+              <p className={cn("text-green-400 text-4xl text-center")}>{"0"}</p>
               <p className={cn("text-muted-foreground text-center")}>
                 Approved Appointments
               </p>
@@ -91,7 +91,9 @@ function DashboardLayout() {
                 "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
-              <p className={cn("text-orange-400 text-4xl text-center")}>1</p>
+              <p className={cn("text-orange-400 text-4xl text-center")}>
+                {"0"}
+              </p>
               <p className={cn("text-muted-foreground text-center")}>
                 Pending Appointments
               </p>
