@@ -22,3 +22,7 @@ export const CoacheeKey = {
 export const UserKey = {
   userUpdatePassword: "user.updatePassword",
 };
+
+export const NotesKey = {
+  notesCreate: "notes.create",
+};

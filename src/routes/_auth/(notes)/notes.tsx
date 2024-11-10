@@ -72,7 +72,7 @@ function NotesLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={data?.data || []} />
+          <DashboardAppointmentsTable data={(data as any) || []} />
         </CardContent>
       </Card>
     </div>

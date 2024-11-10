@@ -13,10 +13,12 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createFileRoute,
   useNavigate,
+  useParams,
   useRouter,
 } from "@tanstack/react-router";
+import { useNotesUtils } from "./-utils/notes.utils";
 
-export const Route = createFileRoute("/_auth/(notes)/[notesId]/NoteDetail")({
+export const Route = createFileRoute("/_auth/(notes)/$notesId/NoteDetail")({
   component: NoteDetailLayout,
 });
 
@@ -67,8 +69,26 @@ const tempAppointmentTime = [
 function NoteDetailLayout() {
   const router = useRouter();
   const navigate = useNavigate();
-  // const test = router.
-
+  const { notesId } = useParams({ from: "/_auth/$notesId/NoteDetail" });
+  const {
+    state: {
+      isButtonDisabled,
+      textGoals,
+      textReality,
+      textOptions,
+      textWayForward,
+      textNotes,
+    },
+    event: {
+      onSaveNotes,
+      setTextGoals,
+      setTextReality,
+      setTextOptions,
+      setTextWayForward,
+      setTextNotes,
+      setFile,
+    },
+  } = useNotesUtils();
   // Text weight 700 600 500 400
 
   return (
@@ -123,23 +143,38 @@ function NoteDetailLayout() {
             <div className="mt-4">
               {/* min height - 200 */}
               <Label>Goals</Label>
-              <Textarea />
+              <Textarea
+                value={textGoals}
+                onChange={(e) => setTextGoals(e.target.value)}
+              />
             </div>
             <div className="mt-4">
               <Label>Reality</Label>
-              <Textarea />
+              <Textarea
+                value={textReality}
+                onChange={(e) => setTextReality(e.target.value)}
+              />
             </div>
             <div className="mt-4">
               <Label>Options</Label>
-              <Textarea />
+              <Textarea
+                value={textOptions}
+                onChange={(e) => setTextOptions(e.target.value)}
+              />
             </div>
             <div className="mt-4">
               <Label>Will/Way Forward</Label>
-              <Textarea />
+              <Textarea
+                value={textWayForward}
+                onChange={(e) => setTextWayForward(e.target.value)}
+              />
             </div>
             <div className="mt-4">
               <Label>Notes</Label>
-              <Textarea />
+              <Textarea
+                value={textNotes}
+                onChange={(e) => setTextNotes(e.target.value)}
+              />
             </div>
             <div className="mt-4">
               {/* Resize bordernya, with icon upload ditengah, multiple file, pdf, png, jpg, jpeg doc docx xls xlsx ppt pptx, rar zip 7zip max 5mb */}
@@ -149,17 +184,25 @@ function NoteDetailLayout() {
                 type="file"
                 multiple
                 accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files) {
+                    const validFiles = Array.from(files).filter(
+                      (file) => file.size <= 5 * 1024 * 1024
+                    );
+                    if (validFiles.length !== files.length) {
+                      alert("File size exceeds 5MB");
+                    }
+                    setFile(validFiles);
+                  }
+                }}
               />
             </div>
           </div>
         </CardContent>
         <CardFooter className="justify-end">
           {/* Add validation for GROW*/}
-          <Button
-            onClick={() => {
-              navigate({ to: "/dashboard" });
-            }}
-          >
+          <Button onClick={onSaveNotes} disabled={isButtonDisabled}>
             Save
           </Button>
         </CardFooter>

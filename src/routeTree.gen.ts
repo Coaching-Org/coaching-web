@@ -23,7 +23,7 @@ import { Route as AuthcoachCreateCoachImport } from './routes/_auth/(coach)/crea
 import { Route as AuthcoachCoachImport } from './routes/_auth/(coach)/coach'
 import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
-import { Route as AuthnotesnotesIdNoteDetailImport } from './routes/_auth/(notes)/[notesId]/NoteDetail'
+import { Route as AuthnotesNotesIdNoteDetailImport } from './routes/_auth/(notes)/$notesId/NoteDetail'
 import { Route as AuthappointmentsappointmentIdReviewImport } from './routes/_auth/(appointments)/[appointmentId]/review'
 import { Route as AuthappointmentscreateCreateImport } from './routes/_auth/(appointments)/(create)/create'
 
@@ -90,9 +90,9 @@ const AuthappointmentsAppointmentsRoute =
     getParentRoute: () => AuthRoute,
   } as any)
 
-const AuthnotesnotesIdNoteDetailRoute = AuthnotesnotesIdNoteDetailImport.update(
+const AuthnotesNotesIdNoteDetailRoute = AuthnotesNotesIdNoteDetailImport.update(
   {
-    path: '/[notesId]/NoteDetail',
+    path: '/$notesId/NoteDetail',
     getParentRoute: () => AuthRoute,
   } as any,
 )
@@ -211,11 +211,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthappointmentsappointmentIdReviewImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/(notes)/[notesId]/NoteDetail': {
-      id: '/_auth/[notesId]/NoteDetail'
-      path: '/[notesId]/NoteDetail'
-      fullPath: '/[notesId]/NoteDetail'
-      preLoaderRoute: typeof AuthnotesnotesIdNoteDetailImport
+    '/_auth/(notes)/$notesId/NoteDetail': {
+      id: '/_auth/$notesId/NoteDetail'
+      path: '/$notesId/NoteDetail'
+      fullPath: '/$notesId/NoteDetail'
+      preLoaderRoute: typeof AuthnotesNotesIdNoteDetailImport
       parentRoute: typeof AuthImport
     }
   }
@@ -235,7 +235,7 @@ interface AuthRouteChildren {
   AuthusersUsersRoute: typeof AuthusersUsersRoute
   AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
   AuthappointmentsappointmentIdReviewRoute: typeof AuthappointmentsappointmentIdReviewRoute
-  AuthnotesnotesIdNoteDetailRoute: typeof AuthnotesnotesIdNoteDetailRoute
+  AuthnotesNotesIdNoteDetailRoute: typeof AuthnotesNotesIdNoteDetailRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -251,7 +251,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentscreateCreateRoute: AuthappointmentscreateCreateRoute,
   AuthappointmentsappointmentIdReviewRoute:
     AuthappointmentsappointmentIdReviewRoute,
-  AuthnotesnotesIdNoteDetailRoute: AuthnotesnotesIdNoteDetailRoute,
+  AuthnotesNotesIdNoteDetailRoute: AuthnotesNotesIdNoteDetailRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -271,7 +271,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
-  '/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
+  '/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
 }
 
 export interface FileRoutesByTo {
@@ -289,7 +289,7 @@ export interface FileRoutesByTo {
   '/users': typeof AuthusersUsersRoute
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
-  '/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
+  '/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
 }
 
 export interface FileRoutesById {
@@ -308,7 +308,7 @@ export interface FileRoutesById {
   '/_auth/users': typeof AuthusersUsersRoute
   '/_auth/create': typeof AuthappointmentscreateCreateRoute
   '/_auth/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
-  '/_auth/[notesId]/NoteDetail': typeof AuthnotesnotesIdNoteDetailRoute
+  '/_auth/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
 }
 
 export interface FileRouteTypes {
@@ -328,7 +328,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/create'
     | '/[appointmentId]/review'
-    | '/[notesId]/NoteDetail'
+    | '/$notesId/NoteDetail'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -345,7 +345,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/create'
     | '/[appointmentId]/review'
-    | '/[notesId]/NoteDetail'
+    | '/$notesId/NoteDetail'
   id:
     | '__root__'
     | '/'
@@ -362,7 +362,7 @@ export interface FileRouteTypes {
     | '/_auth/users'
     | '/_auth/create'
     | '/_auth/[appointmentId]/review'
-    | '/_auth/[notesId]/NoteDetail'
+    | '/_auth/$notesId/NoteDetail'
   fileRoutesById: FileRoutesById
 }
 
@@ -412,7 +412,7 @@ export const routeTree = rootRoute
         "/_auth/users",
         "/_auth/create",
         "/_auth/[appointmentId]/review",
-        "/_auth/[notesId]/NoteDetail"
+        "/_auth/$notesId/NoteDetail"
       ]
     },
     "/login": {
@@ -462,8 +462,8 @@ export const routeTree = rootRoute
       "filePath": "_auth/(appointments)/[appointmentId]/review.tsx",
       "parent": "/_auth"
     },
-    "/_auth/[notesId]/NoteDetail": {
-      "filePath": "_auth/(notes)/[notesId]/NoteDetail.tsx",
+    "/_auth/$notesId/NoteDetail": {
+      "filePath": "_auth/(notes)/$notesId/NoteDetail.tsx",
       "parent": "/_auth"
     }
   }

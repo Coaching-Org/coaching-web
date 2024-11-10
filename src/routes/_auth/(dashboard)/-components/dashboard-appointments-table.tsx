@@ -64,7 +64,10 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
     header: "Action",
     cell: ({ row }) => (
       <div className="">
-        <Link to={`/[notesId]/NoteDetail`}>
+        <Link
+          to={`/$notesId/NoteDetail`}
+          params={{ notesId: row.original.id.toString() }}
+        >
           <Button variant="link" className="-m-4 underline">
             View Details
           </Button>
