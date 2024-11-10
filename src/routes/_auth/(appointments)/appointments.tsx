@@ -61,8 +61,6 @@ function AppointmentsLayout() {
     navigate({ to: `appointments/${appointmentId}/review` });
   };
 
-  console.log("data: ", data);
-
   return (
     <div className="gap-4 lg:p-6">
       <Card className="px-2">

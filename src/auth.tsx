@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { sleep } from "@/lib/utils";
+import { PostLoginResponse } from "./services/auth/auth.type";
 
 export interface IAuthForm {
   email: string;
@@ -9,18 +10,30 @@ export interface IAuthForm {
 
 export interface IAuthContext {
   isAuthenticated: boolean;
-  login: (formValues: IAuthForm) => Promise<void>;
+  login: (formValues: PostLoginResponse) => Promise<void>;
   logout: () => Promise<void>;
   user: string | null;
+  userId: number | null;
+  userRole: string | null;
 }
 
 const AuthContext = React.createContext<IAuthContext | null>(null);
 AuthContext.displayName = "AuthContext";
 
 const key = "coaching.auth.user";
+const keyUserId = "coaching.auth.userId";
+const keyUserRole = "coaching.auth.userRole";
 
 function getStoredUser() {
   return localStorage.getItem(key);
+}
+
+function getStoredUserId() {
+  return localStorage.getItem(keyUserId);
+}
+
+function getStoredUserRole() {
+  return localStorage.getItem(keyUserRole);
 }
 
 function setStoredUser(user: string | null) {
@@ -31,30 +44,64 @@ function setStoredUser(user: string | null) {
   }
 }
 
+function setStoredUserId(userId: number | null) {
+  if (userId) {
+    localStorage.setItem(keyUserId, userId.toString());
+  } else {
+    localStorage.removeItem(keyUserId);
+  }
+}
+
+function setStoredUserRole(userRole: string | null) {
+  if (userRole) {
+    localStorage.setItem(keyUserRole, userRole);
+  } else {
+    localStorage.removeItem(keyUserRole);
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<string | null>(getStoredUser());
-  const isAuthenticated = !!user;
+  const [userId, setUserId] = React.useState<number | null>(
+    Number(getStoredUserId())
+  );
+  const [userRole, setUserRole] = React.useState<string | null>(
+    getStoredUserRole()
+  );
+  const isAuthenticated = !!userId;
 
   const logout = React.useCallback(async () => {
     await sleep(250);
 
     setStoredUser(null);
+    setStoredUserId(null);
+    setStoredUserRole(null);
     setUser(null);
+    setUserId(null);
+    setUserRole(null);
   }, []);
 
-  const login = React.useCallback(async (formValues: IAuthForm) => {
+  const login = React.useCallback(async (formValues: PostLoginResponse) => {
     await sleep(500);
 
     setStoredUser(formValues.email);
+    setStoredUserId(formValues.id);
+    setStoredUserRole(formValues.role);
     setUser(formValues.email);
+    setUserId(formValues.id);
+    setUserRole(formValues.role);
   }, []);
 
   React.useEffect(() => {
     setUser(getStoredUser());
+    setUserId(Number(getStoredUserId()));
+    setUserRole(getStoredUserRole());
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, userId, userRole, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

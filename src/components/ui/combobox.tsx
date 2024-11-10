@@ -38,10 +38,6 @@ export function Combobox({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
-  console.log("data", data);
-  console.log("defaultValue", defaultValue);
-  console.log("value", value);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -71,7 +67,6 @@ export function Combobox({
                   key={item.value}
                   value={item.value.toString()}
                   onSelect={(currentValue) => {
-                    console.log("currentValue", currentValue);
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
                     onValueChange?.(currentValue);

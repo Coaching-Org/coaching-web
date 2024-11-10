@@ -23,7 +23,6 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
   }, [selectedDate]);
 
   const onDateSelect = (date: Date | null) => {
-    console.log("date", date);
     setSelectedDate(date);
     setSelectedTimeSlot("");
   };
@@ -33,19 +32,12 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
   };
 
   const onCoacheeSelect = (coachee: string | number) => {
-    console.log("onCoacheeSelect", coachee);
     const coacheeId =
       typeof coachee === "string" ? parseInt(coachee, 10) : coachee;
     setSelectedCoachee(coacheeId);
   };
 
   const onSubmitAppointment = async () => {
-    console.log("selectedDate", selectedDate);
-    console.log("selectedTimeSlot", selectedTimeSlot);
-    console.log("selectedCoachee", selectedCoachee);
-    console.log("selectedCourse", selectedCourse);
-    console.log("coachId", coachId);
-
     const splitDate = selectedTimeSlot?.split("-");
     const startDate = new Date(splitDate[0]);
     const endDate = new Date(splitDate[1]);
@@ -58,8 +50,6 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
       startDate: String(startDate),
       note: "Mark",
     };
-
-    console.log("Data", data);
 
     try {
       await mutateAsync(data);
