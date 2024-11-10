@@ -8,8 +8,7 @@ import Cookies from "universal-cookie";
 export const useAppointmentsUtils = () => {
   const cookie = new Cookies();
   const { data } = useAppointmentsListQuery({ page: 1, perPage: 10 }, true);
-  // const { data: meData } = useMeQuery();
-  // console.log("meData: ", meData);
+
   useEffect(() => {
     const fetchMe = async () => {
       try {
@@ -20,7 +19,6 @@ export const useAppointmentsUtils = () => {
             withCredentials: true,
           }
         );
-        console.log("response: ", response);
       } catch (error) {
         console.log("error: ", error);
       }

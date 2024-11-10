@@ -22,7 +22,6 @@ function ProfileLayout() {
   const {
     state: { data },
   } = useProfileUtils();
-  console.log("Profile Data", data);
 
   return (
     <Card className="m-4">

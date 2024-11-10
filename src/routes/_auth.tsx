@@ -112,7 +112,7 @@ function AuthLayout() {
           <FileTextIcon className="h-4 w-4" />
           Notes
         </Link>
-        {/* Coach/Coachee */}
+        {/* Coach */}
         <Link
           to="/users"
           onClick={() => setCurrentPath("/users")}
@@ -121,6 +121,17 @@ function AuthLayout() {
           <User className="h-4 w-4" />
           Coachee
         </Link>
+
+        {/* Coach */}
+        <Link
+          to="/coach"
+          onClick={() => setCurrentPath("/coach")}
+          className={`${isActive("/coach")} ${auth.userRole !== "admin" ? "hidden" : ""} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+        >
+          <User className="h-4 w-4" />
+          Coach
+        </Link>
+
         {/* Profile */}
         <Link
           to="/profile"
@@ -135,12 +146,12 @@ function AuthLayout() {
       <div className="flex flex-col">
         <Header handleLogout={() => setOpenLogout(true)}>
           <Link
-            to="/users"
-            onClick={() => setCurrentPath("/users")}
+            to="/dashboard"
+            onClick={() => setCurrentPath("/dashboard")}
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
-            <User className="h-5 w-5" />
-            Users
+            <LayoutDashboard className="h-5 w-5" />
+            Dashboard
           </Link>
           <Link
             to="/appointments"
@@ -148,7 +159,39 @@ function AuthLayout() {
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <Calendar className="h-5 w-5" />
-            Appointments
+            Sessions
+          </Link>
+          <Link
+            to="/notes"
+            onClick={() => setCurrentPath("/notes")}
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <FileTextIcon className="h-5 w-5" />
+            Notes
+          </Link>
+          <Link
+            to="/users"
+            onClick={() => setCurrentPath("/users")}
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <User className="h-5 w-5" />
+            Coachee
+          </Link>
+          <Link
+            to="/coach"
+            onClick={() => setCurrentPath("/coach")}
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <User className="h-5 w-5" />
+            Coach
+          </Link>
+          <Link
+            to="/profile"
+            onClick={() => setCurrentPath("/profile")}
+            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+          >
+            <UserCircle className="h-5 w-5" />
+            Profile
           </Link>
         </Header>
         <Outlet />

@@ -19,6 +19,8 @@ import { Route as AuthusersCreateCoacheeImport } from './routes/_auth/(users)/cr
 import { Route as AuthprofileProfileImport } from './routes/_auth/(profile)/profile'
 import { Route as AuthnotesNotesImport } from './routes/_auth/(notes)/notes'
 import { Route as AuthdashboardDashboardImport } from './routes/_auth/(dashboard)/dashboard'
+import { Route as AuthcoachCreateCoachImport } from './routes/_auth/(coach)/create-coach'
+import { Route as AuthcoachCoachImport } from './routes/_auth/(coach)/coach'
 import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
 import { Route as AuthnotesnotesIdNoteDetailImport } from './routes/_auth/(notes)/[notesId]/NoteDetail'
@@ -64,6 +66,16 @@ const AuthnotesNotesRoute = AuthnotesNotesImport.update({
 
 const AuthdashboardDashboardRoute = AuthdashboardDashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthcoachCreateCoachRoute = AuthcoachCreateCoachImport.update({
+  path: '/create-coach',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthcoachCoachRoute = AuthcoachCoachImport.update({
+  path: '/coach',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -136,6 +148,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthcalendarCalendarImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(coach)/coach': {
+      id: '/_auth/coach'
+      path: '/coach'
+      fullPath: '/coach'
+      preLoaderRoute: typeof AuthcoachCoachImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/(coach)/create-coach': {
+      id: '/_auth/create-coach'
+      path: '/create-coach'
+      fullPath: '/create-coach'
+      preLoaderRoute: typeof AuthcoachCreateCoachImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/(dashboard)/dashboard': {
       id: '/_auth/dashboard'
       path: '/dashboard'
@@ -200,6 +226,8 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   AuthappointmentsAppointmentsRoute: typeof AuthappointmentsAppointmentsRoute
   AuthcalendarCalendarRoute: typeof AuthcalendarCalendarRoute
+  AuthcoachCoachRoute: typeof AuthcoachCoachRoute
+  AuthcoachCreateCoachRoute: typeof AuthcoachCreateCoachRoute
   AuthdashboardDashboardRoute: typeof AuthdashboardDashboardRoute
   AuthnotesNotesRoute: typeof AuthnotesNotesRoute
   AuthprofileProfileRoute: typeof AuthprofileProfileRoute
@@ -213,6 +241,8 @@ interface AuthRouteChildren {
 const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentsAppointmentsRoute: AuthappointmentsAppointmentsRoute,
   AuthcalendarCalendarRoute: AuthcalendarCalendarRoute,
+  AuthcoachCoachRoute: AuthcoachCoachRoute,
+  AuthcoachCreateCoachRoute: AuthcoachCreateCoachRoute,
   AuthdashboardDashboardRoute: AuthdashboardDashboardRoute,
   AuthnotesNotesRoute: AuthnotesNotesRoute,
   AuthprofileProfileRoute: AuthprofileProfileRoute,
@@ -232,6 +262,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
   '/calendar': typeof AuthcalendarCalendarRoute
+  '/coach': typeof AuthcoachCoachRoute
+  '/create-coach': typeof AuthcoachCreateCoachRoute
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/notes': typeof AuthnotesNotesRoute
   '/profile': typeof AuthprofileProfileRoute
@@ -248,6 +280,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/appointments': typeof AuthappointmentsAppointmentsRoute
   '/calendar': typeof AuthcalendarCalendarRoute
+  '/coach': typeof AuthcoachCoachRoute
+  '/create-coach': typeof AuthcoachCreateCoachRoute
   '/dashboard': typeof AuthdashboardDashboardRoute
   '/notes': typeof AuthnotesNotesRoute
   '/profile': typeof AuthprofileProfileRoute
@@ -265,6 +299,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_auth/appointments': typeof AuthappointmentsAppointmentsRoute
   '/_auth/calendar': typeof AuthcalendarCalendarRoute
+  '/_auth/coach': typeof AuthcoachCoachRoute
+  '/_auth/create-coach': typeof AuthcoachCreateCoachRoute
   '/_auth/dashboard': typeof AuthdashboardDashboardRoute
   '/_auth/notes': typeof AuthnotesNotesRoute
   '/_auth/profile': typeof AuthprofileProfileRoute
@@ -283,6 +319,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/appointments'
     | '/calendar'
+    | '/coach'
+    | '/create-coach'
     | '/dashboard'
     | '/notes'
     | '/profile'
@@ -298,6 +336,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/appointments'
     | '/calendar'
+    | '/coach'
+    | '/create-coach'
     | '/dashboard'
     | '/notes'
     | '/profile'
@@ -313,6 +353,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/_auth/appointments'
     | '/_auth/calendar'
+    | '/_auth/coach'
+    | '/_auth/create-coach'
     | '/_auth/dashboard'
     | '/_auth/notes'
     | '/_auth/profile'
@@ -361,6 +403,8 @@ export const routeTree = rootRoute
       "children": [
         "/_auth/appointments",
         "/_auth/calendar",
+        "/_auth/coach",
+        "/_auth/create-coach",
         "/_auth/dashboard",
         "/_auth/notes",
         "/_auth/profile",
@@ -380,6 +424,14 @@ export const routeTree = rootRoute
     },
     "/_auth/calendar": {
       "filePath": "_auth/(calendar)/calendar.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/coach": {
+      "filePath": "_auth/(coach)/coach.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/create-coach": {
+      "filePath": "_auth/(coach)/create-coach.tsx",
       "parent": "/_auth"
     },
     "/_auth/dashboard": {

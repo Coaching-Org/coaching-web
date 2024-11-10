@@ -20,7 +20,7 @@ export const useLoginQuery = (): UseMutationResult<
       try {
         const response = await AuthServices.postLogin(params);
 
-        return response.data;
+        return response.data.data;
       } catch (error) {
         throw error;
       }

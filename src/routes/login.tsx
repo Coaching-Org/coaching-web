@@ -75,8 +75,11 @@ function Login() {
 
     try {
       if (!values) return;
-      await mutateAsync({ email: values.email, password: values.password });
-      await auth.login(values);
+      const resUser = await mutateAsync({
+        email: values.email,
+        password: values.password,
+      });
+      await auth.login(resUser);
 
       await router.invalidate();
 
