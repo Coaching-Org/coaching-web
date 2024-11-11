@@ -30,8 +30,10 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { AppointmentDetail } from "@/services/appointments/appointments.type";
+import { useCoachingContext } from "@/hooks/context";
+import { AppointmentDetailV2 } from "@/interfaces";
 
-export const columns: ColumnDef<AppointmentDetail>[] = [
+export const columns: ColumnDef<AppointmentDetailV2>[] = [
   {
     accessorKey: "id",
     header: "Session Name",
@@ -43,7 +45,7 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
     ),
   },
   {
-    accessorKey: "course",
+    accessorKey: "courseName",
     header: "Session Type",
     cell: ({ row }) => <div className="">{row.original.courseName}</div>,
   },
@@ -55,7 +57,7 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
     ),
   },
   {
-    accessorKey: "sessionTime",
+    accessorKey: "duration",
     header: "Session Time",
     cell: ({ row }) => <div className="">{row.original.duration} Minutes</div>,
   },
@@ -66,7 +68,10 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
       <div className="">
         <Link
           to={`/$notesId/NoteDetail`}
-          params={{ notesId: row.original.id.toString() }}
+          onClick={() => console.log(row.original)}
+          params={{
+            notesId: row.original.id.toString(),
+          }}
         >
           <Button variant="link" className="-m-4 underline">
             View Notes
@@ -80,8 +85,19 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
 export function DashboardAppointmentsTable({
   data,
 }: {
-  data: AppointmentDetail[];
+  data: AppointmentDetailV2[];
 }) {
+  const {
+    eventContext: {
+      setContextCoacheeId,
+      setContextCoacheeName,
+      setContextDate,
+      setContextCourseId,
+      setContextCourseName,
+      setContextAppointmentId,
+      setContextNotesId,
+    },
+  } = useCoachingContext();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -100,9 +116,9 @@ export function DashboardAppointmentsTable({
       <div className="flex items-center py-4">
         <Input
           placeholder="Search coachee, notes, session"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("id")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -137,7 +153,16 @@ export function DashboardAppointmentsTable({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => console.log("row", row.original.id)}
+                  onClick={() => {
+                    console.log("row", row.original);
+                    setContextAppointmentId(row.original.id);
+                    setContextCoacheeId(row.original.coacheeId);
+                    setContextCoacheeName(row.original.coacheeName);
+                    setContextDate(row.original.date);
+                    setContextCourseId(row.original.courseId);
+                    setContextCourseName(row.original.courseName);
+                    setContextNotesId(row.original.notesId || null);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-4 py-2 text-black">
