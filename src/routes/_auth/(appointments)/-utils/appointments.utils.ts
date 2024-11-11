@@ -20,12 +20,12 @@ export const useAppointmentsUtils = () => {
           }
         );
       } catch (error) {
-        console.log("error: ", error);
+        // console.log("error: ", error);
       }
     };
 
     fetchMe();
-    console.log("cookie: ", cookie.getAll());
+    // console.log("cookie: ", cookie.getAll());
   }, []);
 
   return {

@@ -15,6 +15,7 @@ export interface IAuthContext {
   user: string | null;
   userId: number | null;
   userRole: string | null;
+  userName: string | null;
 }
 
 const AuthContext = React.createContext<IAuthContext | null>(null);
@@ -23,6 +24,7 @@ AuthContext.displayName = "AuthContext";
 const key = "coaching.auth.user";
 const keyUserId = "coaching.auth.userId";
 const keyUserRole = "coaching.auth.userRole";
+const keyUserName = "coaching.auth.userName";
 
 function getStoredUser() {
   return localStorage.getItem(key);
@@ -34,6 +36,10 @@ function getStoredUserId() {
 
 function getStoredUserRole() {
   return localStorage.getItem(keyUserRole);
+}
+
+function getStoredUserName() {
+  return localStorage.getItem(keyUserName);
 }
 
 function setStoredUser(user: string | null) {
@@ -60,6 +66,14 @@ function setStoredUserRole(userRole: string | null) {
   }
 }
 
+function setStoredUserName(userName: string | null) {
+  if (userName) {
+    localStorage.setItem(keyUserName, userName);
+  } else {
+    localStorage.removeItem(keyUserName);
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<string | null>(getStoredUser());
   const [userId, setUserId] = React.useState<number | null>(
@@ -67,6 +81,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
   const [userRole, setUserRole] = React.useState<string | null>(
     getStoredUserRole()
+  );
+  const [userName, setUserName] = React.useState<string | null>(
+    getStoredUserName()
   );
   const isAuthenticated = !!userId;
 
@@ -76,9 +93,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStoredUser(null);
     setStoredUserId(null);
     setStoredUserRole(null);
+    setStoredUserName(null);
     setUser(null);
     setUserId(null);
     setUserRole(null);
+    setUserName(null);
   }, []);
 
   const login = React.useCallback(async (formValues: PostLoginResponse) => {
@@ -87,20 +106,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setStoredUser(formValues.email);
     setStoredUserId(formValues.id);
     setStoredUserRole(formValues.role);
+    setStoredUserName(formValues.name);
     setUser(formValues.email);
     setUserId(formValues.id);
     setUserRole(formValues.role);
+    setUserName(formValues.name);
   }, []);
 
   React.useEffect(() => {
     setUser(getStoredUser());
     setUserId(Number(getStoredUserId()));
     setUserRole(getStoredUserRole());
+    setUserName(getStoredUserName());
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, userId, userRole, login, logout }}
+      value={{
+        isAuthenticated,
+        user,
+        userId,
+        userRole,
+        userName,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,14 +1,23 @@
+import { useAuth } from "@/auth";
+import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
 export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
+  const { userId, userName } = useAuth();
+  const { toast } = useToast();
+  const {
+    event: { onFirestoreSaveAppointments },
+  } = useCreateAppointmentFirestoreUtils();
   const navigate = useNavigate();
   const { mutateAsync } = useCreateAppointmentQuery();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
   const [selectedCoachee, setSelectedCoachee] = useState<number>(0);
+  const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
 
   const { data: coacheeData } = useCoacheeListQuery({
@@ -32,9 +41,23 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
   };
 
   const onCoacheeSelect = (coachee: string | number) => {
-    const coacheeId =
-      typeof coachee === "string" ? parseInt(coachee, 10) : coachee;
-    setSelectedCoachee(coacheeId);
+    // console.log("coachee", coachee);
+    // const coacheeId =
+    //   typeof coachee === "string" ? parseInt(coachee, 10) : coachee;
+    // setSelectedCoachee(coacheeId);
+  };
+
+  const onChangeCoachee = ({
+    value,
+    label,
+  }: {
+    value: string;
+    label: string;
+  }) => {
+    console.log("onChangeCoachee value", value);
+    console.log("onChangeCoachee label", label);
+    setSelectedCoachee(Number(value));
+    setSelectedCoacheeName(label);
   };
 
   const onSubmitAppointment = async () => {
@@ -44,28 +67,46 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
 
     const data = {
       coacheeId: selectedCoachee,
-      coachId: coachId,
+      coachId: Number(userId),
       courseId: selectedCourse,
       endDate: String(endDate),
       startDate: String(startDate),
-      note: "Mark",
+      note: "",
     };
 
     try {
-      await mutateAsync(data);
+      onFirestoreSaveAppointments({
+        ...data,
+        coachName: userName,
+        coacheeName: selectedCoacheeName,
+        courseName: "Professional Coaching",
+        status: "pending",
+      });
+      /** Change to Backend Server */
+      // await mutateAsync(data);
+      toast({ title: "Appointment created successfully", variant: "success" });
       navigate({ to: "/appointments" });
     } catch (error) {
-      console.log("error: ", error);
+      console.error("error: ", error);
+      toast({ title: "Appointment creation failed", variant: "destructive" });
     }
   };
 
   return {
-    state: { timeSlots, selectedDate, selectedTimeSlot, coacheeData },
+    state: {
+      timeSlots,
+      selectedDate,
+      selectedTimeSlot,
+      coacheeData,
+      coachName: userName,
+      coachId: userId,
+    },
     event: {
       onDateSelect,
       onTimeSlotSelect,
       onSubmitAppointment,
       onCoacheeSelect,
+      onChangeCoachee,
     },
   };
 };

@@ -56,9 +56,19 @@ function AppointmentCreateLayout() {
       onTimeSlotSelect,
       onSubmitAppointment,
       onCoacheeSelect,
+      onChangeCoachee,
     },
-    state: { timeSlots, selectedDate, selectedTimeSlot, coacheeData },
+    state: {
+      timeSlots,
+      selectedDate,
+      selectedTimeSlot,
+      coacheeData,
+      coachId,
+      coachName,
+    },
   } = useCreateAppointmentUtils({ coachId: tempCoach[0].value });
+  console.log("coachId", coachId);
+  console.log("coachName", coachName);
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       {/* Padding Card => 32 */}
@@ -81,8 +91,8 @@ function AppointmentCreateLayout() {
                     <Combobox
                       data={tempCourse}
                       defaultValue={{
-                        label: tempCoach[0].label,
-                        value: tempCoach[0].value,
+                        label: coachName || "",
+                        value: coachId || "",
                       }}
                       disabled={true}
                     />
@@ -103,6 +113,7 @@ function AppointmentCreateLayout() {
                         })) || []
                       }
                       onValueChange={onCoacheeSelect}
+                      onDataChange={onChangeCoachee}
                     />
                   </div>
                 </div>
@@ -142,7 +153,6 @@ function AppointmentCreateLayout() {
           <Button
             onClick={() => {
               onSubmitAppointment();
-              // navigate({ to: "/appointments" });
             }}
           >
             Create

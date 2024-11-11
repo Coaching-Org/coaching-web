@@ -7,6 +7,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAppointmentsUtils } from "./-utils/appointments.utils";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
+import { useAppointmentsFirestoreUtils } from "../(dashboard)/-utils/dashboard-fs.utils";
 
 export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,
@@ -57,6 +58,10 @@ function AppointmentsLayout() {
     state: { data },
   } = useAppointmentsUtils();
 
+  const {
+    state: { fsData },
+  } = useAppointmentsFirestoreUtils();
+
   const goToReview = (appointmentId: string) => {
     navigate({ to: `appointments/${appointmentId}/review` });
   };
@@ -84,8 +89,7 @@ function AppointmentsLayout() {
           {/* Add Button export */}
         </CardHeader>
         <CardContent>
-          {/* <AppointmentsTable navigate={() => goToReview("1")} /> */}
-          <DashboardAppointmentsTable data={data?.data || []} />
+          <DashboardAppointmentsTable data={(fsData as any) || []} />
         </CardContent>
       </Card>
     </div>
