@@ -1,4 +1,4 @@
-import { addDoc, collection, doc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { useCoachingContext } from "../context";
 import { firestoreDb, fsCollectionKey } from "@/lib/firebase";
 import { v4 as uuidv4 } from "uuid";

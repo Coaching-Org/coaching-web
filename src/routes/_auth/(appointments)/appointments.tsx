@@ -7,7 +7,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAppointmentsUtils } from "./-utils/appointments.utils";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
-import { useAppointmentsFirestoreUtils } from "../(dashboard)/-utils/dashboard-fs.utils";
+import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 
 export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,

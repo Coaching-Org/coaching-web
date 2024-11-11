@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { DashboardAppointmentsTable } from "./-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
-import { useAppointmentsFirestoreUtils } from "./-utils/dashboard-fs.utils";
+import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 
 const tempDataTable: DashboardUpcomingAppointments[] = [
   {
