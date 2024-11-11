@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
 import { AuthProvider, useAuth } from "./auth";
 import "@/routes/index.css";
+import { CoachingProvider } from "./hooks/context";
 
 // Set up a Router instance
 const router = createRouter({
@@ -30,7 +31,9 @@ function InnerApp() {
 function App() {
   return (
     <AuthProvider>
-      <InnerApp />
+      <CoachingProvider>
+        <InnerApp />
+      </CoachingProvider>
     </AuthProvider>
   );
 }

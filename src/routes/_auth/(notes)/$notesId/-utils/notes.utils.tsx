@@ -1,3 +1,6 @@
+import { useAuth } from "@/auth";
+import { useCoachingContext } from "@/hooks/context";
+import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "@tanstack/react-router";
@@ -8,6 +11,24 @@ export const useNotesUtils = () => {
   const { mutateAsync: postNotes } = usePostNotesQuery();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { userId, userName } = useAuth();
+  const {
+    event: { onFirestoreSaveNotes },
+  } = useCreateNotesFirestoreUtils();
+
+  const {
+    stateContext: {
+      contextAppointmentId,
+      contextCoachId,
+      contextCoacheeId,
+      contextCourseId,
+      contextNotesId,
+      contextCoachName,
+      contextCoacheeName,
+      contextCourseName,
+      contextDate,
+    },
+  } = useCoachingContext();
 
   const [textGoals, setTextGoals] = useState("");
   const [textReality, setTextReality] = useState("");
@@ -18,7 +39,7 @@ export const useNotesUtils = () => {
 
   const onSaveNotes = async () => {
     try {
-      await postNotes({
+      const notesData = {
         appointmentId: Number(notesId),
         goals: textGoals,
         reality: textReality,
@@ -26,12 +47,28 @@ export const useNotesUtils = () => {
         wayForward: textWayForward,
         notes: textNotes,
         file: file,
+      };
+
+      onFirestoreSaveNotes({
+        ...notesData,
+        appointmentId: contextAppointmentId,
+        coachId: userId,
+        coachName: userName,
+        coacheeId: contextCoacheeId,
+        coacheeName: contextCoacheeName,
+        courseId: contextCourseId,
+        courseName: contextCourseName,
       });
+      /**
+       * TODO: Uncomment this when the backend is ready
+       */
+      // await postNotes(notesData);
       toast({
         title: "Success",
         description: "Notes saved successfully",
+        variant: "success",
       });
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/notes" });
     } catch (error) {
       toast({
         title: "Error",
@@ -55,6 +92,9 @@ export const useNotesUtils = () => {
       textWayForward,
       textNotes,
       isButtonDisabled,
+      contextCoacheeName,
+      contextCourseName,
+      contextDate,
     },
     event: {
       onSaveNotes,

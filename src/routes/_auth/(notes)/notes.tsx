@@ -4,6 +4,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
+import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -54,6 +55,9 @@ function NotesLayout() {
   const {
     state: { data },
   } = useAppointmentsUtils();
+  const {
+    state: { fsNotes },
+  } = useListNotesFirestoreUtils();
 
   return (
     <div className="gap-4 lg:p-6">
@@ -72,7 +76,7 @@ function NotesLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(data as any) || []} />
+          <DashboardAppointmentsTable data={(fsNotes as any) || []} />
         </CardContent>
       </Card>
     </div>

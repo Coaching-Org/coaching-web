@@ -28,3 +28,20 @@ export interface Appointment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface AppointmentDetailV2 {
+  status: string;
+  coacheeId: number;
+  id: string | number;
+  courseId: number;
+  endDate: string;
+  note: string;
+  coacheeName: string;
+  startDate: string;
+  coachName: string;
+  courseName: string;
+  coachId: number;
+  date: string;
+  duration: number;
+  notesId?: string | number | null;
+}

@@ -17,6 +17,8 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { useNotesUtils } from "./-utils/notes.utils";
+import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
+import moment from "moment";
 
 export const Route = createFileRoute("/_auth/(notes)/$notesId/NoteDetail")({
   component: NoteDetailLayout,
@@ -69,7 +71,9 @@ const tempAppointmentTime = [
 function NoteDetailLayout() {
   const router = useRouter();
   const navigate = useNavigate();
-  const { notesId } = useParams({ from: "/_auth/$notesId/NoteDetail" });
+  const { notesId } = useParams({
+    from: "/_auth/$notesId/NoteDetail",
+  });
   const {
     state: {
       isButtonDisabled,
@@ -78,6 +82,9 @@ function NoteDetailLayout() {
       textOptions,
       textWayForward,
       textNotes,
+      contextCoacheeName,
+      contextCourseName,
+      contextDate,
     },
     event: {
       onSaveNotes,
@@ -89,7 +96,10 @@ function NoteDetailLayout() {
       setFile,
     },
   } = useNotesUtils();
-  // Text weight 700 600 500 400
+
+  const {
+    event: {},
+  } = useCreateAppointmentFirestoreUtils();
 
   return (
     <div className="gap-4 lg:p-6">
@@ -114,7 +124,7 @@ function NoteDetailLayout() {
                 <span className="text-base">Session Date</span>
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
-                    October 2nd, 2024
+                    {moment(contextDate).format("MMMM Do, YYYY")}
                   </span>
                 </div>
               </div>
@@ -124,7 +134,7 @@ function NoteDetailLayout() {
                 Session Type
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
-                    Professional Coaching
+                    {contextCourseName}
                   </span>
                 </div>
               </div>
@@ -134,7 +144,7 @@ function NoteDetailLayout() {
                 Coachee
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
-                    Tatas Fachrul
+                    {contextCoacheeName}
                   </span>
                 </div>
               </div>
