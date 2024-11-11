@@ -68,7 +68,7 @@ export const useNotesUtils = () => {
         description: "Notes saved successfully",
         variant: "success",
       });
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/notes" });
     } catch (error) {
       toast({
         title: "Error",
