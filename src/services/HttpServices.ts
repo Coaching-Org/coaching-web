@@ -29,7 +29,7 @@ export abstract class HttpService {
     try {
       return await requestFn();
     } catch (error) {
-      console.log("error: ", error);
+      // console.log("error: ", error);
       if (error instanceof AxiosError && error.response?.status === 401) {
         // Token is invalid or expired
         // const cookies = new Cookies();

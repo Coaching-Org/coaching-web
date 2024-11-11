@@ -57,7 +57,7 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
   {
     accessorKey: "sessionTime",
     header: "Session Time",
-    cell: ({ row }) => <div className="">{row.original.duration}</div>,
+    cell: ({ row }) => <div className="">{row.original.duration} Minutes</div>,
   },
   {
     accessorKey: "id",
@@ -69,7 +69,7 @@ export const columns: ColumnDef<AppointmentDetail>[] = [
           params={{ notesId: row.original.id.toString() }}
         >
           <Button variant="link" className="-m-4 underline">
-            View Details
+            View Notes
           </Button>
         </Link>
       </div>

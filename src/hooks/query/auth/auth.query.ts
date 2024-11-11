@@ -27,9 +27,9 @@ export const useLoginQuery = (): UseMutationResult<
     },
     retry: 0,
     onError(error, variables, context) {
-      console.log("error", error);
-      console.log("variables", variables);
-      console.log("context", context);
+      // console.log("error", error);
+      // console.log("variables", variables);
+      // console.log("context", context);
     },
   });
 };

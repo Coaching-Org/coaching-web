@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { DashboardAppointmentsTable } from "./-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
+import { useAppointmentsFirestoreUtils } from "./-utils/dashboard-fs.utils";
 
 const tempDataTable: DashboardUpcomingAppointments[] = [
   {
@@ -53,6 +54,14 @@ function DashboardLayout() {
   const {
     state: { data },
   } = useAppointmentsUtils();
+  const {
+    state: {
+      fsData,
+      fsTotalAppointment,
+      fsApprovedAppointment,
+      fsPendingAppointment,
+    },
+  } = useAppointmentsFirestoreUtils();
 
   return (
     <div className="gap-4 lg:gap-6 lg:p-6">
@@ -69,7 +78,9 @@ function DashboardLayout() {
                 "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
-              <p className={cn("text-black text-4xl text-center")}>{"0"}</p>
+              <p className={cn("text-black text-4xl text-center")}>
+                {fsTotalAppointment}
+              </p>
               <p className={cn("text-muted-foreground text-center")}>
                 Total Appointments
               </p>
@@ -80,7 +91,9 @@ function DashboardLayout() {
                 "px-8 py-4 rounded-lg border max-w-52 flex-col flex justify-center items-center"
               )}
             >
-              <p className={cn("text-green-400 text-4xl text-center")}>{"0"}</p>
+              <p className={cn("text-green-400 text-4xl text-center")}>
+                {fsApprovedAppointment}
+              </p>
               <p className={cn("text-muted-foreground text-center")}>
                 Approved Appointments
               </p>
@@ -92,7 +105,7 @@ function DashboardLayout() {
               )}
             >
               <p className={cn("text-orange-400 text-4xl text-center")}>
-                {"0"}
+                {fsPendingAppointment}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
                 Pending Appointments
@@ -106,7 +119,7 @@ function DashboardLayout() {
           <CardTitle>Upcoming Appointments</CardTitle>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={data?.data || []} />
+          <DashboardAppointmentsTable data={(fsData as any) || []} />
         </CardContent>
       </Card>
     </div>
