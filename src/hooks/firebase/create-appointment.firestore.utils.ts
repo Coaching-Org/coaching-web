@@ -1,6 +1,6 @@
 import { PostAppointmentRequest } from "@/interfaces/";
 import { firestoreDb, fsCollectionKey } from "@/lib/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 interface fsAppointmentProps extends PostAppointmentRequest {
@@ -20,6 +20,8 @@ export const useCreateAppointmentFirestoreUtils = () => {
           id,
           ...data,
           status: "pending",
+          createdAt: Timestamp.fromDate(new Date()),
+          updatedAt: Timestamp.fromDate(new Date()),
         }
       );
     } catch (error) {

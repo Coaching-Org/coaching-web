@@ -26,3 +26,7 @@ export const UserKey = {
 export const NotesKey = {
   notesCreate: "notes.create",
 };
+
+export const SharedKey = {
+  fileUpload: "shared.fileUpload",
+};

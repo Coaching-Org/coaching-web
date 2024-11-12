@@ -24,50 +24,6 @@ export const Route = createFileRoute("/_auth/(notes)/$notesId/NoteDetail")({
   component: NoteDetailLayout,
 });
 
-const tempCourse = [
-  {
-    value: "1",
-    label: "Professional Coaching",
-  },
-];
-
-const tempCoach = [
-  {
-    value: "1",
-    label: "Marcel",
-  },
-];
-
-const tempCoachee = [
-  {
-    value: "1",
-    label: "Tatas",
-  },
-  {
-    value: "2",
-    label: "Iwan",
-  },
-];
-
-const tempAppointmentTime = [
-  {
-    value: "1",
-    label: "09.00 - 09.30",
-  },
-  {
-    value: "2",
-    label: "09.30 - 10.00",
-  },
-  {
-    value: "3",
-    label: "10.00 - 10.30",
-  },
-  {
-    value: "4",
-    label: "10.30 - 11.00",
-  },
-];
-
 function NoteDetailLayout() {
   const router = useRouter();
   const navigate = useNavigate();
@@ -96,10 +52,6 @@ function NoteDetailLayout() {
       setFile,
     },
   } = useNotesUtils();
-
-  const {
-    event: {},
-  } = useCreateAppointmentFirestoreUtils();
 
   return (
     <div className="gap-4 lg:p-6">
@@ -192,19 +144,27 @@ function NoteDetailLayout() {
               <Label>File</Label>
               <Input
                 type="file"
-                multiple
+                multiple={false}
                 accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
                 onChange={(e) => {
-                  const files = e.target.files;
-                  if (files) {
-                    const validFiles = Array.from(files).filter(
-                      (file) => file.size <= 5 * 1024 * 1024
-                    );
-                    if (validFiles.length !== files.length) {
-                      alert("File size exceeds 5MB");
-                    }
-                    setFile(validFiles);
-                  }
+                  const formData = new FormData();
+                  const files = e.target?.files?.[0];
+                  formData.append("file", files as any, files?.name);
+                  // handleUploadFile(formData);
+                  setFile(formData);
+                  // if (files) {
+                  //   const validFiles = Array.from(files).filter(
+                  //     (file) => file.size <= 5 * 1024 * 1024
+                  //   );
+                  //   if (validFiles.length !== files.length) {
+                  //     alert("File size exceeds 5MB");
+                  //   }
+
+                  //   formData.append("file", validFiles[0]);
+
+                  //   setFile(validFiles);
+                  //   handleUploadFile(validFiles[0]);
+                  // }
                 }}
               />
             </div>

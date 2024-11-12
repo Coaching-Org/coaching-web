@@ -95,7 +95,7 @@ function DashboardLayout() {
                 {fsApprovedAppointment}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
-                Approved Appointments
+                Done Appointments
               </p>
             </div>
 

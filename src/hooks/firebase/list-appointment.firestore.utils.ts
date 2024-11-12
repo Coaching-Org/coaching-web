@@ -1,7 +1,14 @@
 import { useAuth } from "@/auth";
 import { Appointment } from "@/interfaces/appointment";
 import { firestoreDb, fsCollectionKey } from "@/lib/firebase";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -11,7 +18,7 @@ export const useAppointmentsFirestoreUtils = () => {
     null
   );
   const [totalAppointmentData, setTotalAppointmentData] = useState<number>(0);
-  const [totalApprovedAppointmentData, setTotalApprovedAppointmentData] =
+  const [totalDoneAppointmentData, setTotalDoneAppointmentData] =
     useState<number>(0);
   const [totalPendingAppointmentData, setTotalPendingAppointmentData] =
     useState<number>(0);
@@ -36,7 +43,8 @@ export const useAppointmentsFirestoreUtils = () => {
     try {
       const queryGetAppointmentsQuery = query(
         collection(firestoreDb, fsCollectionKey.appointments),
-        where("coachId", "==", userId)
+        where("coachId", "==", userId),
+        where("status", "!=", "done")
       );
 
       const getAppointmentsSnapshot = (
@@ -64,15 +72,74 @@ export const useAppointmentsFirestoreUtils = () => {
     }
   };
 
+  const getFsTotalAppointment = async () => {
+    try {
+      const queryGetTotalAppointmentQuery = query(
+        collection(firestoreDb, fsCollectionKey.appointments),
+        where("coachId", "==", userId)
+      );
+      const getTotalAppointmentSnapshot = (
+        await getDocs(queryGetTotalAppointmentQuery)
+      ).size;
+      console.log("getTotalAppointmentSnapshot", getTotalAppointmentSnapshot);
+      setTotalAppointmentData(getTotalAppointmentSnapshot);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getFsTotalDoneAppointment = async () => {
+    try {
+      const queryGetTotalDoneAppointmentQuery = query(
+        collection(firestoreDb, fsCollectionKey.appointments),
+        where("coachId", "==", userId),
+        where("status", "==", "done")
+      );
+      const getTotalDoneAppointmentSnapshot = (
+        await getDocs(queryGetTotalDoneAppointmentQuery)
+      ).size;
+      console.log(
+        "getTotalDoneAppointmentSnapshot",
+        getTotalDoneAppointmentSnapshot
+      );
+      setTotalDoneAppointmentData(getTotalDoneAppointmentSnapshot);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getFsTotalPendingAppointment = async () => {
+    try {
+      const queryGetTotalPendingAppointmentQuery = query(
+        collection(firestoreDb, fsCollectionKey.appointments),
+        where("coachId", "==", userId),
+        where("status", "==", "pending")
+      );
+      const getTotalPendingAppointmentSnapshot = (
+        await getDocs(queryGetTotalPendingAppointmentQuery)
+      ).size;
+      console.log(
+        "getTotalPendingAppointmentSnapshot",
+        getTotalPendingAppointmentSnapshot
+      );
+      setTotalPendingAppointmentData(getTotalPendingAppointmentSnapshot);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
     getFsDoc();
+    getFsTotalAppointment();
+    getFsTotalDoneAppointment();
+    getFsTotalPendingAppointment();
   }, []);
 
   return {
     state: {
       fsData: appointmentData,
       fsTotalAppointment: totalAppointmentData,
-      fsApprovedAppointment: totalApprovedAppointmentData,
+      fsApprovedAppointment: totalDoneAppointmentData,
       fsPendingAppointment: totalPendingAppointmentData,
     },
     event: {},

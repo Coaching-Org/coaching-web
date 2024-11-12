@@ -63,6 +63,7 @@ const tempAppointments = [
 
 export const columns: ColumnDef<Appointment>[] = [
   {
+    id: "coachName",
     accessorKey: "coachName",
     header: "Coach",
     cell: ({ row }) => (
@@ -73,6 +74,7 @@ export const columns: ColumnDef<Appointment>[] = [
     ),
   },
   {
+    id: "coacheeName",
     accessorKey: "coacheeName",
     header: "Coachee",
     cell: ({ row }) => (
@@ -82,6 +84,7 @@ export const columns: ColumnDef<Appointment>[] = [
     ),
   },
   {
+    id: "courseName",
     accessorKey: "courseName",
     header: "Session Type",
     cell: ({ row }) => (
@@ -89,6 +92,7 @@ export const columns: ColumnDef<Appointment>[] = [
     ),
   },
   {
+    id: "createdAt",
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
@@ -119,6 +123,7 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
+    id: "status",
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
@@ -174,10 +179,10 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={`${headerGroup.id}-header-row`}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={`${header.id}-header-cell`}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -194,12 +199,12 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
+                  key={`${row.id}-row`}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={navigate}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={`${cell.id}-cell`}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
