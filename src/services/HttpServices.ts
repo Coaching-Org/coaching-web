@@ -9,10 +9,6 @@ export abstract class HttpService {
     config: AxiosRequestConfig,
     type: string | undefined
   ) {
-    // console.log("Cookies", Cookies);
-    // const apiHost = "https://api-service-coaching.tatas.id/";
-
-    // config.baseURL = apiHost;
     config.headers = {
       ...config.headers,
       "Content-Type": "application/json",
@@ -29,12 +25,8 @@ export abstract class HttpService {
     try {
       return await requestFn();
     } catch (error) {
-      // console.log("error: ", error);
       if (error instanceof AxiosError && error.response?.status === 401) {
         // Token is invalid or expired
-        // const cookies = new Cookies();
-        // cookies.remove("coaching-token"); // Remove invalid token
-        // window.location.href = "/login"; // Redirect to login page
       }
       throw error;
     }
@@ -90,6 +82,50 @@ export abstract class HttpService {
         newConfig.data = body;
       }
       return axios.delete(url, { ...newConfig, withCredentials: true });
+    });
+  }
+}
+
+export abstract class HttpServiceContent {
+  private static initConfig(
+    config: AxiosRequestConfig,
+    type: string | undefined
+  ) {
+    config.headers = {
+      ...config.headers,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    config.withCredentials = true;
+
+    return config;
+  }
+
+  private static async handleRequest<T>(
+    requestFn: () => Promise<T>
+  ): Promise<T> {
+    try {
+      return await requestFn();
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        // Token is invalid or expired
+      }
+      throw error;
+    }
+  }
+  protected static postFormData<DataResponse = any, DataRequest = any>(
+    url: string,
+    data: DataRequest,
+    config: AxiosRequestConfig = {},
+    type?: string
+  ): Promise<any> {
+    console.log("HttpServiceContent Data:", data);
+    return this.handleRequest(async () => {
+      const newConfig = this.initConfig(config, type);
+      return axios.post(url, data, {
+        ...newConfig,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     });
   }
 }

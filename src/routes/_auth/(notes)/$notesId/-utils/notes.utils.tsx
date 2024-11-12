@@ -2,6 +2,7 @@ import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
 import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
+import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useState } from "react";
@@ -37,8 +38,12 @@ export const useNotesUtils = () => {
   const [textNotes, setTextNotes] = useState("");
   const [file, setFile] = useState<any>(null);
 
+  const { mutateAsync: uploadFile } = useUploadFileQuery();
+
   const onSaveNotes = async () => {
     try {
+      const resFileUpload = await uploadFile(file);
+
       const notesData = {
         appointmentId: Number(notesId),
         goals: textGoals,
@@ -46,7 +51,7 @@ export const useNotesUtils = () => {
         options: textOptions,
         wayForward: textWayForward,
         notes: textNotes,
-        file: file,
+        file: resFileUpload.data,
       };
 
       onFirestoreSaveNotes({

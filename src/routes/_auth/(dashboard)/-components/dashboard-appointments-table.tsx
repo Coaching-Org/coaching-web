@@ -35,6 +35,7 @@ import { AppointmentDetailV2 } from "@/interfaces";
 
 export const columns: ColumnDef<AppointmentDetailV2>[] = [
   {
+    id: "sessionName",
     accessorKey: "id",
     header: "Session Name",
     cell: ({ row }) => (
@@ -45,11 +46,13 @@ export const columns: ColumnDef<AppointmentDetailV2>[] = [
     ),
   },
   {
+    id: "sessionType",
     accessorKey: "courseName",
     header: "Session Type",
     cell: ({ row }) => <div className="">{row.original.courseName}</div>,
   },
   {
+    id: "sessionDate",
     accessorKey: "date",
     header: "Session Date",
     cell: ({ row }) => (
@@ -57,11 +60,13 @@ export const columns: ColumnDef<AppointmentDetailV2>[] = [
     ),
   },
   {
+    id: "sessionTime",
     accessorKey: "duration",
     header: "Session Time",
     cell: ({ row }) => <div className="">{row.original.duration} Minutes</div>,
   },
   {
+    id: "action",
     accessorKey: "id",
     header: "Action",
     cell: ({ row }) => (
@@ -128,11 +133,11 @@ export function DashboardAppointmentsTable({
           {/* Render Table Header */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={`${headerGroup.id}-header-row`}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
-                      key={header.id}
+                      key={`${header.id}-header-cell`}
                       className="px-4 py-2 text-muted-foreground"
                     >
                       {header.isPlaceholder
@@ -152,7 +157,7 @@ export function DashboardAppointmentsTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
+                  key={`${row.id}-row`}
                   onClick={() => {
                     console.log("row", row.original);
                     setContextAppointmentId(row.original.id);
@@ -165,7 +170,10 @@ export function DashboardAppointmentsTable({
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-4 py-2 text-black">
+                    <TableCell
+                      key={`${cell.id}-cell`}
+                      className="px-4 py-2 text-black"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
