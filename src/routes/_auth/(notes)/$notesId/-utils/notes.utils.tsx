@@ -73,7 +73,7 @@ export const useNotesUtils = ({
         coachId: userId,
         coachName: userName,
         coacheeId: appointmentDetail?.coacheeId,
-        coacheeName: appointmentDetail?.coachName,
+        coacheeName: appointmentDetail?.coacheeName,
         courseId: appointmentDetail?.courseId,
         courseName: appointmentDetail?.courseName,
         startDate: appointmentDetail?.startDate,
