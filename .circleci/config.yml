@@ -17,7 +17,11 @@ jobs:
       - checkout
       - node/install:
           install-yarn: false
-          node-version: '22'
+          node-version: "22"
+      - run:
+          name: "Download env file from Infisical"
+          command: |
+            infisical run --token=$ENV_TOKEN --env $ENV --command 'echo "$FRONTEND_INFISICAL_ENV" > .env'
       - run:
           name: "Install dependencies"
           command: "npm ci"
@@ -43,9 +47,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Download env file from Infisical"
+          command: |
+            infisical run --token=$ENV_TOKEN --env $ENV --command 'echo "$FRONTEND_INFISICAL_ENV" > .env'
+      - run:
           name: "Setup config"
           command: |
-            docker stack config -c .docker/docker-compose.yml > app.docker-compose.yml
+            ENV_FILE=$CIRCLE_WORKING_DIRECTORY/.env docker stack config -c .docker/docker-compose.yml > app.docker-compose.yml
       - run:
           name: "Deploy"
           command: |
@@ -68,23 +76,33 @@ workflows:
           pre-steps:
             - add_ssh_keys:
                 fingerprints:
-                  - "SHA256:i3LhpgQ5B+F22BjwpAff4oVfmvCqKSLO1VhQIqXX304"
+                  - "SHA256:i3LhpgQ5B+F22BjwpAff4oVfmvCqKSLO1VhQIqXX304" #Contabo
+                  - "SHA256:+RNAGMbKBXpFjqvn+1vROfYeK/4SJv2yCNkw6vDnszw" #Hostinger
             - run:
-                name: "Prepare Docker Context"
+                name: "Install Infisical"
                 command: |
-                  docker context create remote --docker "host=ssh://deploy@46.250.229.137"
+                  curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+                  sudo apt-get update && sudo apt-get install -y infisical=0.31.4
             - when:
                 condition:
-                  equal: [ main, << pipeline.git.branch >> ]
+                  equal: [main, << pipeline.git.branch >>]
                 steps:
+                  - run:
+                      name: "Prepare Docker Context"
+                      command: |
+                        docker context create remote --docker "host=ssh://deploy@82.112.235.104"
                   - run:
                       name: Setup Environment Variables (Production)"
                       command: |
                         echo 'export ENV=`echo prod`' >> "$BASH_ENV"
             - when:
                 condition:
-                  equal: [ development, << pipeline.git.branch >> ]
+                  equal: [development, << pipeline.git.branch >>]
                 steps:
+                  - run:
+                      name: "Prepare Docker Context"
+                      command: |
+                        docker context create remote --docker "host=ssh://deploy@46.250.229.137"
                   - run:
                       name: Setup Environment Variables (Development)"
                       command: |
@@ -105,15 +123,21 @@ workflows:
           pre-steps:
             - add_ssh_keys:
                 fingerprints:
-                  - "SHA256:i3LhpgQ5B+F22BjwpAff4oVfmvCqKSLO1VhQIqXX304"
+                  - "SHA256:i3LhpgQ5B+F22BjwpAff4oVfmvCqKSLO1VhQIqXX304" #Contabo
+                  - "SHA256:+RNAGMbKBXpFjqvn+1vROfYeK/4SJv2yCNkw6vDnszw" #Hostinger
             - run:
-                name: "Prepare Docker Context"
+                name: "Install Infisical"
                 command: |
-                  docker context create remote --docker "host=ssh://deploy@46.250.229.137"
+                  curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+                  sudo apt-get update && sudo apt-get install -y infisical=0.31.4
             - when:
                 condition:
-                  equal: [ main, << pipeline.git.branch >> ]
+                  equal: [main, << pipeline.git.branch >>]
                 steps:
+                  - run:
+                      name: "Prepare Docker Context"
+                      command: |
+                        docker context create remote --docker "host=ssh://deploy@82.112.235.104"
                   - run:
                       name: Setup Environment Variables (Production)
                       command: |
@@ -121,8 +145,12 @@ workflows:
                         echo 'export EXPOSED_PORT=`echo 4000`' >> "$BASH_ENV"
             - when:
                 condition:
-                  equal: [ development, << pipeline.git.branch >> ]
+                  equal: [development, << pipeline.git.branch >>]
                 steps:
+                  - run:
+                      name: "Prepare Docker Context"
+                      command: |
+                        docker context create remote --docker "host=ssh://deploy@46.250.229.137"
                   - run:
                       name: Setup Environment Variables (Development)
                       command: |
