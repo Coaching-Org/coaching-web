@@ -2,6 +2,7 @@ import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
 import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
 import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
+import { useUpdateAppointmentFirestoreUtils } from "@/hooks/firebase/update-appointment.firestore.utils";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
@@ -13,7 +14,7 @@ export const useNotesUtils = ({
   notesId,
 }: {
   edit?: boolean;
-  notesId?: string;
+  notesId: string;
 }) => {
   const { mutateAsync: postNotes } = usePostNotesQuery();
   const { toast } = useToast();
@@ -25,6 +26,9 @@ export const useNotesUtils = ({
   const {
     state: { appointmentDetail },
   } = useDetailAppointmentFirestoreUtils();
+  const {
+    event: { onFirestoreUpdateAppointment },
+  } = useUpdateAppointmentFirestoreUtils({ appointmentId: notesId });
 
   const {
     stateContext: {
@@ -80,6 +84,8 @@ export const useNotesUtils = ({
         endDate: appointmentDetail?.endDate,
         sessionName: appointmentDetail?.sessionName || "",
       });
+
+      onFirestoreUpdateAppointment({ status: "done" });
       /**
        * TODO: Uncomment this when the backend is ready
        */
