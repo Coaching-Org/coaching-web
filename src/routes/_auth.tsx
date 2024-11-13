@@ -6,19 +6,9 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router";
-import {
-  Calendar,
-  CheckSquare,
-  Search,
-  User,
-  WashingMachine,
-  LayoutDashboard,
-  UserCircle,
-  CalendarDays,
-} from "lucide-react";
+import { Calendar, User, LayoutDashboard, UserCircle } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -26,10 +16,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FileTextIcon } from "@radix-ui/react-icons";
 
 export const Route = createFileRoute("/_auth")({
@@ -81,7 +70,7 @@ function AuthLayout() {
         <Link
           to="/dashboard"
           onClick={() => setCurrentPath("/dashboard")}
-          className={`${isActive("/dashboard")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+          className={`${isActive("/dashboard")}  ${auth.userRole === "admin" ? "hidden" : ""}  flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <LayoutDashboard className="h-4 w-4" />
           Dashboard
@@ -148,7 +137,7 @@ function AuthLayout() {
           <Link
             to="/dashboard"
             onClick={() => setCurrentPath("/dashboard")}
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            className={`${auth.userRole === "admin" ? "hidden" : ""} mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
           >
             <LayoutDashboard className="h-5 w-5" />
             Dashboard
@@ -180,7 +169,7 @@ function AuthLayout() {
           <Link
             to="/coach"
             onClick={() => setCurrentPath("/coach")}
-            className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+            className={`${auth.userRole !== "admin" ? "hidden" : ""} mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
           >
             <User className="h-5 w-5" />
             Coach

@@ -23,6 +23,7 @@ import { Route as AuthcoachCreateCoachImport } from './routes/_auth/(coach)/crea
 import { Route as AuthcoachCoachImport } from './routes/_auth/(coach)/coach'
 import { Route as AuthcalendarCalendarImport } from './routes/_auth/(calendar)/calendar'
 import { Route as AuthappointmentsAppointmentsImport } from './routes/_auth/(appointments)/appointments'
+import { Route as AuthnotesNotesIdEditImport } from './routes/_auth/(notes)/$notesId/edit'
 import { Route as AuthnotesNotesIdNoteDetailImport } from './routes/_auth/(notes)/$notesId/NoteDetail'
 import { Route as AuthappointmentsappointmentIdReviewImport } from './routes/_auth/(appointments)/[appointmentId]/review'
 import { Route as AuthappointmentscreateCreateImport } from './routes/_auth/(appointments)/(create)/create'
@@ -89,6 +90,11 @@ const AuthappointmentsAppointmentsRoute =
     path: '/appointments',
     getParentRoute: () => AuthRoute,
   } as any)
+
+const AuthnotesNotesIdEditRoute = AuthnotesNotesIdEditImport.update({
+  path: '/$notesId/edit',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 const AuthnotesNotesIdNoteDetailRoute = AuthnotesNotesIdNoteDetailImport.update(
   {
@@ -218,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthnotesNotesIdNoteDetailImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/(notes)/$notesId/edit': {
+      id: '/_auth/$notesId/edit'
+      path: '/$notesId/edit'
+      fullPath: '/$notesId/edit'
+      preLoaderRoute: typeof AuthnotesNotesIdEditImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -236,6 +249,7 @@ interface AuthRouteChildren {
   AuthappointmentscreateCreateRoute: typeof AuthappointmentscreateCreateRoute
   AuthappointmentsappointmentIdReviewRoute: typeof AuthappointmentsappointmentIdReviewRoute
   AuthnotesNotesIdNoteDetailRoute: typeof AuthnotesNotesIdNoteDetailRoute
+  AuthnotesNotesIdEditRoute: typeof AuthnotesNotesIdEditRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -252,6 +266,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthappointmentsappointmentIdReviewRoute:
     AuthappointmentsappointmentIdReviewRoute,
   AuthnotesNotesIdNoteDetailRoute: AuthnotesNotesIdNoteDetailRoute,
+  AuthnotesNotesIdEditRoute: AuthnotesNotesIdEditRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -272,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
   '/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
+  '/$notesId/edit': typeof AuthnotesNotesIdEditRoute
 }
 
 export interface FileRoutesByTo {
@@ -290,6 +306,7 @@ export interface FileRoutesByTo {
   '/create': typeof AuthappointmentscreateCreateRoute
   '/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
   '/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
+  '/$notesId/edit': typeof AuthnotesNotesIdEditRoute
 }
 
 export interface FileRoutesById {
@@ -309,6 +326,7 @@ export interface FileRoutesById {
   '/_auth/create': typeof AuthappointmentscreateCreateRoute
   '/_auth/[appointmentId]/review': typeof AuthappointmentsappointmentIdReviewRoute
   '/_auth/$notesId/NoteDetail': typeof AuthnotesNotesIdNoteDetailRoute
+  '/_auth/$notesId/edit': typeof AuthnotesNotesIdEditRoute
 }
 
 export interface FileRouteTypes {
@@ -329,6 +347,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/[appointmentId]/review'
     | '/$notesId/NoteDetail'
+    | '/$notesId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -346,6 +365,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/[appointmentId]/review'
     | '/$notesId/NoteDetail'
+    | '/$notesId/edit'
   id:
     | '__root__'
     | '/'
@@ -363,6 +383,7 @@ export interface FileRouteTypes {
     | '/_auth/create'
     | '/_auth/[appointmentId]/review'
     | '/_auth/$notesId/NoteDetail'
+    | '/_auth/$notesId/edit'
   fileRoutesById: FileRoutesById
 }
 
@@ -412,7 +433,8 @@ export const routeTree = rootRoute
         "/_auth/users",
         "/_auth/create",
         "/_auth/[appointmentId]/review",
-        "/_auth/$notesId/NoteDetail"
+        "/_auth/$notesId/NoteDetail",
+        "/_auth/$notesId/edit"
       ]
     },
     "/login": {
@@ -464,6 +486,10 @@ export const routeTree = rootRoute
     },
     "/_auth/$notesId/NoteDetail": {
       "filePath": "_auth/(notes)/$notesId/NoteDetail.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/$notesId/edit": {
+      "filePath": "_auth/(notes)/$notesId/edit.tsx",
       "parent": "/_auth"
     }
   }

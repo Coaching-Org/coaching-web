@@ -5,6 +5,7 @@ import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
+import { NotesAppointmentTable } from "./-component/notes-appointment-table";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -76,7 +77,7 @@ function NotesLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(fsNotes as any) || []} />
+          <NotesAppointmentTable data={(fsNotes as any) || []} />
         </CardContent>
       </Card>
     </div>

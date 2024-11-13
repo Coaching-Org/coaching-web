@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import {
   ColumnDef,
   flexRender,
@@ -18,21 +17,12 @@ import {
 } from "@tanstack/react-table";
 import React, { useState } from "react";
 import moment from "moment";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
-import { AppointmentDetail } from "@/services/appointments/appointments.type";
 import { useCoachingContext } from "@/hooks/context";
 import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
+import { Link } from "@tanstack/react-router";
 
 export const createColumns = (
   setIsOpenModal: (open: boolean) => void,
@@ -75,8 +65,8 @@ export const createColumns = (
     header: "Action",
     cell: ({ row }) => (
       <div className="">
-        {/* <Link
-          to={`/$notesId/NoteDetail`}
+        <Link
+          to={`/$notesId/edit`}
           onClick={() => console.log(row.original)}
           params={{
             notesId: row.original.id.toString(),
@@ -85,8 +75,8 @@ export const createColumns = (
           <Button variant="link" className="-m-4 underline">
             View Notes
           </Button>
-        </Link> */}
-        <Button
+        </Link>
+        {/* <Button
           variant="link"
           className="-m-4 underline"
           onClick={() => {
@@ -95,13 +85,13 @@ export const createColumns = (
           }}
         >
           View Notes
-        </Button>
+        </Button> */}
       </div>
     ),
   },
 ];
 
-export function DashboardAppointmentsTable({
+export function NotesAppointmentTable({
   data,
 }: {
   data: AppointmentDetailV2[];
@@ -136,7 +126,7 @@ export function DashboardAppointmentsTable({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search coachee, session"
+          placeholder="Search coachee, notes"
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("id")?.setFilterValue(event.target.value)
