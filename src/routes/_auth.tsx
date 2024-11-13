@@ -81,7 +81,7 @@ function AuthLayout() {
         <Link
           to="/dashboard"
           onClick={() => setCurrentPath("/dashboard")}
-          className={`${isActive("/dashboard")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
+          className={`${isActive("/dashboard")}  ${auth.userRole === "admin" ? "hidden" : ""}  flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <LayoutDashboard className="h-4 w-4" />
           Dashboard

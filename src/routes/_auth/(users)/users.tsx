@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_auth/(users)/users")({
 function UsersLayout() {
   const router = useRouter();
   const navigate = Route.useNavigate();
+  const { userRole } = useAuth();
   const {
     state: { data },
   } = useCoacheeUtils();
@@ -24,15 +25,17 @@ function UsersLayout() {
           <div>
             <CardTitle className="text-2xl text-primary">Coachee</CardTitle>
           </div>
-          <div>
-            <Button
-              onClick={() => {
-                navigate({ to: "/create-coachee" });
-              }}
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Coachee
-            </Button>
-          </div>
+          {userRole === "admin" && (
+            <div>
+              <Button
+                onClick={() => {
+                  navigate({ to: "/create-coachee" });
+                }}
+              >
+                <Plus className="mr-2 h-4 w-4" /> Add Coachee
+              </Button>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <UsersTable data={data?.data || []} />
