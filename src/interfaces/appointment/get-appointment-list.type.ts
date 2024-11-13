@@ -44,4 +44,5 @@ export interface AppointmentDetailV2 {
   date: string;
   duration: number;
   notesId?: string | number | null;
+  sessionName?: string;
 }

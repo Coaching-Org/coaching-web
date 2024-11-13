@@ -2,29 +2,32 @@ import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
 import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
 import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
+import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
+import { useUpdateNotesFirestoreUtils } from "@/hooks/firebase/update-notes.firestore.utils";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export const useNotesUtils = ({
+export const useEditNotesUtils = ({
   edit,
   notesId,
 }: {
   edit?: boolean;
-  notesId?: string;
+  notesId: string;
 }) => {
   const { mutateAsync: postNotes } = usePostNotesQuery();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
   const {
-    event: { onFirestoreSaveNotes },
-  } = useCreateNotesFirestoreUtils();
+    event: { onFirestoreUpdateNotes },
+  } = useUpdateNotesFirestoreUtils({ notesId });
+
   const {
-    state: { appointmentDetail },
-  } = useDetailAppointmentFirestoreUtils();
+    state: { notesData: fsNotes },
+  } = useDetailNotesFirestoreUtils({ notesId });
 
   const {
     stateContext: {
@@ -67,18 +70,10 @@ export const useNotesUtils = ({
         file: fileData,
       };
 
-      onFirestoreSaveNotes({
+      onFirestoreUpdateNotes({
+        ...fsNotes,
         ...notesData,
-        appointmentId: appointmentDetail?.id,
-        coachId: userId,
-        coachName: userName,
-        coacheeId: appointmentDetail?.coacheeId,
-        coacheeName: appointmentDetail?.coachName,
-        courseId: appointmentDetail?.courseId,
-        courseName: appointmentDetail?.courseName,
-        startDate: appointmentDetail?.startDate,
-        endDate: appointmentDetail?.endDate,
-        sessionName: appointmentDetail?.sessionName || "",
+        appointmentId: fsNotes.appointmentId,
       });
       /**
        * TODO: Uncomment this when the backend is ready
@@ -105,6 +100,14 @@ export const useNotesUtils = ({
     textOptions === "" ||
     textWayForward === "";
 
+  useMemo(() => {
+    setTextGoals(fsNotes?.goals);
+    setTextReality(fsNotes?.reality);
+    setTextOptions(fsNotes?.options);
+    setTextWayForward(fsNotes?.wayForward);
+    setTextNotes(fsNotes?.notes);
+  }, [fsNotes]);
+
   return {
     state: {
       textGoals,
@@ -116,9 +119,9 @@ export const useNotesUtils = ({
       contextCoacheeName,
       contextCourseName,
       contextDate,
-      sessionDate: appointmentDetail?.startDate,
-      sessionName: appointmentDetail?.courseName,
-      sessionCoachee: appointmentDetail?.coacheeName,
+      sessionDate: fsNotes?.startDate,
+      sessionName: fsNotes?.courseName,
+      sessionCoachee: fsNotes?.coacheeName,
     },
     event: {
       onSaveNotes,
