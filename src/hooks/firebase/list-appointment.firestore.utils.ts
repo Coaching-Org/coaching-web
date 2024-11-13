@@ -44,7 +44,8 @@ export const useAppointmentsFirestoreUtils = () => {
       const queryGetAppointmentsQuery = query(
         collection(firestoreDb, fsCollectionKey.appointments),
         where("coachId", "==", userId),
-        where("status", "!=", "done")
+        where("status", "!=", "done"),
+        orderBy("createdAt", "desc")
       );
 
       const getAppointmentsSnapshot = (

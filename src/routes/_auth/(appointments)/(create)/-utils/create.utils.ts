@@ -4,6 +4,7 @@ import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointmen
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "@tanstack/react-router";
+import { Timestamp } from "firebase/firestore";
 import { useMemo, useState } from "react";
 
 export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
@@ -81,6 +82,7 @@ export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
         coacheeName: selectedCoacheeName,
         courseName: "Professional Coaching",
         status: "pending",
+        fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
       });
       /** Change to Backend Server */
       // await mutateAsync(data);
