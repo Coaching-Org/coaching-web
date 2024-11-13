@@ -2,7 +2,7 @@ import { Link, LinkComponent } from "@tanstack/react-router";
 import { Dumbbell, Folder, Package2 } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { logo } from "@/assets/logo";
+import { logoHD } from "@/assets/logo";
 
 interface ISidebarProps {
   handleLogout: () => void;
@@ -12,13 +12,15 @@ interface ISidebarProps {
 export default function Sidebar({ handleLogout, children }: ISidebarProps) {
   return (
     <div className="hidden border-r bg-muted/40 md:block">
-      <div className="flex h-full max-h-screen flex-col gap-2">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+      <div className="inline-flex h-full max-h-screen flex-col gap-2">
+        <div className="inline-flex h-14 items-center justify-center border-b lg:h-[60px] lg:px-6">
           <Link
             to="/dashboard"
-            className="flex items-center gap-2 font-semibold"
+            className="flex items-center gap-4 font-semibold"
           >
-            <img src={logo} alt="logo" className="h-12 w-fit" />
+            <div className="p-10">
+              <img src={logoHD} alt="logo" className="h-12 w-fit" />
+            </div>
           </Link>
         </div>
         <div className="flex-1">

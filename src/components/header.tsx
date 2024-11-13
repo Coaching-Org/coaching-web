@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { ThemeToggle } from "./theme-toggle";
+import { logoHD } from "@/assets/logo";
 
 interface IHeaderProps {
   handleLogout: () => void;
@@ -50,11 +51,12 @@ export default function Header({ handleLogout, children }: IHeaderProps) {
           <div className="flex flex-col h-[95vh]">
             <nav className="grid gap-2 text-lg font-medium">
               <Link
-                to="/users"
-                className="flex items-center gap-2 text-lg font-semibold"
+                to="/dashboard"
+                className="flex items-center justify-center font-semibold"
               >
-                <Dumbbell className="h-6 w-6" />
-                <span>Coaching</span>
+                <div className="p-4">
+                  <img src={logoHD} alt="logo" className="h-12 w-fit" />
+                </div>
               </Link>
               {children}
             </nav>

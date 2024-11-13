@@ -1,6 +1,6 @@
 import { useAuth } from "@/auth";
 import { firestoreDb, fsCollectionKey } from "@/lib/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export const useListNotesFirestoreUtils = () => {
@@ -11,7 +11,8 @@ export const useListNotesFirestoreUtils = () => {
     try {
       const queryGetNotesList = query(
         collection(firestoreDb, fsCollectionKey.notes),
-        where("coachId", "==", userId)
+        where("coachId", "==", userId),
+        orderBy("createdAt", "desc")
       );
 
       const getNotesListSnapshot = (await getDocs(queryGetNotesList)).docs

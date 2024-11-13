@@ -9,6 +9,7 @@ interface fsAppointmentProps extends PostAppointmentRequest {
   coacheeName?: string | null;
   courseName?: string | null;
   status: string;
+  fsSessionDate?: any;
 }
 
 export const useCreateAppointmentFirestoreUtils = () => {
