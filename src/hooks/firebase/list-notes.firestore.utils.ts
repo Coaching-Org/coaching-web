@@ -14,9 +14,18 @@ export const useListNotesFirestoreUtils = () => {
         where("coachId", "==", userId)
       );
 
-      const getNotesListSnapshot = (await getDocs(queryGetNotesList)).docs.map(
-        (doc) => doc.data()
-      );
+      const getNotesListSnapshot = (await getDocs(queryGetNotesList)).docs
+        .map((doc) => doc.data())
+        .map((item: any) => {
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
+          const duration =
+            (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+          return {
+            ...item,
+            duration: Math.ceil(duration),
+          };
+        });
       console.log("getNotesListSnapshot", getNotesListSnapshot);
       setNotesList(getNotesListSnapshot);
     } catch (error) {

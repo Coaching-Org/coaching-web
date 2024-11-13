@@ -6,30 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  createFileRoute,
-  useNavigate,
-  useParams,
-  useRouter,
-} from "@tanstack/react-router";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useNotesUtils } from "./-utils/notes.utils";
-import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import moment from "moment";
+import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
 
-export const Route = createFileRoute("/_auth/(notes)/$notesId/NoteDetail")({
-  component: NoteDetailLayout,
+export const Route = createFileRoute("/_auth/(notes)/$notesId/edit")({
+  component: EdiNotesLayout,
 });
 
-function NoteDetailLayout() {
-  const router = useRouter();
-  const navigate = useNavigate();
-  const { notesId } = useParams({
-    from: "/_auth/$notesId/NoteDetail",
-  });
+function EdiNotesLayout() {
+  const { notesId } = useParams({ from: "/_auth/$notesId/edit" });
   const {
     state: {
       isButtonDisabled,
@@ -38,9 +28,6 @@ function NoteDetailLayout() {
       textOptions,
       textWayForward,
       textNotes,
-      contextCoacheeName,
-      contextCourseName,
-      contextDate,
       sessionDate,
       sessionName,
       sessionCoachee,
@@ -54,7 +41,13 @@ function NoteDetailLayout() {
       setTextNotes,
       setFile,
     },
-  } = useNotesUtils({ edit: false, notesId });
+  } = useNotesUtils({ edit: true, notesId });
+
+  const {
+    state: { notesData },
+  } = useDetailNotesFirestoreUtils({ notesId });
+
+  console.log("notesData", notesData);
 
   return (
     <div className="gap-4 lg:p-6">

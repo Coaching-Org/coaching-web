@@ -1,14 +1,20 @@
 import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
 import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
+import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const useNotesUtils = () => {
-  const { notesId } = useParams({ from: "/_auth/$notesId/NoteDetail" });
+export const useNotesUtils = ({
+  edit,
+  notesId,
+}: {
+  edit?: boolean;
+  notesId?: string;
+}) => {
   const { mutateAsync: postNotes } = usePostNotesQuery();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -16,6 +22,9 @@ export const useNotesUtils = () => {
   const {
     event: { onFirestoreSaveNotes },
   } = useCreateNotesFirestoreUtils();
+  const {
+    state: { appointmentDetail },
+  } = useDetailAppointmentFirestoreUtils();
 
   const {
     stateContext: {
@@ -63,6 +72,8 @@ export const useNotesUtils = () => {
         coacheeName: contextCoacheeName,
         courseId: contextCourseId,
         courseName: contextCourseName,
+        startDate: appointmentDetail?.startDate,
+        endDate: appointmentDetail?.endDate,
       });
       /**
        * TODO: Uncomment this when the backend is ready
@@ -100,6 +111,9 @@ export const useNotesUtils = () => {
       contextCoacheeName,
       contextCourseName,
       contextDate,
+      sessionDate: appointmentDetail?.startDate,
+      sessionName: appointmentDetail?.courseName,
+      sessionCoachee: appointmentDetail?.coacheeName,
     },
     event: {
       onSaveNotes,

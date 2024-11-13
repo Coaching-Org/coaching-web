@@ -4,6 +4,7 @@ export interface PostAppointmentRequest {
   courseId: number;
   endDate: string;
   note: string;
+  sessionName?: string;
   startDate: string;
 }
 
