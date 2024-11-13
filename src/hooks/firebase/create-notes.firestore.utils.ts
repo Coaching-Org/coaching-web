@@ -25,7 +25,7 @@ export const useCreateNotesFirestoreUtils = () => {
       // );
       // console.log("notesRef", notesRef);
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
   return {

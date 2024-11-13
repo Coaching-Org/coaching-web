@@ -35,6 +35,7 @@ export const useCreateAppointmentFirestoreUtils = () => {
       // );
     } catch (error) {
       console.error("error", error);
+      throw error;
     }
   };
   const onFirestoreSaveAppointments = (data: fsAppointmentProps) => {

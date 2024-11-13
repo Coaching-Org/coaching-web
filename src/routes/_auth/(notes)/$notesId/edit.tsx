@@ -13,6 +13,7 @@ import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useNotesUtils } from "./-utils/notes.utils";
 import moment from "moment";
 import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
+import { useEditNotesUtils } from "./-utils/edit-notes.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/$notesId/edit")({
   component: EdiNotesLayout,
@@ -41,7 +42,7 @@ function EdiNotesLayout() {
       setTextNotes,
       setFile,
     },
-  } = useNotesUtils({ edit: true, notesId });
+  } = useEditNotesUtils({ edit: true, notesId });
 
   const {
     state: { notesData },
