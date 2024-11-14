@@ -94,7 +94,7 @@ export const createColumns = (
             setAppointmentData(row.original);
           }}
         >
-          View Notes
+          View Details
         </Button>
       </div>
     ),

@@ -13,45 +13,6 @@ export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,
 });
 
-const tempDataTable: DashboardUpcomingAppointments[] = [
-  {
-    id: 1,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 2,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 3,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 4,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-];
-
 function AppointmentsLayout() {
   const navigate = useNavigate();
   const {
@@ -89,7 +50,7 @@ function AppointmentsLayout() {
           {/* Add Button export */}
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(fsData as any) || []} />
+          <DashboardAppointmentsTable data={(data as any) || []} />
         </CardContent>
       </Card>
     </div>

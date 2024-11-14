@@ -12,4 +12,6 @@ export interface CoachDetail {
   numberOfAppointments: number;
   phone: string;
   recentAppointment: string;
+  createdAt: string;
+  updatedAt: string;
 }
