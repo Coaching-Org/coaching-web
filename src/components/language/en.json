@@ -6,15 +6,65 @@
     "coachee": "Coachee",
     "coach": "Coach",
     "profile": "Profile",
-    "exit": "Exit"
+    "exit": "Exit",
+    "sessionDetail": "Sessions Details",
+    "sessionType": "Session Type",
+    "sessionCoachee": "Coachee",
+    "sessionSchedule": "Sessions Schedule",
+    "sessionAppointmentDate": "Appointment Date",
+    "sessionAppointmentTime": "Appointment Time",
+    "others": "Others",
+    "sessionStatus": "Status",
+    "sessionAction": "Action",
+    "sessionManage": "Manage Session",
+    "sessionCoach": "Coach"
+  },
+  "placeholder": {
+    "searchAppointments": "Search coachee, session"
   },
   "button": {
     "action": {
-      "signOut": "Sign Out"
+      "signOut": "Sign Out",
+      "addNotes": "Add Notes",
+      "addSession": "Add Session",
+      "create": "Create"
     }
   },
   "description": {
     "signoutDescription": "Are you sure you want to sign out?",
-    "gotoLoginDescription": "Go to login page"
+    "gotoLoginDescription": "Go to login page",
+    "dashboardTotalAppointment": "Total Appointments",
+    "dashboardDoneAppointment": "Done Appointments",
+    "dashboardPendingAppointment": "Pending Appointments",
+    "dashboardUpcomingAppointment": "Upcoming Appointments",
+    "sessionManageDescription": "View and manage all your sessions that you have scheduled with your coachees."
+  },
+  "tables": {
+    "header": {
+      "sessionName": "Session Name",
+      "sessionType": "Session Type",
+      "sessionDate": "Created Date",
+      "sessionTime": "Session Time",
+      "action": "Action"
+    },
+    "cell": {
+      "viewNotes": "View Notes",
+      "viewDetails": "View Details",
+      "minutesDuration": "Minutes"
+    },
+    "noData": "No results.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "components": {
+    "dateRangePicker": {
+      "pickDate": "Pick a Date"
+    },
+    "combobox": {
+      "select": "Select",
+      "noData": "No data found."
+    }
   }
 }

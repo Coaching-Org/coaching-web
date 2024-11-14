@@ -31,6 +31,7 @@ import { Info } from "lucide-react";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
+import { useLanguage } from "@/components/language.provider";
 
 const tempAppointments = [
   {
@@ -148,6 +149,7 @@ export const columns: ColumnDef<Appointment>[] = [
 ];
 
 export function AppointmentsTable({ navigate }: { navigate: () => void }) {
+  const { translations } = useLanguage();
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -167,7 +169,7 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search coachee, notes, session"
+          placeholder={translations.placeholder.searchAppointments}
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -227,10 +229,10 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows?.length} of{" "}
           {table.getFilteredRowModel().rows?.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"

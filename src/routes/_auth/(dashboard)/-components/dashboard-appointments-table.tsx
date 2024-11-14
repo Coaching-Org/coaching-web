@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import {
   ColumnDef,
   flexRender,
@@ -16,96 +15,84 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { useState } from "react";
 import moment from "moment";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
-import { AppointmentDetail } from "@/services/appointments/appointments.type";
 import { useCoachingContext } from "@/hooks/context";
 import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
+import { useLanguage } from "@/components/language.provider";
 
 export const createColumns = (
   setIsOpenModal: (open: boolean) => void,
   setAppointmentData: (data: AppointmentDetailV2) => void
-): ColumnDef<AppointmentDetailV2>[] => [
-  {
-    id: "sessionName",
-    accessorKey: "id",
-    header: "Session Name",
-    cell: ({ row }) => (
-      <div className="">
-        {row.original.courseName} - {row.original.coacheeName}{" "}
-        {moment(row.original.date).format("DD/MM/YYYY")}
-      </div>
-    ),
-  },
-  {
-    id: "sessionType",
-    accessorKey: "courseName",
-    header: "Session Type",
-    cell: ({ row }) => <div className="">{row.original.courseName}</div>,
-  },
-  {
-    id: "sessionDate",
-    accessorKey: "date",
-    header: "Created Date",
-    cell: ({ row }) => (
-      <div className="">{moment(row.original.date).format("DD/MM/YYYY")}</div>
-    ),
-  },
-  {
-    id: "sessionTime",
-    accessorKey: "duration",
-    header: "Session Time",
-    cell: ({ row }) => <div className="">{row.original.duration} Minutes</div>,
-  },
-  {
-    id: "id",
-    accessorKey: "id",
-    header: "Action",
-    cell: ({ row }) => (
-      <div className="">
-        {/* <Link
-          to={`/$notesId/NoteDetail`}
-          onClick={() => console.log(row.original)}
-          params={{
-            notesId: row.original.id.toString(),
-          }}
-        >
-          <Button variant="link" className="-m-4 underline">
-            View Notes
+): ColumnDef<AppointmentDetailV2>[] => {
+  const { translations } = useLanguage();
+  return [
+    {
+      id: "sessionName",
+      accessorKey: "id",
+      header: translations.tables.header.sessionName,
+      cell: ({ row }) => (
+        <div className="">
+          {row.original.courseName} - {row.original.coacheeName}{" "}
+          {moment(row.original.date).format("DD/MM/YYYY")}
+        </div>
+      ),
+    },
+    {
+      id: "sessionType",
+      accessorKey: "courseName",
+      header: translations.tables.header.sessionType,
+      cell: ({ row }) => <div className="">{row.original.courseName}</div>,
+    },
+    {
+      id: "sessionDate",
+      accessorKey: "date",
+      header: translations.tables.header.sessionDate,
+      cell: ({ row }) => (
+        <div className="">{moment(row.original.date).format("DD/MM/YYYY")}</div>
+      ),
+    },
+    {
+      id: "sessionTime",
+      accessorKey: "duration",
+      header: translations.tables.header.sessionTime,
+      cell: ({ row }) => (
+        <div className="">
+          {row.original.duration} {translations.tables.cell.minutesDuration}
+        </div>
+      ),
+    },
+    {
+      id: "id",
+      accessorKey: "id",
+      header: translations.tables.header.action,
+      cell: ({ row }) => (
+        <div className="">
+          <Button
+            variant="link"
+            className="-m-4 underline"
+            onClick={() => {
+              setIsOpenModal(true);
+              setAppointmentData(row.original);
+            }}
+          >
+            {translations.tables.cell.viewDetails}
           </Button>
-        </Link> */}
-        <Button
-          variant="link"
-          className="-m-4 underline"
-          onClick={() => {
-            setIsOpenModal(true);
-            setAppointmentData(row.original);
-          }}
-        >
-          View Details
-        </Button>
-      </div>
-    ),
-  },
-];
+        </div>
+      ),
+    },
+  ];
+};
 
 export function DashboardAppointmentsTable({
   data,
 }: {
   data: AppointmentDetailV2[];
 }) {
+  const { translations } = useLanguage();
   const {
     eventContext: {
       setContextCoacheeId,
@@ -136,7 +123,7 @@ export function DashboardAppointmentsTable({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search coachee, session"
+          placeholder={translations.placeholder.searchAppointments}
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("id")?.setFilterValue(event.target.value)
@@ -202,7 +189,7 @@ export function DashboardAppointmentsTable({
             ) : (
               <TableRow>
                 <TableCell colSpan={5} className="h-24 text-center">
-                  No results.
+                  {translations.tables.noData}
                 </TableCell>
               </TableRow>
             )}
@@ -211,10 +198,10 @@ export function DashboardAppointmentsTable({
       </div>
       {/* Pagination */}
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows?.length} of{" "}
           {table.getFilteredRowModel().rows?.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -222,7 +209,7 @@ export function DashboardAppointmentsTable({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translations.tables.pagination.previous}
           </Button>
           <Button
             variant="outline"
@@ -230,7 +217,7 @@ export function DashboardAppointmentsTable({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translations.tables.pagination.next}
           </Button>
         </div>
       </div>

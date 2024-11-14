@@ -11,13 +11,15 @@ import moment from "moment";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
+import { useLanguage } from "@/components/language.provider";
 
 export function DateRangePicker({
-  className
+  className,
 }: React.HTMLAttributes<HTMLDivElement>) {
+  const { translations } = useLanguage();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
-    to: addDays(new Date(), 0)
+    to: addDays(new Date(), 0),
   });
 
   return (
@@ -36,14 +38,14 @@ export function DateRangePicker({
             {date?.from ? (
               date.to ? (
                 <>
-                  {moment(date.from).format('DD MMM YYYY')} -{" "}
-                  {moment(date.to).format('DD MMM YYYY')}
+                  {moment(date.from).format("DD MMM YYYY")} -{" "}
+                  {moment(date.to).format("DD MMM YYYY")}
                 </>
               ) : (
-                moment(date.from).format('DD MMM YYYY')
+                moment(date.from).format("DD MMM YYYY")
               )
             ) : (
-              <span>Pick a Date</span>
+              <span>{translations.components.dateRangePicker.pickDate}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -55,7 +57,7 @@ export function DateRangePicker({
             onSelect={setDate}
             initialFocus
             numberOfMonths={2}
-            disabled={((date) => date > new Date())}
+            disabled={(date) => date > new Date()}
           />
         </PopoverContent>
       </Popover>

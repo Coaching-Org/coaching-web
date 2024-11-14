@@ -8,12 +8,14 @@ import { useAppointmentsUtils } from "./-utils/appointments.utils";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
+import { useLanguage } from "@/components/language.provider";
 
 export const Route = createFileRoute("/_auth/(appointments)/appointments")({
   component: AppointmentsLayout,
 });
 
 function AppointmentsLayout() {
+  const { translations } = useLanguage();
   const navigate = useNavigate();
   const {
     state: { data },
@@ -33,11 +35,10 @@ function AppointmentsLayout() {
         <CardHeader className="flex-row flex-1 justify-between">
           <div>
             <CardTitle className="text-2xl text-primary">
-              Manage Session
+              {translations.title.sessionManage}
             </CardTitle>
             <CardTitle className="mt-4 text-sm font-normal">
-              View and managae all your sessions that you have scheduled with
-              your coachees.
+              {translations.description.sessionManageDescription}
             </CardTitle>
           </div>
           <Button
@@ -45,7 +46,8 @@ function AppointmentsLayout() {
               navigate({ to: "/create" });
             }}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Session
+            <Plus className="mr-2 h-4 w-4" />{" "}
+            {translations.button.action.addSession}
           </Button>
           {/* Add Button export */}
         </CardHeader>

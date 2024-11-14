@@ -7,7 +7,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Timestamp } from "firebase/firestore";
 import { useMemo, useState } from "react";
 
-export const useCreateAppointmentUtils = ({ coachId }: { coachId: number }) => {
+export const useCreateAppointmentUtils = () => {
   const { userId, userName } = useAuth();
   const { toast } = useToast();
   const {
