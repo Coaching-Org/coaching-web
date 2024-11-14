@@ -6,53 +6,15 @@ import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
 import { NotesAppointmentTable } from "./-component/notes-appointment-table";
+import { useLanguage } from "@/components/language.provider";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
 });
 
-const tempDataTable: DashboardUpcomingAppointments[] = [
-  {
-    id: 1,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 2,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 3,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 4,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-];
-
 function NotesLayout() {
   const navigate = useNavigate();
-
+  const { translations } = useLanguage();
   const {
     state: { data },
   } = useAppointmentsUtils();
@@ -67,12 +29,11 @@ function NotesLayout() {
           <div>
             <CardTitle className="text-2xl text-primary">
               {/* 20px */}
-              Session Notes
+              {translations.title.sessionNotes}
             </CardTitle>
             <CardTitle className="mt-4 text-sm font-normal">
               {/*  14 */}
-              View all of your past/ongoing notes from session that you have
-              scheduled with your coachees.
+              {translations.description.notesDescription}
             </CardTitle>
           </div>
         </CardHeader>

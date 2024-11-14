@@ -17,17 +17,28 @@
     "sessionStatus": "Status",
     "sessionAction": "Action",
     "sessionManage": "Manage Session",
-    "sessionCoach": "Coach"
+    "sessionCoach": "Coach",
+    "sessionNotes": "Session Notes",
+    "createdDate": "Created Date",
+    "notesDetail": "Note Details",
+    "notesGoals": "Goals",
+    "notesReality": "Reality",
+    "notesOptions": "Options",
+    "notesWayForward": "Will/Way Forward",
+    "notesNotes": "Notes",
+    "notesFile": "File"
   },
   "placeholder": {
-    "searchAppointments": "Search coachee, session"
+    "searchAppointments": "Search coachee, session",
+    "searchNotes": "Search coachee, notes"
   },
   "button": {
     "action": {
       "signOut": "Sign Out",
       "addNotes": "Add Notes",
       "addSession": "Add Session",
-      "create": "Create"
+      "create": "Create",
+      "save": "Save"
     }
   },
   "description": {
@@ -37,7 +48,8 @@
     "dashboardDoneAppointment": "Done Appointments",
     "dashboardPendingAppointment": "Pending Appointments",
     "dashboardUpcomingAppointment": "Upcoming Appointments",
-    "sessionManageDescription": "View and manage all your sessions that you have scheduled with your coachees."
+    "sessionManageDescription": "View and manage all your sessions that you have scheduled with your coachees.",
+    "notesDescription": "View all of your past/ongoing notes from session that you have scheduled with your coachees."
   },
   "tables": {
     "header": {

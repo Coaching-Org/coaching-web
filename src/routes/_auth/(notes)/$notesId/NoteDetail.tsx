@@ -19,12 +19,14 @@ import {
 import { useNotesUtils } from "./-utils/notes.utils";
 import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import moment from "moment";
+import { useLanguage } from "@/components/language.provider";
 
 export const Route = createFileRoute("/_auth/(notes)/$notesId/NoteDetail")({
   component: NoteDetailLayout,
 });
 
 function NoteDetailLayout() {
+  const { translations } = useLanguage();
   const router = useRouter();
   const navigate = useNavigate();
   const { notesId } = useParams({
@@ -63,7 +65,7 @@ function NoteDetailLayout() {
           <div>
             <CardTitle className="text-2xl text-primary">
               {/* 24px */}
-              Session Notes
+              {translations.title.sessionNotes}
             </CardTitle>
           </div>
         </CardHeader>
@@ -71,12 +73,14 @@ function NoteDetailLayout() {
           <div className="w-1/2">
             <CardTitle className="text-xl">
               {/* 20px */}
-              Session Details
+              {translations.title.sessionDetail}
             </CardTitle>
             <div className="flex flex-1 flex-row justify-between">
               {/* Form Service */}
               <div className="flex-col flex mt-4 min-w-[250px]">
-                <span className="text-base">Session Date</span>
+                <span className="text-base">
+                  {translations.title.sessionDate}
+                </span>
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {moment(sessionDate).format("MMMM Do, YYYY")}
@@ -86,7 +90,7 @@ function NoteDetailLayout() {
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Session Type
+                {translations.title.sessionType}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {sessionName}
@@ -96,7 +100,7 @@ function NoteDetailLayout() {
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Coachee
+                {translations.title.sessionCoachee}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {sessionCoachee}
@@ -104,38 +108,40 @@ function NoteDetailLayout() {
                 </div>
               </div>
             </div>
-            <CardTitle className="text-xl mt-8">Note Details</CardTitle>
+            <CardTitle className="text-xl mt-8">
+              {translations.title.notesDetail}
+            </CardTitle>
             <div className="mt-4">
               {/* min height - 200 */}
-              <Label>Goals</Label>
+              <Label>{translations.title.notesGoals}</Label>
               <Textarea
                 value={textGoals}
                 onChange={(e) => setTextGoals(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>Reality</Label>
+              <Label>{translations.title.notesReality}</Label>
               <Textarea
                 value={textReality}
                 onChange={(e) => setTextReality(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>Options</Label>
+              <Label>{translations.title.notesOptions}</Label>
               <Textarea
                 value={textOptions}
                 onChange={(e) => setTextOptions(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>Will/Way Forward</Label>
+              <Label>{translations.title.notesWayForward}</Label>
               <Textarea
                 value={textWayForward}
                 onChange={(e) => setTextWayForward(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>Notes</Label>
+              <Label>{translations.title.notesNotes}</Label>
               <Textarea
                 value={textNotes}
                 onChange={(e) => setTextNotes(e.target.value)}
@@ -144,7 +150,7 @@ function NoteDetailLayout() {
             <div className="mt-4">
               {/* Resize bordernya, with icon upload ditengah, multiple file, pdf, png, jpg, jpeg doc docx xls xlsx ppt pptx, rar zip 7zip max 5mb */}
               {/* Can we make it universal? */}
-              <Label>File</Label>
+              <Label>{translations.title.notesFile}</Label>
               <Input
                 type="file"
                 multiple={false}
@@ -176,7 +182,7 @@ function NoteDetailLayout() {
         <CardFooter className="justify-end">
           {/* Add validation for GROW*/}
           <Button onClick={onSaveNotes} disabled={isButtonDisabled}>
-            Save
+            {translations.button.action.save}
           </Button>
         </CardFooter>
       </Card>
