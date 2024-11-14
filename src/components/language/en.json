@@ -1,0 +1,82 @@
+{
+  "title": {
+    "dashboard": "Dashboard",
+    "session": "Sessions",
+    "notes": "Notes",
+    "coachee": "Coachee",
+    "coach": "Coach",
+    "profile": "Profile",
+    "exit": "Exit",
+    "sessionDetail": "Sessions Details",
+    "sessionType": "Session Type",
+    "sessionCoachee": "Coachee",
+    "sessionSchedule": "Sessions Schedule",
+    "sessionAppointmentDate": "Appointment Date",
+    "sessionAppointmentTime": "Appointment Time",
+    "others": "Others",
+    "sessionStatus": "Status",
+    "sessionAction": "Action",
+    "sessionManage": "Manage Session",
+    "sessionCoach": "Coach",
+    "sessionNotes": "Session Notes",
+    "createdDate": "Created Date",
+    "notesDetail": "Note Details",
+    "notesGoals": "Goals",
+    "notesReality": "Reality",
+    "notesOptions": "Options",
+    "notesWayForward": "Will/Way Forward",
+    "notesNotes": "Notes",
+    "notesFile": "File"
+  },
+  "placeholder": {
+    "searchAppointments": "Search coachee, session",
+    "searchNotes": "Search coachee, notes"
+  },
+  "button": {
+    "action": {
+      "signOut": "Sign Out",
+      "addNotes": "Add Notes",
+      "addSession": "Add Session",
+      "create": "Create",
+      "save": "Save"
+    }
+  },
+  "description": {
+    "signoutDescription": "Are you sure you want to sign out?",
+    "gotoLoginDescription": "Go to login page",
+    "dashboardTotalAppointment": "Total Appointments",
+    "dashboardDoneAppointment": "Done Appointments",
+    "dashboardPendingAppointment": "Pending Appointments",
+    "dashboardUpcomingAppointment": "Upcoming Appointments",
+    "sessionManageDescription": "View and manage all your sessions that you have scheduled with your coachees.",
+    "notesDescription": "View all of your past/ongoing notes from session that you have scheduled with your coachees."
+  },
+  "tables": {
+    "header": {
+      "sessionName": "Session Name",
+      "sessionType": "Session Type",
+      "sessionDate": "Created Date",
+      "sessionTime": "Session Time",
+      "action": "Action"
+    },
+    "cell": {
+      "viewNotes": "View Notes",
+      "viewDetails": "View Details",
+      "minutesDuration": "Minutes"
+    },
+    "noData": "No results.",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "components": {
+    "dateRangePicker": {
+      "pickDate": "Pick a Date"
+    },
+    "combobox": {
+      "select": "Select",
+      "noData": "No data found."
+    }
+  }
+}

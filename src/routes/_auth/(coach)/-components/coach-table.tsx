@@ -32,7 +32,7 @@ export const columns: ColumnDef<CoachDetail>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="capitalize flex flex-row items-center gap-2">
+      <div className="flex flex-row items-center gap-2">
         {row.original.name}
       </div>
     ),
@@ -40,9 +40,7 @@ export const columns: ColumnDef<CoachDetail>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("email")}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "role",
@@ -66,9 +64,7 @@ export const columns: ColumnDef<CoachDetail>[] = [
       const date = row.getValue("createdAt") as string;
 
       // Format the ISO string to dd-mm-yyyy hh:mm
-      const formatted = moment(row.original.recentAppointment).format(
-        "DD-MMM-YYYY HH:mm"
-      );
+      const formatted = moment(row.original.updatedAt).format("DD/MMM/YYYY");
 
       return <div className="text-left font-medium">{formatted}</div>;
     },

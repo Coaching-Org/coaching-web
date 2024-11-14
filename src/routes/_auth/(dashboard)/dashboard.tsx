@@ -6,54 +6,18 @@ import { DashboardAppointmentsTable } from "./-components/dashboard-appointments
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
-
-const tempDataTable: DashboardUpcomingAppointments[] = [
-  {
-    id: 1,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 2,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 3,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 4,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-];
+import { useDashboardUtils } from "./-utils/dashboard.utils";
+import { useLanguage } from "@/components/language.provider";
 
 export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
   component: DashboardLayout,
 });
 
 function DashboardLayout() {
+  const { translations } = useLanguage();
   const {
     state: { data },
-  } = useAppointmentsUtils();
+  } = useDashboardUtils();
   const {
     state: {
       fsData,
@@ -68,7 +32,9 @@ function DashboardLayout() {
       <Card className="px-2">
         {/* Appointments Section */}
         <CardHeader className="flex-row flex-1 justify-between">
-          <CardTitle className="text-2xl text-primary">Dashboard</CardTitle>
+          <CardTitle className="text-2xl text-primary">
+            {translations.title.dashboard}
+          </CardTitle>
           <DateRangePicker />
         </CardHeader>
         <CardContent>
@@ -82,7 +48,7 @@ function DashboardLayout() {
                 {fsTotalAppointment}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
-                Total Appointments
+                {translations.description.dashboardTotalAppointment}
               </p>
             </div>
 
@@ -95,7 +61,7 @@ function DashboardLayout() {
                 {fsApprovedAppointment}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
-                Done Appointments
+                {translations.description.dashboardDoneAppointment}
               </p>
             </div>
 
@@ -108,7 +74,7 @@ function DashboardLayout() {
                 {fsPendingAppointment}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
-                Pending Appointments
+                {translations.description.dashboardPendingAppointment}
               </p>
             </div>
           </div>
@@ -116,10 +82,12 @@ function DashboardLayout() {
 
         {/* Upcoming Seciton */}
         <CardHeader>
-          <CardTitle>Upcoming Appointments</CardTitle>
+          <CardTitle>
+            {translations.description.dashboardUpcomingAppointment}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(fsData as any) || []} />
+          <DashboardAppointmentsTable data={(data as any) || []} />
         </CardContent>
       </Card>
     </div>

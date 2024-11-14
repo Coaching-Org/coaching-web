@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { FileTextIcon } from "@radix-ui/react-icons";
+import { loadLanguage, useLanguage } from "@/components/language.provider";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/_auth")({
 
 function AuthLayout() {
   const router = useRouter();
+  const { translations } = useLanguage();
   const navigate = Route.useNavigate();
   const auth = useAuth();
   const [openLogout, setOpenLogout] = React.useState(false);
@@ -73,7 +75,7 @@ function AuthLayout() {
           className={`${isActive("/dashboard")}  ${auth.userRole === "admin" ? "hidden" : ""}  flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <LayoutDashboard className="h-4 w-4" />
-          Dashboard
+          {translations.title.dashboard}
         </Link>
         {/* Calendar */}
         {/* <Link
@@ -90,7 +92,7 @@ function AuthLayout() {
           className={`${isActive("/appointments")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <Calendar className="h-4 w-4" />
-          Sessions
+          {translations.title.session}
         </Link>
         {/* Notes */}
         <Link
@@ -99,16 +101,16 @@ function AuthLayout() {
           className={`${isActive("/notes")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <FileTextIcon className="h-4 w-4" />
-          Notes
+          {translations.title.notes}
         </Link>
-        {/* Coach */}
+        {/* Coachee */}
         <Link
           to="/users"
           onClick={() => setCurrentPath("/users")}
           className={`${isActive("/users")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <User className="h-4 w-4" />
-          Coachee
+          {translations.title.coachee}
         </Link>
 
         {/* Coach */}
@@ -118,7 +120,7 @@ function AuthLayout() {
           className={`${isActive("/coach")} ${auth.userRole !== "admin" ? "hidden" : ""} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <User className="h-4 w-4" />
-          Coach
+          {translations.title.coach}
         </Link>
 
         {/* Profile */}
@@ -128,7 +130,7 @@ function AuthLayout() {
           className={`${isActive("/profile")} flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary`}
         >
           <UserCircle className="h-4 w-4" />
-          Profile
+          {translations.title.profile}
         </Link>
       </Sidebar>
       {/* Mini Menu Section */}
@@ -140,7 +142,7 @@ function AuthLayout() {
             className={`${auth.userRole === "admin" ? "hidden" : ""} mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
           >
             <LayoutDashboard className="h-5 w-5" />
-            Dashboard
+            {translations.title.dashboard}
           </Link>
           <Link
             to="/appointments"
@@ -148,7 +150,7 @@ function AuthLayout() {
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <Calendar className="h-5 w-5" />
-            Sessions
+            {translations.title.session}
           </Link>
           <Link
             to="/notes"
@@ -156,7 +158,7 @@ function AuthLayout() {
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <FileTextIcon className="h-5 w-5" />
-            Notes
+            {translations.title.notes}
           </Link>
           <Link
             to="/users"
@@ -164,7 +166,7 @@ function AuthLayout() {
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <User className="h-5 w-5" />
-            Coachee
+            {translations.title.coachee}
           </Link>
           <Link
             to="/coach"
@@ -172,7 +174,7 @@ function AuthLayout() {
             className={`${auth.userRole !== "admin" ? "hidden" : ""} mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground`}
           >
             <User className="h-5 w-5" />
-            Coach
+            {translations.title.coach}
           </Link>
           <Link
             to="/profile"
@@ -180,7 +182,7 @@ function AuthLayout() {
             className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
           >
             <UserCircle className="h-5 w-5" />
-            Profile
+            {translations.title.profile}
           </Link>
         </Header>
         <Outlet />
@@ -188,13 +190,15 @@ function AuthLayout() {
       <Dialog open={openLogout} onOpenChange={setOpenLogout}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Exit</DialogTitle>
+            <DialogTitle>{translations.title.exit}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to sign out?
+              {translations.description.signoutDescription}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={handleLogout}>Sign Out</Button>
+            <Button onClick={handleLogout}>
+              {translations.button.action.signOut}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

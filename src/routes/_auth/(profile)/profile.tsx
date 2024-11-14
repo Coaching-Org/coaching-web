@@ -5,6 +5,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,10 +27,10 @@ function ProfileLayout() {
   return (
     <Card className="m-4">
       <CardHeader>
-        <h1 className="text-2xl font-semibold md:text-2xl">Profile</h1>
+        <CardTitle className="text-2xl text-primary mb-4">Profile</CardTitle>
         <Avatar className="size-36">
-          <AvatarImage src={data?.picture ?? "https://github.com/shadcn.png"} />
-          <AvatarFallback>MS</AvatarFallback>
+          <AvatarImage src={data?.picture} />
+          <AvatarFallback>Profile Picture</AvatarFallback>
         </Avatar>
       </CardHeader>
       <CardContent>
@@ -101,7 +102,10 @@ function ProfileLayout() {
         )}
       </CardContent>
       <CardFooter className="justify-end">
-        <Button onClick={() => setShowPasswordField(!showPasswordField)}>
+        <Button
+          onClick={() => setShowPasswordField(!showPasswordField)}
+          disabled
+        >
           Edit
         </Button>
       </CardFooter>

@@ -12,4 +12,6 @@ export interface CoacheeDetail {
   numberOfAppointments: number;
   phone: string;
   recentAppointment: string;
+  createdAt: string;
+  updatedAt: string;
 }
