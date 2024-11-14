@@ -84,7 +84,7 @@ export function ModalAppointment({
                 {/* Size 12 */}
                 Status
                 <div>
-                  <span className="font-semibold mt-4 text-sm text-muted-foreground">
+                  <span className="font-semibold mt-4 text-sm text-muted-foreground capitalize">
                     {appointmentData.status}
                   </span>
                 </div>
@@ -92,7 +92,7 @@ export function ModalAppointment({
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Coachee
+                Action
                 <div>
                   <Link
                     to={`/$notesId/NoteDetail`}

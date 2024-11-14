@@ -1,0 +1,20 @@
+{
+  "title": {
+    "dashboard": "Dashboard",
+    "session": "Sessions",
+    "notes": "Notes",
+    "coachee": "Coachee",
+    "coach": "Coach",
+    "profile": "Profile",
+    "exit": "Exit"
+  },
+  "button": {
+    "action": {
+      "signOut": "Sign Out"
+    }
+  },
+  "description": {
+    "signoutDescription": "Are you sure you want to sign out?",
+    "gotoLoginDescription": "Go to login page"
+  }
+}

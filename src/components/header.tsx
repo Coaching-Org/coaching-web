@@ -73,7 +73,7 @@ export default function Header({ handleLogout, children }: IHeaderProps) {
         </SheetContent>
       </Sheet>
       <div className="flex flex-row gap-4">
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
