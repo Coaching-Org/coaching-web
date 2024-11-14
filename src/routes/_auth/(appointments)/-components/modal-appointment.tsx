@@ -1,3 +1,4 @@
+import { useLanguage } from "@/components/language.provider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,6 +21,7 @@ export function ModalAppointment({
   onOpenChange: (open: boolean) => void;
   appointmentData: AppointmentDetailV2;
 }) {
+  const { translations } = useLanguage();
   console.log("appointmentData", appointmentData);
   return (
     isOpen && (
@@ -27,13 +29,15 @@ export function ModalAppointment({
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
           <DialogContent className="w-[600px]">
             <DialogHeader>
-              <DialogTitle className="text-xl">Sessions Details</DialogTitle>
+              <DialogTitle className="text-xl">
+                {translations.title.sessionDetail}
+              </DialogTitle>
             </DialogHeader>
             {/* Section 1 */}
             <div className="flex flex-1 flex-row justify-between">
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Session Type
+                {translations.title.sessionType}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {appointmentData.courseName}
@@ -43,7 +47,7 @@ export function ModalAppointment({
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Coachee
+                {translations.title.sessionCoachee}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {appointmentData.coachName}
@@ -53,11 +57,13 @@ export function ModalAppointment({
             </div>
 
             {/* Section 2 */}
-            <DialogTitle className="mt-4 -mb-6">Sessions Schedule</DialogTitle>
+            <DialogTitle className="mt-4 -mb-6">
+              {translations.title.sessionSchedule}
+            </DialogTitle>
             <div className="flex flex-1 flex-row justify-between">
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Appointment Date
+                {translations.title.sessionAppointmentDate}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {moment(appointmentData.date).format("MMMM Do, YYYY")}
@@ -67,7 +73,7 @@ export function ModalAppointment({
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Appointment Time
+                {translations.title.sessionAppointmentTime}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
                     {moment(appointmentData.startDate).format("hh:mm")} -{" "}
@@ -78,11 +84,13 @@ export function ModalAppointment({
             </div>
 
             {/* Section 3 */}
-            <DialogTitle className="mt-4 -mb-6">Others</DialogTitle>
+            <DialogTitle className="mt-4 -mb-6">
+              {translations.title.others}
+            </DialogTitle>
             <div className="flex flex-1 flex-row justify-between">
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Status
+                {translations.title.sessionStatus}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground capitalize">
                     {appointmentData.status}
@@ -92,14 +100,14 @@ export function ModalAppointment({
 
               <div className="flex-col flex mt-4 min-w-[250px]">
                 {/* Size 12 */}
-                Action
+                {translations.title.action}
                 <div>
                   <Link
                     to={`/$notesId/NoteDetail`}
                     params={{ notesId: appointmentData?.id.toString() }}
                   >
                     <Button variant="link" className="-m-4 underline">
-                      Add Notes
+                      {translations.button.action.addNotes}
                     </Button>
                   </Link>
                 </div>

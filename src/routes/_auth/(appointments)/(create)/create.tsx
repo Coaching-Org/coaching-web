@@ -18,37 +18,15 @@ import {
 } from "@/components/ui/select";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCreateAppointmentUtils } from "./-utils/create.utils";
+import { useLanguage } from "@/components/language.provider";
+import { useAuth } from "@/auth";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
 });
 
-const tempCourse = [
-  {
-    value: 1,
-    label: "Professional Coaching",
-  },
-];
-
-const tempCoach = [
-  {
-    value: 1,
-    label: "Marcel",
-  },
-];
-
-const tempCoachee = [
-  {
-    value: 1,
-    label: "Tatas",
-  },
-  {
-    value: 2,
-    label: "Iwan",
-  },
-];
-
 function AppointmentCreateLayout() {
+  const { translations } = useLanguage();
   const navigate = useNavigate();
   const {
     event: {
@@ -66,7 +44,7 @@ function AppointmentCreateLayout() {
       coachId,
       coachName,
     },
-  } = useCreateAppointmentUtils({ coachId: tempCoach[0].value });
+  } = useCreateAppointmentUtils();
   console.log("coachId", coachId);
   console.log("coachName", coachName);
   return (
@@ -74,11 +52,15 @@ function AppointmentCreateLayout() {
       {/* Padding Card => 32 */}
       <Card className="p-4 flex-row">
         <CardHeader>
-          <CardTitle className="text-2xl text-primary">Add Session</CardTitle>
+          <CardTitle className="text-2xl text-primary">
+            {translations.button.action.addSession}
+          </CardTitle>
           {/* Heading 16px */}
         </CardHeader>
         <CardContent>
-          <CardTitle className="text-xl">Session Details</CardTitle>
+          <CardTitle className="text-xl">
+            {translations.title.sessionDetail}
+          </CardTitle>
           <div className="w-1/2">
             <div className="flex flex-1 flex-row">
               {/* Form Service */}
@@ -86,10 +68,10 @@ function AppointmentCreateLayout() {
                 {/* Form Service */}
                 <div className="flex-col flex mt-4 min-w-[250px]">
                   {/* Size 12 */}
-                  Session Type
+                  {translations.title.sessionCoach}
                   <div className="text-xs">
                     <Combobox
-                      data={tempCourse}
+                      data={[]}
                       defaultValue={{
                         label: coachName || "",
                         value: coachId || "",
@@ -103,7 +85,7 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Coachee */}
                 <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                  Coachee
+                  {translations.title.sessionCoachee}
                   <div className="text-xs">
                     <Combobox
                       data={
@@ -120,12 +102,14 @@ function AppointmentCreateLayout() {
               </div>
             </div>
 
-            <CardTitle className="text-xl mt-4">Session Schedule</CardTitle>
+            <CardTitle className="text-xl mt-4">
+              {translations.title.sessionSchedule}
+            </CardTitle>
             <div className="flex flex-1 flex-row">
               <div className="w-1/2">
                 {/* Form Appointments Date */}
                 <div className="flex-col flex mt-4 min-w-[250px]">
-                  Appointment Date
+                  {translations.title.sessionAppointmentDate}
                   <DatePicker onDateSelect={onDateSelect} />
                 </div>
               </div>
@@ -133,7 +117,7 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Appointments Time */}
                 <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                  Appointment Time
+                  {translations.title.sessionAppointmentTime}
                   <Combobox
                     onValueChange={onTimeSlotSelect}
                     data={timeSlots.map((item) => {
@@ -155,7 +139,7 @@ function AppointmentCreateLayout() {
               onSubmitAppointment();
             }}
           >
-            Create
+            {translations.button.action.create}
           </Button>
         </CardFooter>
       </Card>

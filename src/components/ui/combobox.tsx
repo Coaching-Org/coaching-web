@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useLanguage } from "../language.provider";
 
 interface ComboboxProps {
   data: Array<ItemDetailProps>;
@@ -37,6 +38,7 @@ export function Combobox({
   onValueChange,
   onDataChange,
 }: ComboboxProps) {
+  const { translations } = useLanguage();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [label, setLabel] = React.useState<string>("");
@@ -55,7 +57,7 @@ export function Combobox({
             ? label
             : defaultValue?.label
               ? defaultValue?.label
-              : "Select"}
+              : translations.components.combobox.select}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -63,7 +65,9 @@ export function Combobox({
         <Command>
           <CommandInput placeholder="Search" />
           <CommandList>
-            <CommandEmpty>No data found.</CommandEmpty>
+            <CommandEmpty>
+              {translations.components.combobox.noData}
+            </CommandEmpty>
             <CommandGroup>
               {data.map((item) => (
                 <CommandItem
