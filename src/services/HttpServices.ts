@@ -1,7 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import Cookies from "universal-cookie";
+
+// @ts-ignore
+const baseUrl = import.meta.env.VITE_BASE_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "https://api-service.biofarmacoaching.com/";
+axios.defaults.baseURL = baseUrl;
 
 export abstract class HttpService {
   private static initConfig(
