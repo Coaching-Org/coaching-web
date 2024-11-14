@@ -6,45 +6,7 @@ import { DashboardAppointmentsTable } from "./-components/dashboard-appointments
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
-
-const tempDataTable: DashboardUpcomingAppointments[] = [
-  {
-    id: 1,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 2,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 3,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Tatas Fachrul",
-    sessionTime: "10:00 - 11:00",
-  },
-  {
-    id: 4,
-    course: "Counseling Session",
-    date: String(new Date()),
-    duration: 30,
-    status: "pending",
-    coachee: "Iwan",
-    sessionTime: "10:00 - 11:00",
-  },
-];
+import { useDashboardUtils } from "./-utils/dashboard.utils";
 
 export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
   component: DashboardLayout,
@@ -53,7 +15,7 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 function DashboardLayout() {
   const {
     state: { data },
-  } = useAppointmentsUtils();
+  } = useDashboardUtils();
   const {
     state: {
       fsData,
@@ -119,7 +81,7 @@ function DashboardLayout() {
           <CardTitle>Upcoming Appointments</CardTitle>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(fsData as any) || []} />
+          <DashboardAppointmentsTable data={(data as any) || []} />
         </CardContent>
       </Card>
     </div>

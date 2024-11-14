@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   where,
+  WhereFilterOp,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -129,6 +130,67 @@ export const useAppointmentsFirestoreUtils = () => {
     }
   };
 
+  const getFsUserAppointment = async ({
+    coacheeId,
+  }: {
+    coacheeId: number;
+  }): Promise<number> => {
+    try {
+      const queryGetUserAppointmentQuery = query(
+        collection(firestoreDb, fsCollectionKey.appointments),
+        where("coacheeId", "==", coacheeId)
+      );
+      const getUserAppointmentSnapshot = (
+        await getDocs(queryGetUserAppointmentQuery)
+      ).size;
+
+      return getUserAppointmentSnapshot;
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const getFsAppointmentList = async (
+    whereCondition: { field: string; operator: WhereFilterOp; value: any }[]
+  ) => {
+    try {
+      const queryConditions = [
+        ...whereCondition.map((item) =>
+          where(item.field, item.operator as WhereFilterOp, item.value)
+        ),
+      ];
+      const queryGetAppointmentsQuery = query(
+        collection(firestoreDb, fsCollectionKey.appointments),
+        ...queryConditions,
+        orderBy("createdAt", "desc")
+      );
+
+      const getAppointmentsSnapshot = (
+        await getDocs(queryGetAppointmentsQuery)
+      ).docs
+        .map((doc) => doc.data())
+        .map((item) => {
+          const startDate = new Date(item.startDate);
+          const endDate = new Date(item.endDate);
+          const duration =
+            (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+          return {
+            ...item,
+            date: item.startDate,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            duration: Math.ceil(duration),
+          };
+        });
+
+      console.log("getAppointmentsSnapshot", getAppointmentsSnapshot);
+      setAppointmentData(getAppointmentsSnapshot as any);
+      return getAppointmentsSnapshot as any;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
     getFsDoc();
     getFsTotalAppointment();
@@ -142,7 +204,10 @@ export const useAppointmentsFirestoreUtils = () => {
       fsTotalAppointment: totalAppointmentData,
       fsApprovedAppointment: totalDoneAppointmentData,
       fsPendingAppointment: totalPendingAppointmentData,
+      fsCoacheeAppointment: getFsUserAppointment,
     },
-    event: {},
+    event: {
+      getFsAppointmentList,
+    },
   };
 };
