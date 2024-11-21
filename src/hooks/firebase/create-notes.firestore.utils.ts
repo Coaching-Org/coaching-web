@@ -14,16 +14,6 @@ export const useCreateNotesFirestoreUtils = () => {
         createdAt: Timestamp.fromDate(new Date()),
         updatedAt: Timestamp.fromDate(new Date()),
       });
-      // const notesRef = await addDoc(
-      //   collection(firestoreDb, fsCollectionKey.notes),
-      //   {
-      //     id,
-      //     ...data,
-      //     createdAt: Timestamp.fromDate(new Date()),
-      //     updatedAt: Timestamp.fromDate(new Date()),
-      //   }
-      // );
-      // console.log("notesRef", notesRef);
     } catch (error) {
       throw error;
     }

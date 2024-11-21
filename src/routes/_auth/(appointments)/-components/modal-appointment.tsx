@@ -22,7 +22,6 @@ export function ModalAppointment({
   appointmentData: AppointmentDetailV2;
 }) {
   const { translations } = useLanguage();
-  console.log("appointmentData", appointmentData);
   return (
     isOpen && (
       <div className="w-[600px]">

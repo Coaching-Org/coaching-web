@@ -13,6 +13,11 @@ import {
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+interface UserTotalAppointment {
+  coacheeId: number;
+  total: number;
+}
+
 export const useAppointmentsFirestoreUtils = () => {
   const { userId } = useAuth();
   const [appointmentData, setAppointmentData] = useState<Appointment[] | null>(
@@ -23,10 +28,12 @@ export const useAppointmentsFirestoreUtils = () => {
     useState<number>(0);
   const [totalPendingAppointmentData, setTotalPendingAppointmentData] =
     useState<number>(0);
+  const [totalUserAppointmentData, setTotalUserAppointmentData] = useState<
+    UserTotalAppointment[]
+  >([]);
 
   const addFsDocs = async () => {
     const id = uuidv4();
-    console.log("docRef addFsDocs");
     try {
       const docRef = await addDoc(
         collection(firestoreDb, fsCollectionKey.appointments),
@@ -34,9 +41,8 @@ export const useAppointmentsFirestoreUtils = () => {
           id,
         }
       );
-      console.log("docRef", docRef);
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
     }
   };
 
@@ -67,7 +73,6 @@ export const useAppointmentsFirestoreUtils = () => {
           };
         });
 
-      console.log("getAppointmentsSnapshot", getAppointmentsSnapshot);
       setAppointmentData(getAppointmentsSnapshot as any);
     } catch (error) {
       throw error;
@@ -83,7 +88,6 @@ export const useAppointmentsFirestoreUtils = () => {
       const getTotalAppointmentSnapshot = (
         await getDocs(queryGetTotalAppointmentQuery)
       ).size;
-      console.log("getTotalAppointmentSnapshot", getTotalAppointmentSnapshot);
       setTotalAppointmentData(getTotalAppointmentSnapshot);
     } catch (error) {
       throw error;
@@ -100,10 +104,6 @@ export const useAppointmentsFirestoreUtils = () => {
       const getTotalDoneAppointmentSnapshot = (
         await getDocs(queryGetTotalDoneAppointmentQuery)
       ).size;
-      console.log(
-        "getTotalDoneAppointmentSnapshot",
-        getTotalDoneAppointmentSnapshot
-      );
       setTotalDoneAppointmentData(getTotalDoneAppointmentSnapshot);
     } catch (error) {
       throw error;
@@ -120,10 +120,6 @@ export const useAppointmentsFirestoreUtils = () => {
       const getTotalPendingAppointmentSnapshot = (
         await getDocs(queryGetTotalPendingAppointmentQuery)
       ).size;
-      console.log(
-        "getTotalPendingAppointmentSnapshot",
-        getTotalPendingAppointmentSnapshot
-      );
       setTotalPendingAppointmentData(getTotalPendingAppointmentSnapshot);
     } catch (error) {
       throw error;
@@ -183,7 +179,6 @@ export const useAppointmentsFirestoreUtils = () => {
           };
         });
 
-      console.log("getAppointmentsSnapshot", getAppointmentsSnapshot);
       setAppointmentData(getAppointmentsSnapshot as any);
       return getAppointmentsSnapshot as any;
     } catch (error) {
@@ -191,11 +186,38 @@ export const useAppointmentsFirestoreUtils = () => {
     }
   };
 
+  const getUserTotalAppointment = async (coacheeId: number): Promise<any> => {
+    const queryGetUserAppointmentQuery = query(
+      collection(firestoreDb, fsCollectionKey.appointments)
+      // where("coacheeId", "==", coacheeId)
+    );
+
+    const getTotalAppointment = (
+      await getDocs(queryGetUserAppointmentQuery)
+    ).docs.map((doc) => doc.data());
+
+    const result = getTotalAppointment.reduce((acc, curr) => {
+      const { coacheeId } = curr;
+      const existing = acc.find((item: any) => item.coacheeId === coacheeId);
+
+      if (existing) {
+        existing.total += 1;
+      } else {
+        acc.push({ coacheeId, total: 1 });
+      }
+
+      return acc;
+    }, []);
+
+    setTotalUserAppointmentData(result as UserTotalAppointment[]);
+  };
+
   useEffect(() => {
     getFsDoc();
     getFsTotalAppointment();
     getFsTotalDoneAppointment();
     getFsTotalPendingAppointment();
+    getUserTotalAppointment(0);
   }, []);
 
   return {
@@ -205,6 +227,7 @@ export const useAppointmentsFirestoreUtils = () => {
       fsApprovedAppointment: totalDoneAppointmentData,
       fsPendingAppointment: totalPendingAppointmentData,
       fsCoacheeAppointment: getFsUserAppointment,
+      fsTotalUserAppointment: totalUserAppointmentData,
     },
     event: {
       getFsAppointmentList,

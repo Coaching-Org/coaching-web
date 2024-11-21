@@ -151,6 +151,9 @@ export const columns: ColumnDef<Appointment>[] = [
 export function AppointmentsTable({ navigate }: { navigate: () => void }) {
   const { translations } = useLanguage();
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
 
   const table = useReactTable({
     data: tempAppointments,
@@ -160,8 +163,10 @@ export function AppointmentsTable({ navigate }: { navigate: () => void }) {
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     state: {
       sorting,
+      columnFilters,
     },
   });
 

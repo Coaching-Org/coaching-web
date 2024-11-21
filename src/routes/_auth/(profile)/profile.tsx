@@ -46,7 +46,7 @@ function ProfileLayout() {
               />
             </div>
 
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <Label>Phone Number</Label>
               <Input
                 type="text"
@@ -54,7 +54,7 @@ function ProfileLayout() {
                 disabled
                 value={data?.email ?? "-"}
               />
-            </div>
+            </div> */}
           </div>
           <div className="w-1/2 ml-1">
             <div>

@@ -3,6 +3,7 @@ import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
 import { useToast } from "@/hooks/use-toast";
+import { CoacheeDetail } from "@/interfaces";
 import { useNavigate } from "@tanstack/react-router";
 import { Timestamp } from "firebase/firestore";
 import { useMemo, useState } from "react";
@@ -20,10 +21,12 @@ export const useCreateAppointmentUtils = () => {
   const [selectedCoachee, setSelectedCoachee] = useState<number>(0);
   const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
+  const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
+  const [coacheeData, setCoacheeData] = useState<any[]>([]);
 
-  const { data: coacheeData } = useCoacheeListQuery({
+  const { data } = useCoacheeListQuery({
     enabled: true,
-    params: { page: 1, perPage: 10 },
+    params: { page: 1, perPage: 25 },
   });
 
   const timeSlots = useMemo(() => {
@@ -55,8 +58,6 @@ export const useCreateAppointmentUtils = () => {
     value: string;
     label: string;
   }) => {
-    console.log("onChangeCoachee value", value);
-    console.log("onChangeCoachee label", label);
     setSelectedCoachee(Number(value));
     setSelectedCoacheeName(label);
   };
@@ -94,6 +95,19 @@ export const useCreateAppointmentUtils = () => {
     }
   };
 
+  useMemo(() => {
+    if (data?.data) {
+      setCoacheeData(data.data);
+    }
+
+    if (coacheeKeyword) {
+      const filteredData = coacheeData.filter((item: CoacheeDetail) =>
+        item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
+      );
+      setCoacheeData(filteredData);
+    }
+  }, [data?.data, coacheeKeyword]);
+
   return {
     state: {
       timeSlots,
@@ -109,6 +123,7 @@ export const useCreateAppointmentUtils = () => {
       onSubmitAppointment,
       onCoacheeSelect,
       onChangeCoachee,
+      setCoacheeKeyword,
     },
   };
 };

@@ -121,7 +121,6 @@ export abstract class HttpServiceContent {
     config: AxiosRequestConfig = {},
     type?: string
   ): Promise<any> {
-    console.log("HttpServiceContent Data:", data);
     return this.handleRequest(async () => {
       const newConfig = this.initConfig(config, type);
       return axios.post(url, data, {

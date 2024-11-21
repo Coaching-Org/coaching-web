@@ -49,81 +49,6 @@ import { User } from "@/interfaces/user";
 import { CoacheeDetail } from "@/interfaces";
 import moment from "moment";
 
-const tempDataUser: User[] = [
-  {
-    createdAt: new Date(),
-    email: "tatasfachrul@gmail.com",
-    id: "1",
-    name: "Tatas Fachrul",
-    role: "user",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "john.doe@example.com",
-    id: "2",
-    name: "John Doe",
-    role: "admin",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "jane.doe@example.com",
-    id: "#3",
-    name: "Jane Doe",
-    role: "user",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "bob.smith@example.com",
-    id: "4",
-    name: "Bob Smith",
-    role: "guest",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "alice.johnson@example.com",
-    id: "5",
-    name: "Alice Johnson",
-    role: "admin",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "mike.brown@example.com",
-    id: "6",
-    name: "Mike Brown",
-    role: "user",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "sarah.lee@example.com",
-    id: "7",
-    name: "Sarah Lee",
-    role: "guest",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "emily.chen@example.com",
-    id: "#8",
-    name: "Emily Chen",
-    role: "admin",
-    updatedAt: new Date(),
-  },
-  {
-    createdAt: new Date(),
-    email: "david.kim@example.com",
-    id: "9",
-    name: "David Kim",
-    role: "user",
-    updatedAt: new Date(),
-  },
-];
-
 export const columns: ColumnDef<CoacheeDetail>[] = [
   {
     accessorKey: "name",
@@ -140,46 +65,10 @@ export const columns: ColumnDef<CoacheeDetail>[] = [
     cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "role",
-    header: "Role",
-    cell: ({ row }) => <div className="">{"Coachee"}</div>,
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const date = row.getValue("createdAt") as string;
-
-      // Format the ISO string to dd-mm-yyyy hh:mm
-      const formatted = moment(row.original.updatedAt).format("DD/MMM/YYYY");
-
-      return <div className="text-left font-medium">{formatted}</div>;
-    },
-  },
-  {
     accessorKey: "numberOfAppointments",
     header: "Appointments",
     cell: ({ row }) => (
-      <div
-        className={cn(
-          {
-            "text-primary": row.getValue("status") === "approved",
-            "text-yellow-500": row.getValue("status") === "pending",
-            "text-red-500": row.getValue("status") === "rejected",
-          },
-          "capitalize"
-        )}
-      >
+      <div className={cn("capitalize")}>
         {row.getValue("numberOfAppointments")}
       </div>
     ),
@@ -277,10 +166,6 @@ export function UsersTable({ data }: { data: CoacheeDetail[] }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{" "}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
