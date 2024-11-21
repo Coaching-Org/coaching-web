@@ -24,6 +24,7 @@ interface ComboboxProps {
   disabled?: boolean;
   onValueChange?: (value: any) => void;
   onDataChange?: (data: any) => void;
+  onSearch?: (value: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface ItemDetailProps {
@@ -37,6 +38,7 @@ export function Combobox({
   disabled = false,
   onValueChange,
   onDataChange,
+  onSearch,
 }: ComboboxProps) {
   const { translations } = useLanguage();
   const [open, setOpen] = React.useState(false);
@@ -63,7 +65,7 @@ export function Combobox({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search" />
+          <CommandInput placeholder="Search" onChangeCapture={onSearch} />
           <CommandList>
             <CommandEmpty>
               {translations.components.combobox.noData}

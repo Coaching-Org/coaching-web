@@ -35,6 +35,7 @@ function AppointmentCreateLayout() {
       onSubmitAppointment,
       onCoacheeSelect,
       onChangeCoachee,
+      setCoacheeKeyword,
     },
     state: {
       timeSlots,
@@ -88,13 +89,14 @@ function AppointmentCreateLayout() {
                   <div className="text-xs">
                     <Combobox
                       data={
-                        coacheeData?.data.map((item) => ({
+                        coacheeData?.map((item) => ({
                           label: item.name,
                           value: item.id,
                         })) || []
                       }
                       onValueChange={onCoacheeSelect}
                       onDataChange={onChangeCoachee}
+                      onSearch={(e) => setCoacheeKeyword(e.target.value)}
                     />
                   </div>
                 </div>

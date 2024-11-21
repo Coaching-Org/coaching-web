@@ -9,7 +9,7 @@ export const useCoacheeUtils = () => {
   } = useAppointmentsFirestoreUtils();
 
   const { data } = useCoacheeListQuery({
-    params: { page: 1, perPage: 10 },
+    params: { page: 1, perPage: 50 },
     enabled: true,
   });
 
