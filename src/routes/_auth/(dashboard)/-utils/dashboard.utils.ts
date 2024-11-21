@@ -32,7 +32,6 @@ export const useDashboardUtils = () => {
           value: "done",
         },
       ]);
-      console.log("response: ", response);
       setAppointmentData(response);
     } catch (error) {
       throw error;

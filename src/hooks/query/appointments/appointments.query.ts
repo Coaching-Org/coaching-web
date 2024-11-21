@@ -46,9 +46,9 @@ export const useCreateAppointmentQuery = () => {
     },
     retry: 0,
     onError(error, variables, context) {
-      console.log("error", error);
-      console.log("variables", variables);
-      console.log("context", context);
+      console.error("error", error);
+      console.error("variables", variables);
+      console.error("context", context);
     },
   });
 };

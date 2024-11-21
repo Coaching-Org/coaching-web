@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/table";
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -32,14 +34,9 @@ export const createColumns = (
   return [
     {
       id: "sessionName",
-      accessorKey: "id",
+      accessorKey: "sessionName",
       header: translations.tables.header.sessionName,
-      cell: ({ row }) => (
-        <div className="">
-          {row.original.courseName} - {row.original.coacheeName}{" "}
-          {moment(row.original.date).format("DD/MM/YYYY")}
-        </div>
-      ),
+      cell: ({ row }) => <div className="">{row.original.sessionName}</div>,
     },
     {
       id: "sessionType",
@@ -107,6 +104,7 @@ export function DashboardAppointmentsTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [appointmentData, setAppointmentData] = useState<AppointmentDetailV2>();
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data: data,
@@ -115,8 +113,11 @@ export function DashboardAppointmentsTable({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
   return (
@@ -124,9 +125,11 @@ export function DashboardAppointmentsTable({
       <div className="flex items-center py-4">
         <Input
           placeholder={translations.placeholder.searchAppointments}
-          value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("sessionName")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("id")?.setFilterValue(event.target.value)
+            table.getColumn("sessionName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

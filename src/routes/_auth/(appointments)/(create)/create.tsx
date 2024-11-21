@@ -35,6 +35,7 @@ function AppointmentCreateLayout() {
       onSubmitAppointment,
       onCoacheeSelect,
       onChangeCoachee,
+      setCoacheeKeyword,
     },
     state: {
       timeSlots,
@@ -45,8 +46,7 @@ function AppointmentCreateLayout() {
       coachName,
     },
   } = useCreateAppointmentUtils();
-  console.log("coachId", coachId);
-  console.log("coachName", coachName);
+
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       {/* Padding Card => 32 */}
@@ -89,13 +89,14 @@ function AppointmentCreateLayout() {
                   <div className="text-xs">
                     <Combobox
                       data={
-                        coacheeData?.data.map((item) => ({
+                        coacheeData?.map((item) => ({
                           label: item.name,
                           value: item.id,
                         })) || []
                       }
                       onValueChange={onCoacheeSelect}
                       onDataChange={onChangeCoachee}
+                      onSearch={(e) => setCoacheeKeyword(e.target.value)}
                     />
                   </div>
                 </div>

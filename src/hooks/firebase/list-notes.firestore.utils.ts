@@ -27,7 +27,6 @@ export const useListNotesFirestoreUtils = () => {
             duration: Math.ceil(duration),
           };
         });
-      console.log("getNotesListSnapshot", getNotesListSnapshot);
       setNotesList(getNotesListSnapshot);
     } catch (error) {
       throw error;

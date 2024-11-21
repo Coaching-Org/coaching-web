@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/table";
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -119,6 +121,7 @@ export function NotesAppointmentTable({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [appointmentData, setAppointmentData] = useState<AppointmentDetailV2>();
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data: data,
@@ -127,8 +130,11 @@ export function NotesAppointmentTable({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
   return (

@@ -38,7 +38,7 @@ function UsersLayout() {
           )}
         </CardHeader>
         <CardContent>
-          <UsersTable data={data?.data || []} />
+          <UsersTable data={data} />
         </CardContent>
       </Card>
     </div>

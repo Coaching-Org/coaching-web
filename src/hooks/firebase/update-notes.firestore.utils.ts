@@ -7,7 +7,6 @@ export const useUpdateNotesFirestoreUtils = ({
   notesId: string;
 }) => {
   const onFirestoreUpdateNotes = async (data: any) => {
-    console.log("data payload", data);
     try {
       await updateDoc(doc(firestoreDb, fsCollectionKey.notes, notesId), {
         ...data,
