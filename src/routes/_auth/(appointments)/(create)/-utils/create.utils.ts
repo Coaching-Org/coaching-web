@@ -55,8 +55,6 @@ export const useCreateAppointmentUtils = () => {
     value: string;
     label: string;
   }) => {
-    console.log("onChangeCoachee value", value);
-    console.log("onChangeCoachee label", label);
     setSelectedCoachee(Number(value));
     setSelectedCoacheeName(label);
   };

@@ -27,7 +27,6 @@ export const useAppointmentsUtils = () => {
           value: userId,
         },
       ]);
-      console.log("response: ", response);
       setAppointmentData(response);
     } catch (error) {
       throw error;

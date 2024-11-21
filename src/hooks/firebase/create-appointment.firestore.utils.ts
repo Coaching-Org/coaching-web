@@ -41,7 +41,6 @@ export const useCreateAppointmentFirestoreUtils = () => {
   };
   const onFirestoreSaveAppointments = (data: fsAppointmentProps) => {
     addFirestoreAppointments(data as any);
-    console.log("onFirestoreSaveAppointments", data);
   };
   return { event: { onFirestoreSaveAppointments } };
 };

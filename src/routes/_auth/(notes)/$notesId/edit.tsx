@@ -50,8 +50,6 @@ function EdiNotesLayout() {
     state: { notesData },
   } = useDetailNotesFirestoreUtils({ notesId });
 
-  console.log("notesData", notesData);
-
   return (
     <div className="gap-4 lg:p-6">
       <Card className="px-2">

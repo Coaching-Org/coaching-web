@@ -10,11 +10,9 @@ export const useDetailAppointmentFirestoreUtils = () => {
     useState<AppointmentDetailV2>();
 
   const getAppointmentDetail = async () => {
-    console.log("notesId", notesId);
     try {
       const docRef = doc(firestoreDb, fsCollectionKey.appointments, notesId);
       const docSnap = await getDoc(docRef);
-      console.log("docSnap", docSnap.data());
       setAppointmentDetail(docSnap.data() as AppointmentDetailV2);
     } catch (error) {
       throw error;

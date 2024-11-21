@@ -45,8 +45,7 @@ function AppointmentCreateLayout() {
       coachName,
     },
   } = useCreateAppointmentUtils();
-  console.log("coachId", coachId);
-  console.log("coachName", coachName);
+
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       {/* Padding Card => 32 */}
