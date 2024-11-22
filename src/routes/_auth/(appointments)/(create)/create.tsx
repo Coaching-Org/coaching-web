@@ -88,12 +88,7 @@ function AppointmentCreateLayout() {
                   {translations.title.sessionCoachee}
                   <div className="text-xs">
                     <Combobox
-                      data={
-                        coacheeData?.map((item) => ({
-                          label: item.name,
-                          value: item.id,
-                        })) || []
-                      }
+                      data={coacheeData}
                       onValueChange={onCoacheeSelect}
                       onDataChange={onChangeCoachee}
                       onSearch={(e) => setCoacheeKeyword(e.target.value)}
