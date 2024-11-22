@@ -119,23 +119,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUserEmail(null);
   }, []);
 
-  const login = React.useCallback(
-    async (formValues: PostLoginResponse, email: string) => {
-      await sleep(500);
+  const login = React.useCallback(async (formValues: PostLoginResponse) => {
+    await sleep(500);
 
-      setStoredUser(formValues.email);
-      setStoredUserId(formValues.id);
-      setStoredUserRole(formValues.role);
-      setStoredUserName(formValues.name);
-      setStoredUserEmail(email);
-      setUser(formValues.email);
-      setUserId(formValues.id);
-      setUserRole(formValues.role);
-      setUserName(formValues.name);
-      setUserEmail(email);
-    },
-    []
-  );
+    setStoredUser(formValues.email);
+    setStoredUserId(formValues.id);
+    setStoredUserRole(formValues.role);
+    setStoredUserName(formValues.name);
+    setStoredUserEmail(formValues.email);
+    setUser(formValues.email);
+    setUserId(formValues.id);
+    setUserRole(formValues.role);
+    setUserName(formValues.name);
+    setUserEmail(formValues.email);
+  }, []);
 
   React.useEffect(() => {
     setUser(getStoredUser());
@@ -153,9 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         userId,
         userRole,
         userName,
-        login: async (formValues: PostLoginResponse, email?: string) => {
-          await login(formValues, email || formValues.email);
-        },
+        login,
         logout,
         userEmail,
       }}
