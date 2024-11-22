@@ -109,7 +109,8 @@ export const useNotesUtils = ({
     textGoals === "" ||
     textReality === "" ||
     textOptions === "" ||
-    textWayForward === "";
+    textWayForward === "" ||
+    file === null;
 
   return {
     state: {
