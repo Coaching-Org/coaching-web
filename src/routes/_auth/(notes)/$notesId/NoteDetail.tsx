@@ -113,28 +113,43 @@ function NoteDetailLayout() {
             </CardTitle>
             <div className="mt-4">
               {/* min height - 200 */}
-              <Label>{translations.title.notesGoals}</Label>
+              <Label>
+                <span className="text-red-500">*</span>
+                {translations.title.notesGoals}
+              </Label>
               <Textarea
                 value={textGoals}
                 onChange={(e) => setTextGoals(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>{translations.title.notesReality}</Label>
+              <Label>
+                {" "}
+                <span className="text-red-500">*</span>
+                {translations.title.notesReality}
+              </Label>
               <Textarea
                 value={textReality}
                 onChange={(e) => setTextReality(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>{translations.title.notesOptions}</Label>
+              <Label>
+                {" "}
+                <span className="text-red-500">*</span>
+                {translations.title.notesOptions}
+              </Label>
               <Textarea
                 value={textOptions}
                 onChange={(e) => setTextOptions(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <Label>{translations.title.notesWayForward}</Label>
+              <Label>
+                {" "}
+                <span className="text-red-500">*</span>
+                {translations.title.notesWayForward}
+              </Label>
               <Textarea
                 value={textWayForward}
                 onChange={(e) => setTextWayForward(e.target.value)}
@@ -150,7 +165,10 @@ function NoteDetailLayout() {
             <div className="mt-4">
               {/* Resize bordernya, with icon upload ditengah, multiple file, pdf, png, jpg, jpeg doc docx xls xlsx ppt pptx, rar zip 7zip max 5mb */}
               {/* Can we make it universal? */}
-              <Label>{translations.title.notesFile}</Label>
+              <Label>
+                <span className="text-red-500">*</span>
+                {translations.title.notesFile}
+              </Label>
               <Input
                 type="file"
                 multiple={false}
