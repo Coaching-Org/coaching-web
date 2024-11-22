@@ -13,6 +13,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useProfileUtils } from "./-utils/profile.utils";
+import { useAuth } from "@/auth";
 
 export const Route = createFileRoute("/_auth/(profile)/profile")({
   component: ProfileLayout,
@@ -23,6 +24,8 @@ function ProfileLayout() {
   const {
     state: { data },
   } = useProfileUtils();
+
+  const { userEmail, userName } = useAuth();
 
   return (
     <Card className="m-4">
@@ -42,7 +45,7 @@ function ProfileLayout() {
                 type="text"
                 placeholder="Name"
                 disabled
-                value={data?.name ?? "-"}
+                value={userName ?? "-"}
               />
             </div>
 
@@ -63,7 +66,7 @@ function ProfileLayout() {
                 type="text"
                 placeholder="Email"
                 disabled
-                value={data?.email ?? "-"}
+                value={userEmail ?? "-"}
               />
             </div>
           </div>
