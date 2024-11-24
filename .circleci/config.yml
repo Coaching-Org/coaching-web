@@ -58,10 +58,6 @@ jobs:
           name: "Deploy"
           command: |
             docker --context remote stack deploy --compose-file app.docker-compose.yml booking-apps-frontend-$ENV
-      - run:
-          name: "Prune image"
-          command: |
-            docker --context remote image prune -af
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
