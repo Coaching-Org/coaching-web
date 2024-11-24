@@ -7,7 +7,7 @@ export class AuthServices extends HttpService {
   }
 
   static getMe(signal?: AbortSignal) {
-    return this.get("/auth/me", { signal });
+    return this.get("/v1/auth/me", { signal });
   }
 
   static logout(signal?: AbortSignal) {

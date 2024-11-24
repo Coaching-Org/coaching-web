@@ -105,6 +105,9 @@ export const useCreateAppointmentUtils = () => {
         item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
       );
       setCoacheeData(filteredData);
+      // setCoacheeData(
+      //  filteredData.map((item) => ({ label: item.name, value: item.id }))
+     // );
     }
   }, [data?.data, coacheeKeyword]);
 

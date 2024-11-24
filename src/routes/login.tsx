@@ -79,7 +79,7 @@ function Login() {
         email: values.email,
         password: values.password,
       });
-      await auth.login(resUser);
+      await auth.login(resUser, values.email);
 
       await router.invalidate();
 
