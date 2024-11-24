@@ -20,6 +20,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCreateAppointmentUtils } from "./-utils/create.utils";
 import { useLanguage } from "@/components/language.provider";
 import { useAuth } from "@/auth";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -44,6 +45,7 @@ function AppointmentCreateLayout() {
       coacheeData,
       coachId,
       coachName,
+      isButtonDisabled,
     },
   } = useCreateAppointmentUtils();
 
@@ -67,8 +69,10 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Service */}
                 <div className="flex-col flex mt-4 min-w-[250px]">
-                  {/* Size 12 */}
-                  {translations.title.sessionCoach}
+                  <Label className="text-base">
+                    {/* <span className="text-red-500">*</span> */}
+                    {translations.title.sessionCoach}
+                  </Label>
                   <div className="text-xs">
                     <Combobox
                       data={[]}
@@ -85,7 +89,10 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Coachee */}
                 <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                  {translations.title.sessionCoachee}
+                  <Label className="text-base">
+                    <span className="text-red-500">*</span>
+                    {translations.title.sessionCoachee}
+                  </Label>
                   <div className="text-xs">
                     <Combobox
                       data={
@@ -111,7 +118,10 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Appointments Date */}
                 <div className="flex-col flex mt-4 min-w-[250px]">
-                  {translations.title.sessionAppointmentDate}
+                  <Label className="text-base">
+                    <span className="text-red-500">*</span>
+                    {translations.title.sessionAppointmentDate}
+                  </Label>
                   <DatePicker onDateSelect={onDateSelect} />
                 </div>
               </div>
@@ -119,7 +129,10 @@ function AppointmentCreateLayout() {
               <div className="w-1/2">
                 {/* Form Appointments Time */}
                 <div className="flex-col flex mt-4 ml-4 min-w-[250px]">
-                  {translations.title.sessionAppointmentTime}
+                  <Label className="text-base">
+                    <span className="text-red-500">*</span>
+                    {translations.title.sessionAppointmentTime}
+                  </Label>
                   <Combobox
                     onValueChange={onTimeSlotSelect}
                     data={timeSlots.map((item) => {
@@ -128,6 +141,7 @@ function AppointmentCreateLayout() {
                         value: item.id,
                       };
                     })}
+                    disabled={selectedDate === null}
                   />
                 </div>
               </div>
@@ -140,6 +154,7 @@ function AppointmentCreateLayout() {
             onClick={() => {
               onSubmitAppointment();
             }}
+            disabled={isButtonDisabled}
           >
             {translations.button.action.create}
           </Button>
