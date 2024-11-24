@@ -44,6 +44,7 @@ function AppointmentCreateLayout() {
       coacheeData,
       coachId,
       coachName,
+      isButtonDisabled,
     },
   } = useCreateAppointmentUtils();
 
@@ -134,6 +135,7 @@ function AppointmentCreateLayout() {
             onClick={() => {
               onSubmitAppointment();
             }}
+            disabled={isButtonDisabled}
           >
             {translations.button.action.create}
           </Button>

@@ -18,7 +18,7 @@ export const useCreateAppointmentUtils = () => {
   const { mutateAsync } = useCreateAppointmentQuery();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
-  const [selectedCoachee, setSelectedCoachee] = useState<number>(0);
+  const [selectedCoachee, setSelectedCoachee] = useState<number | null>(null);
   const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
@@ -68,7 +68,7 @@ export const useCreateAppointmentUtils = () => {
     const endDate = new Date(splitDate[1]);
 
     const data = {
-      coacheeId: selectedCoachee,
+      coacheeId: selectedCoachee !== null ? selectedCoachee : 0,
       coachId: Number(userId),
       courseId: selectedCourse,
       endDate: String(endDate),
@@ -110,6 +110,12 @@ export const useCreateAppointmentUtils = () => {
     }
   }, [data?.data, coacheeKeyword]);
 
+  const isButtonDisabled =
+    selectedCoachee === 0 ||
+    selectedTimeSlot === "" ||
+    selectedDate === null ||
+    selectedTimeSlot === "";
+
   return {
     state: {
       timeSlots,
@@ -118,6 +124,7 @@ export const useCreateAppointmentUtils = () => {
       coacheeData,
       coachName: userName,
       coachId: userId,
+      isButtonDisabled,
     },
     event: {
       onDateSelect,
