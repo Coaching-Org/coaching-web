@@ -7,7 +7,7 @@ export class CoacheeServices extends HttpService {
     signal?: AbortSignal,
     params?: ParamsPaginationRequest
   ) {
-    return this.get("/v1/coachees", { signal, params });
+    return this.get("/v2/coachees", { signal, params });
   }
 
   static postCoachee(params: PostCoacheeRequest) {
