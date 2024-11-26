@@ -118,7 +118,7 @@ export const useCreateAppointmentUtils = () => {
   }, [data?.data, coacheeKeyword]);
 
   const isButtonDisabled =
-    selectedCoachee === 0 ||
+    selectedCoachee === null ||
     selectedTimeSlot === "" ||
     selectedDate === null ||
     selectedTimeSlot === "";
