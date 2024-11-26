@@ -25,6 +25,7 @@ interface ComboboxProps {
   onValueChange?: (value: any) => void;
   onDataChange?: (data: any) => void;
   onSearch?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  loading?: boolean;
 }
 
 interface ItemDetailProps {
@@ -39,6 +40,7 @@ export function Combobox({
   onValueChange,
   onDataChange,
   onSearch,
+  loading = false,
 }: ComboboxProps) {
   const { translations } = useLanguage();
   const [open, setOpen] = React.useState(false);
@@ -66,34 +68,39 @@ export function Combobox({
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search" onChangeCapture={onSearch} />
-          <CommandList>
-            <CommandEmpty>
-              {translations.components.combobox.noData}
-            </CommandEmpty>
-            <CommandGroup>
-              {data.map((item) => (
-                <CommandItem
-                  key={item.value}
-                  value={item.value.toString()}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setLabel(item.label.toString());
-                    setOpen(false);
-                    onValueChange?.(currentValue);
-                    onDataChange?.(item);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === item.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {item.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <CommandList>
+              <CommandEmpty>
+                {translations.components.combobox.noData}
+              </CommandEmpty>
+
+              <CommandGroup>
+                {data.map((item) => (
+                  <CommandItem
+                    key={item.value}
+                    value={item.value.toString()}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setLabel(item.label.toString());
+                      setOpen(false);
+                      onValueChange?.(currentValue);
+                      onDataChange?.(item);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === item.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {item.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          )}
         </Command>
       </PopoverContent>
     </Popover>

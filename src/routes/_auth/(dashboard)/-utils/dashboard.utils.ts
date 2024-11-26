@@ -3,6 +3,7 @@ import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
 import { useMeQuery } from "@/hooks/query/auth/auth.query";
 import { AppointmentDetailV2 } from "@/interfaces";
+import { useDebounce } from "@/lib";
 import { AuthServices } from "@/services/auth/auth.service";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -13,7 +14,13 @@ export const useDashboardUtils = () => {
   const [appointmentData, setAppointmentData] = useState<
     AppointmentDetailV2[] | null
   >();
-  // const { data } = useAppointmentsListQuery({ page: 1, perPage: 10 }, true);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
+    { page: 1, perPage: 10, keyword: search, status: "pending" },
+    true
+  );
   const {
     event: { getFsAppointmentList },
   } = useAppointmentsFirestoreUtils();
@@ -42,8 +49,14 @@ export const useDashboardUtils = () => {
     fetchAppointment();
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch]);
+
+  console.log("Dashboard Appointment Data", AppointmentListData);
+
   return {
-    state: { data: appointmentData },
-    event: {},
+    state: { data: appointmentData, search },
+    event: { setSearch },
   };
 };

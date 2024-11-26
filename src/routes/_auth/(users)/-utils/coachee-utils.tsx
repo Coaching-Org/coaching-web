@@ -1,15 +1,19 @@
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
+import { useDebounce } from "@/lib";
 import { useEffect, useState } from "react";
 
 export const useCoacheeUtils = () => {
   const [listCoachee, setListCoachee] = useState<any[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+
   const {
     state: { fsTotalUserAppointment },
   } = useAppointmentsFirestoreUtils();
 
-  const { data } = useCoacheeListQuery({
-    params: { page: 1, perPage: 50 },
+  const { data, refetch } = useCoacheeListQuery({
+    params: { page: 1, perPage: 50, keyword: search },
     enabled: true,
   });
 
@@ -29,8 +33,12 @@ export const useCoacheeUtils = () => {
     }
   }, [data?.data, fsTotalUserAppointment]);
 
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch]);
+
   return {
-    state: { data: listCoachee },
-    event: {},
+    state: { data: listCoachee, search },
+    event: { setSearch },
   };
 };

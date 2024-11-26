@@ -86,8 +86,12 @@ export const createColumns = (
 
 export function DashboardAppointmentsTable({
   data,
+  setSearch,
+  search,
 }: {
   data: AppointmentDetailV2[];
+  setSearch?: (value: string) => void;
+  search?: string;
 }) {
   const { translations } = useLanguage();
   const {

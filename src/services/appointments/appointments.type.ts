@@ -4,6 +4,7 @@ export interface GetAppointmentsListRequest {
   keyword?: string;
   sort?: string;
   sortBy?: string;
+  status?: string;
 }
 
 export interface AppointmentDetail {

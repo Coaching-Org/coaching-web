@@ -4,9 +4,10 @@ import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointmen
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
 import { useToast } from "@/hooks/use-toast";
 import { CoacheeDetail } from "@/interfaces";
+import { useDebounce } from "@/lib";
 import { useNavigate } from "@tanstack/react-router";
 import { Timestamp } from "firebase/firestore";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const useCreateAppointmentUtils = () => {
   const { userId, userName } = useAuth();
@@ -23,10 +24,13 @@ export const useCreateAppointmentUtils = () => {
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
   const [coacheeData, setCoacheeData] = useState<any[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+  const debouncedCoacheeKeyword = useDebounce(coacheeKeyword, 500);
 
-  const { data } = useCoacheeListQuery({
+  const { data, refetch, isLoading } = useCoacheeListQuery({
     enabled: true,
-    params: { page: 1, perPage: 25 },
+    params: { page: 1, perPage: 10, keyword: coacheeKeyword },
   });
 
   const timeSlots = useMemo(() => {
@@ -86,7 +90,9 @@ export const useCreateAppointmentUtils = () => {
         fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
       });
       /** Change to Backend Server */
-      // await mutateAsync(data);
+      mutateAsync(data)
+        .then((res) => console.log("Created Session", res))
+        .catch((error) => console.error("Failed to create"));
       toast({ title: "Appointment created successfully", variant: "success" });
       navigate({ to: "/appointments" });
     } catch (error) {
@@ -107,15 +113,19 @@ export const useCreateAppointmentUtils = () => {
       setCoacheeData(filteredData);
       // setCoacheeData(
       //  filteredData.map((item) => ({ label: item.name, value: item.id }))
-     // );
+      // );
     }
   }, [data?.data, coacheeKeyword]);
 
   const isButtonDisabled =
-    selectedCoachee === 0 ||
+    selectedCoachee === null ||
     selectedTimeSlot === "" ||
     selectedDate === null ||
     selectedTimeSlot === "";
+
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch, debouncedCoacheeKeyword]);
 
   return {
     state: {
@@ -126,6 +136,7 @@ export const useCreateAppointmentUtils = () => {
       coachName: userName,
       coachId: userId,
       isButtonDisabled,
+      loading: isLoading,
     },
     event: {
       onDateSelect,
