@@ -13,6 +13,7 @@ export const useCreateNotesFirestoreUtils = () => {
         ...data,
         createdAt: Timestamp.fromDate(new Date()),
         updatedAt: Timestamp.fromDate(new Date()),
+        import: false,
       });
     } catch (error) {
       throw error;
