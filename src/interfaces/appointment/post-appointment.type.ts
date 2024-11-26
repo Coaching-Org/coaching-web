@@ -3,7 +3,7 @@ export interface PostAppointmentRequest {
   coacheeId: number;
   courseId: number;
   endDate: string;
-  note: string;
+  note?: string;
   sessionName?: string;
   startDate: string;
 }

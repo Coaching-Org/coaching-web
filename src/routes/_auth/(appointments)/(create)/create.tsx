@@ -46,6 +46,7 @@ function AppointmentCreateLayout() {
       coachId,
       coachName,
       isButtonDisabled,
+      loading,
     },
   } = useCreateAppointmentUtils();
 
@@ -105,6 +106,7 @@ function AppointmentCreateLayout() {
                       onValueChange={onCoacheeSelect}
                       onDataChange={onChangeCoachee}
                       onSearch={(e) => setCoacheeKeyword(e.target.value)}
+                      loading={loading}
                     />
                   </div>
                 </div>
