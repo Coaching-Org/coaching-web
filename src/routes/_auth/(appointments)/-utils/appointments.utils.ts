@@ -1,19 +1,22 @@
 import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
-import { useMeQuery } from "@/hooks/query/auth/auth.query";
 import { AppointmentDetailV2 } from "@/interfaces";
-import { AuthServices } from "@/services/auth/auth.service";
-import axios from "axios";
+import { useDebounce } from "@/lib";
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 
 export const useAppointmentsUtils = () => {
   const { userId } = useAuth();
   const [appointmentData, setAppointmentData] = useState<
     AppointmentDetailV2[] | null
   >();
-  // const { data } = useAppointmentsListQuery({ page: 1, perPage: 10 }, true);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
+    { page: 1, perPage: 10, keyword: search },
+    true
+  );
   const {
     event: { getFsAppointmentList },
   } = useAppointmentsFirestoreUtils();
@@ -37,8 +40,14 @@ export const useAppointmentsUtils = () => {
     fetchAppointment();
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearch]);
+
+  console.log("Session Appointment Data", AppointmentListData);
+
   return {
-    state: { data: appointmentData },
-    event: {},
+    state: { data: appointmentData, search },
+    event: { setSearch },
   };
 };

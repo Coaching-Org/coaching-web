@@ -18,12 +18,9 @@ function AppointmentsLayout() {
   const { translations } = useLanguage();
   const navigate = useNavigate();
   const {
-    state: { data },
+    state: { data, search },
+    event: { setSearch },
   } = useAppointmentsUtils();
-
-  const {
-    state: { fsData },
-  } = useAppointmentsFirestoreUtils();
 
   const goToReview = (appointmentId: string) => {
     navigate({ to: `appointments/${appointmentId}/review` });
@@ -52,7 +49,11 @@ function AppointmentsLayout() {
           {/* Add Button export */}
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(data as any) || []} />
+          <DashboardAppointmentsTable
+            data={(data as any) || []}
+            setSearch={setSearch}
+            search={search}
+          />
         </CardContent>
       </Card>
     </div>
