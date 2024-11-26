@@ -75,7 +75,15 @@ export const columns: ColumnDef<CoacheeDetail>[] = [
   },
 ];
 
-export function UsersTable({ data }: { data: CoacheeDetail[] }) {
+export function UsersTable({
+  data,
+  setSearch,
+  search,
+}: {
+  data: CoacheeDetail[];
+  setSearch: (value: string) => void;
+  search: string;
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -108,10 +116,10 @@ export function UsersTable({ data }: { data: CoacheeDetail[] }) {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter users..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          value={search}
+          onChange={(event) => {
+            setSearch(event.target.value);
+          }}
           className="max-w-sm"
         />
       </div>

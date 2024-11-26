@@ -23,6 +23,7 @@ export const useCreateAppointmentFirestoreUtils = () => {
         sessionName: `${data.courseName} - ${data.coacheeName} ${moment(new Date()).format("DD/MM/YYYY")}`,
         createdAt: Timestamp.fromDate(new Date()),
         updatedAt: Timestamp.fromDate(new Date()),
+        import: false,
       });
       // const docRef = await addDoc(
       //   collection(firestoreDb, fsCollectionKey.appointments),
