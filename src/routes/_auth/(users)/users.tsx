@@ -16,7 +16,8 @@ function UsersLayout() {
   const navigate = Route.useNavigate();
   const { userRole } = useAuth();
   const {
-    state: { data },
+    state: { data, search },
+    event: { setSearch },
   } = useCoacheeUtils();
   return (
     <div className="gap-4 lg:p-6">
@@ -38,7 +39,7 @@ function UsersLayout() {
           )}
         </CardHeader>
         <CardContent>
-          <UsersTable data={data} />
+          <UsersTable data={data} setSearch={setSearch} search={search} />
         </CardContent>
       </Card>
     </div>
