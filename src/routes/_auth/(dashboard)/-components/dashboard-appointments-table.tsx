@@ -25,6 +25,7 @@ import { useCoachingContext } from "@/hooks/context";
 import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
 import { useLanguage } from "@/components/language.provider";
+import { formatHour } from "@/lib";
 
 export const createColumns = (
   setIsOpenModal: (open: boolean) => void,
@@ -49,7 +50,10 @@ export const createColumns = (
       accessorKey: "date",
       header: translations.tables.header.sessionDate,
       cell: ({ row }) => (
-        <div className="">{moment(row.original.date).format("DD/MM/YYYY")}</div>
+        <div className="" style={{ width: "100px" }}>
+          {formatHour(row.original.startDate)} -{" "}
+          {formatHour(row.original.endDate)}
+        </div>
       ),
     },
     {
