@@ -5,7 +5,7 @@ export const formatHour = (value: string) => {
   const minutes = date.getMinutes().toString().padStart(2, "0"); // Ensures two-digit format
 
   const time = `${hours}:${minutes}`;
-  console.log(time); // Outputs: 13:30
 
+  // Outputs: 13:30
   return time;
 };
