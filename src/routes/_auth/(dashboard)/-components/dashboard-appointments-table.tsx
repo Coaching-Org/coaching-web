@@ -43,7 +43,9 @@ export const createColumns = (
       id: "sessionType",
       accessorKey: "courseName",
       header: translations.tables.header.sessionType,
-      cell: ({ row }) => <div className="">{row.original.courseName}</div>,
+      cell: ({ row }) => (
+        <div className="text-center">{row.original.courseName}</div>
+      ),
     },
     {
       id: "sessionDate",
@@ -61,7 +63,7 @@ export const createColumns = (
       accessorKey: "duration",
       header: translations.tables.header.sessionTime,
       cell: ({ row }) => (
-        <div className="">
+        <div className="text-center">
           {row.original.duration} {translations.tables.cell.minutesDuration}
         </div>
       ),

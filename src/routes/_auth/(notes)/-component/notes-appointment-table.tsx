@@ -38,18 +38,15 @@ export const createColumns = (
       id: "sessionName",
       accessorKey: "id",
       header: translations.tables.header.sessionName,
-      cell: ({ row }) => (
-        <div className="">
-          {row.original.courseName} - {row.original.coacheeName}{" "}
-          {moment(row.original.date).format("DD/MM/YYYY")}
-        </div>
-      ),
+      cell: ({ row }) => <div className="">{row.original.sessionName}</div>,
     },
     {
       id: "sessionType",
       accessorKey: "courseName",
       header: translations.tables.header.sessionType,
-      cell: ({ row }) => <div className="">{row.original.courseName}</div>,
+      cell: ({ row }) => (
+        <div className="text-center">{row.original.courseName}</div>
+      ),
     },
     {
       id: "sessionDate",
@@ -57,7 +54,7 @@ export const createColumns = (
       header: translations.tables.header.sessionDate,
       cell: ({ row }) => {
         return (
-          <div className="" style={{ width: "100px" }}>
+          <div className="text-center" style={{ width: "100px" }}>
             {formatHour(row.original.startDate)} -{" "}
             {formatHour(row.original.endDate)}
           </div>
@@ -69,7 +66,7 @@ export const createColumns = (
       accessorKey: "duration",
       header: translations.tables.header.sessionTime,
       cell: ({ row }) => (
-        <div className="">
+        <div className="text-center">
           {row.original.duration} {translations.tables.cell.minutesDuration}
         </div>
       ),

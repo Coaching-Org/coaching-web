@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AppointmentDetailV2 } from "@/interfaces";
+import { formatHour } from "@/lib";
 import { Link } from "@tanstack/react-router";
 import moment from "moment";
 
@@ -75,8 +76,8 @@ export function ModalAppointment({
                 {translations.title.sessionAppointmentTime}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
-                    {moment(appointmentData.startDate).format("hh:mm")} -{" "}
-                    {moment(appointmentData.endDate).format("hh:mm")}
+                    {formatHour(appointmentData.startDate)} -{" "}
+                    {formatHour(appointmentData.endDate)}
                   </span>
                 </div>
               </div>
