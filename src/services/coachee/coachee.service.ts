@@ -7,10 +7,17 @@ export class CoacheeServices extends HttpService {
     signal?: AbortSignal,
     params?: ParamsPaginationRequest
   ) {
-    return this.get("/v2/coachees", { signal, params });
+    return this.get("/v1/coachees", { signal, params });
   }
 
   static postCoachee(params: PostCoacheeRequest) {
     return this.post("/v1/coachees", params);
+  }
+
+  static getCoacheeMappingList(
+    signal?: AbortSignal,
+    params?: ParamsPaginationRequest
+  ) {
+    return this.get("/v2/coachees", { signal, params });
   }
 }
