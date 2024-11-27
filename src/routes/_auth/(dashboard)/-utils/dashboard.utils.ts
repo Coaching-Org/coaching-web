@@ -39,7 +39,7 @@ export const useDashboardUtils = () => {
           value: "done",
         },
       ]);
-      setAppointmentData(response);
+      // setAppointmentData(response);
     } catch (error) {
       throw error;
     }
