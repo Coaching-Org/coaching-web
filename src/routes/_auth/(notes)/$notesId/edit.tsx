@@ -15,6 +15,7 @@ import moment from "moment";
 import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
 import { useEditNotesUtils } from "./-utils/edit-notes.utils";
 import { useLanguage } from "@/components/language.provider";
+import { Download } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/(notes)/$notesId/edit")({
   component: EdiNotesLayout,
@@ -34,6 +35,7 @@ function EdiNotesLayout() {
       sessionDate,
       sessionName,
       sessionCoachee,
+      noteFile,
     },
     event: {
       onSaveNotes,
@@ -156,14 +158,20 @@ function EdiNotesLayout() {
               />
             </div>
             <div className="mt-4">
-              {/* Resize bordernya, with icon upload ditengah, multiple file, pdf, png, jpg, jpeg doc docx xls xlsx ppt pptx, rar zip 7zip max 5mb */}
-              {/* Can we make it universal? */}
               <Label>
                 <span className="text-red-500">*</span>
                 {translations.title.notesFile}
               </Label>
-              <Input
+              <Button
+                variant={"link"}
+                onClick={() => window.open(noteFile, "_blank")}
+                className="text-center gap-2"
+              >
+                Download File <Download />
+              </Button>
+              {/* <Input
                 type="file"
+                disabled
                 multiple={false}
                 accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
                 onChange={(e) => {
@@ -186,7 +194,7 @@ function EdiNotesLayout() {
                   //   handleUploadFile(validFiles[0]);
                   // }
                 }}
-              />
+              /> */}
             </div>
           </div>
         </CardContent>

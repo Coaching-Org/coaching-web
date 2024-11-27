@@ -106,6 +106,7 @@ export const useEditNotesUtils = ({
     setTextOptions(fsNotes?.options);
     setTextWayForward(fsNotes?.wayForward);
     setTextNotes(fsNotes?.notes);
+    setFile(fsNotes?.file);
   }, [fsNotes]);
 
   return {
@@ -122,6 +123,7 @@ export const useEditNotesUtils = ({
       sessionDate: fsNotes?.startDate,
       sessionName: fsNotes?.courseName,
       sessionCoachee: fsNotes?.coacheeName,
+      noteFile: file,
     },
     event: {
       onSaveNotes,
