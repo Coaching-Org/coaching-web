@@ -16,7 +16,8 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 function DashboardLayout() {
   const { translations } = useLanguage();
   const {
-    state: { data },
+    state: { data, search },
+    event: { setSearch },
   } = useDashboardUtils();
   const {
     state: {
@@ -87,7 +88,11 @@ function DashboardLayout() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <DashboardAppointmentsTable data={(data as any) || []} />
+          <DashboardAppointmentsTable
+            data={(data as any) || []}
+            search={search}
+            setSearch={setSearch}
+          />
         </CardContent>
       </Card>
     </div>
