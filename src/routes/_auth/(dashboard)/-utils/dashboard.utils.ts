@@ -2,7 +2,7 @@ import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
 import { useMeQuery } from "@/hooks/query/auth/auth.query";
-import { AppointmentDetailV2 } from "@/interfaces";
+import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
 import { useDebounce } from "@/lib";
 import { AuthServices } from "@/services/auth/auth.service";
 import axios from "axios";
@@ -12,7 +12,7 @@ import Cookies from "universal-cookie";
 export const useDashboardUtils = () => {
   const { userId } = useAuth();
   const [appointmentData, setAppointmentData] = useState<
-    AppointmentDetailV2[] | null
+    AppointmentDetailV2[] | AppointmentDetail[] | null
   >();
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
@@ -46,8 +46,14 @@ export const useDashboardUtils = () => {
   };
 
   useEffect(() => {
-    fetchAppointment();
+    // fetchAppointment();
   }, []);
+
+  useEffect(() => {
+    if (AppointmentListData?.data) {
+      setAppointmentData(AppointmentListData.data);
+    }
+  }, [AppointmentListData?.data]);
 
   useEffect(() => {
     refetch();

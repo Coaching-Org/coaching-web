@@ -44,8 +44,8 @@
   "description": {
     "signoutDescription": "Are you sure you want to sign out?",
     "gotoLoginDescription": "Go to login page",
-    "dashboardTotalAppointment": "Total Appointments",
-    "dashboardDoneAppointment": "Done Appointments",
+    "dashboardTotalAppointment": "Total \n Appointments",
+    "dashboardDoneAppointment": "Appointments Done",
     "dashboardPendingAppointment": "Pending Appointments",
     "dashboardUpcomingAppointment": "Upcoming Appointments",
     "sessionManageDescription": "View and manage all your sessions that you have scheduled with your coachees.",

@@ -21,6 +21,7 @@ import { useCreateAppointmentUtils } from "./-utils/create.utils";
 import { useLanguage } from "@/components/language.provider";
 import { useAuth } from "@/auth";
 import { Label } from "@/components/ui/label";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
 
 function AppointmentCreateLayout() {
   const { translations } = useLanguage();
-  const navigate = useNavigate();
+  const { userRole } = useAuth();
   const {
     event: {
       onDateSelect,
@@ -37,6 +38,7 @@ function AppointmentCreateLayout() {
       onCoacheeSelect,
       onChangeCoachee,
       setCoacheeKeyword,
+      setCoachKeyword,
     },
     state: {
       timeSlots,
@@ -47,6 +49,8 @@ function AppointmentCreateLayout() {
       coachName,
       isButtonDisabled,
       loading,
+      coachData,
+      loadingCoach,
     },
   } = useCreateAppointmentUtils();
 
@@ -76,12 +80,18 @@ function AppointmentCreateLayout() {
                   </Label>
                   <div className="text-xs">
                     <Combobox
-                      data={[]}
-                      defaultValue={{
-                        label: coachName || "",
-                        value: coachId || "",
-                      }}
-                      disabled={true}
+                      data={coachData || []}
+                      defaultValue={
+                        userRole !== "admin"
+                          ? {
+                              label: coachName || "",
+                              value: coachId || "",
+                            }
+                          : { label: "", value: "" }
+                      }
+                      disabled={userRole !== "admin"}
+                      onSearch={(e) => setCoachKeyword(e.target.value)}
+                      loading={loadingCoach}
                     />
                   </div>
                 </div>

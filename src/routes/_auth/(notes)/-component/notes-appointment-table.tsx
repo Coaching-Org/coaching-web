@@ -26,11 +26,12 @@ import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
 import { Link } from "@tanstack/react-router";
 import { useLanguage } from "@/components/language.provider";
+import { NoteListDetail } from "@/interfaces/notes/get-notes.type";
 
 export const createColumns = (
-  setIsOpenModal: (open: boolean) => void,
-  setAppointmentData: (data: AppointmentDetailV2) => void
-): ColumnDef<AppointmentDetailV2>[] => {
+  setIsOpenModal?: (open: boolean) => void,
+  setAppointmentData?: (data: AppointmentDetailV2) => void
+): ColumnDef<NoteListDetail>[] => {
   const { translations } = useLanguage();
   return [
     {
@@ -64,7 +65,7 @@ export const createColumns = (
       header: translations.tables.header.sessionTime,
       cell: ({ row }) => (
         <div className="">
-          {row.original.duration} {translations.tables.cell.minutesDuration}
+          {row.original.sessionTime} {translations.tables.cell.minutesDuration}
         </div>
       ),
     },
@@ -103,8 +104,12 @@ export const createColumns = (
 
 export function NotesAppointmentTable({
   data,
+  search,
+  setSearch,
 }: {
-  data: AppointmentDetailV2[];
+  data: NoteListDetail[];
+  search: string;
+  setSearch: (search: string) => void;
 }) {
   const { translations } = useLanguage();
   const {
@@ -125,7 +130,7 @@ export function NotesAppointmentTable({
 
   const table = useReactTable({
     data: data,
-    columns: createColumns(setIsOpenModal, setAppointmentData),
+    columns: createColumns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -142,10 +147,8 @@ export function NotesAppointmentTable({
       <div className="flex items-center py-4">
         <Input
           placeholder={translations.placeholder.searchNotes}
-          value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("id")?.setFilterValue(event.target.value)
-          }
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -180,13 +183,13 @@ export function NotesAppointmentTable({
                 <TableRow
                   key={`${row.id}-row`}
                   onClick={() => {
-                    setContextAppointmentId(row.original.id);
-                    setContextCoacheeId(row.original.coacheeId);
-                    setContextCoacheeName(row.original.coacheeName);
-                    setContextDate(row.original.date);
-                    setContextCourseId(row.original.courseId);
-                    setContextCourseName(row.original.courseName);
-                    setContextNotesId(row.original.notesId || null);
+                    // setContextAppointmentId(row.original.id);
+                    // setContextCoacheeId(row.original.coacheeId);
+                    // setContextCoacheeName(row.original.coacheeName);
+                    // setContextDate(row.original.date);
+                    // setContextCourseId(row.original.courseId);
+                    // setContextCourseName(row.original.courseName);
+                    // setContextNotesId(row.original.notesId || null);
                   }}
                 >
                   {row.getVisibleCells().map((cell) => {

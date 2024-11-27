@@ -7,6 +7,7 @@ import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.util
 import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
 import { NotesAppointmentTable } from "./-component/notes-appointment-table";
 import { useLanguage } from "@/components/language.provider";
+import { useNoteListUtils } from "./-utils/notes.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -16,8 +17,10 @@ function NotesLayout() {
   const navigate = useNavigate();
   const { translations } = useLanguage();
   const {
-    state: { data },
-  } = useAppointmentsUtils();
+    state: { data, search },
+    event: { setSearch },
+  } = useNoteListUtils();
+
   const {
     state: { fsNotes },
   } = useListNotesFirestoreUtils();
@@ -38,7 +41,11 @@ function NotesLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <NotesAppointmentTable data={(fsNotes as any) || []} />
+          <NotesAppointmentTable
+            data={data}
+            search={search}
+            setSearch={setSearch}
+          />
         </CardContent>
       </Card>
     </div>
