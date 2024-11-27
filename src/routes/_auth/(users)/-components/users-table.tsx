@@ -92,6 +92,8 @@ export function UsersTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  console.log("Coachee Table", data);
+
   const table = useReactTable({
     data,
     columns,
