@@ -1,6 +1,7 @@
 import { useAuth } from "@/auth";
 import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
+import { useCoachListQuery } from "@/hooks/query/coach/coach.query";
 import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
 import { useToast } from "@/hooks/use-toast";
 import { CoacheeDetail } from "@/interfaces";
@@ -23,14 +24,26 @@ export const useCreateAppointmentUtils = () => {
   const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
+  const [coachKeyword, setCoachKeyword] = useState<string>("");
   const [coacheeData, setCoacheeData] = useState<any[]>([]);
+  const [coachData, setCoachData] = useState<any[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
   const debouncedCoacheeKeyword = useDebounce(coacheeKeyword, 500);
+  const debouncedCoachKeyword = useDebounce(coachKeyword, 500);
 
   const { data, refetch, isLoading } = useCoacheeListQuery({
     enabled: true,
     params: { page: 1, perPage: 10, keyword: coacheeKeyword },
+  });
+
+  const {
+    data: coachDataQuery,
+    refetch: refetchCoach,
+    isLoading: isLoadingCoach,
+  } = useCoachListQuery({
+    enabled: true,
+    params: { page: 1, perPage: 10, keyword: coachKeyword },
   });
 
   const timeSlots = useMemo(() => {
@@ -106,15 +119,15 @@ export const useCreateAppointmentUtils = () => {
       setCoacheeData(data.data);
     }
 
-    if (coacheeKeyword) {
-      const filteredData = coacheeData.filter((item: CoacheeDetail) =>
-        item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
-      );
-      setCoacheeData(filteredData);
-      // setCoacheeData(
-      //  filteredData.map((item) => ({ label: item.name, value: item.id }))
-      // );
-    }
+    // if (coacheeKeyword) {
+    //   const filteredData = coacheeData.filter((item: CoacheeDetail) =>
+    //     item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
+    //   );
+    //   setCoacheeData(filteredData);
+    //   setCoacheeData(
+    //    filteredData.map((item) => ({ label: item.name, value: item.id }))
+    //   );
+    // }
   }, [data?.data, coacheeKeyword]);
 
   const isButtonDisabled =
@@ -127,6 +140,18 @@ export const useCreateAppointmentUtils = () => {
     refetch();
   }, [debouncedSearch, debouncedCoacheeKeyword]);
 
+  useEffect(() => {
+    if (coachDataQuery?.data) {
+      setCoachData(coachDataQuery.data);
+    }
+  }, [coachDataQuery?.data]);
+
+  useEffect(() => {
+    refetchCoach();
+  }, [debouncedCoachKeyword]);
+
+  console.log("isLoadingCoach", isLoadingCoach);
+
   return {
     state: {
       timeSlots,
@@ -137,6 +162,13 @@ export const useCreateAppointmentUtils = () => {
       coachId: userId,
       isButtonDisabled,
       loading: isLoading,
+      loadingCoach: isLoadingCoach,
+      coachData: useMemo(() => {
+        return coachDataQuery?.data?.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+      }, [coachDataQuery?.data]),
     },
     event: {
       onDateSelect,
@@ -145,6 +177,7 @@ export const useCreateAppointmentUtils = () => {
       onCoacheeSelect,
       onChangeCoachee,
       setCoacheeKeyword,
+      setCoachKeyword,
     },
   };
 };
