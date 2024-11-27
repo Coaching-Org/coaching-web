@@ -26,6 +26,7 @@ import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
 import { Link } from "@tanstack/react-router";
 import { useLanguage } from "@/components/language.provider";
+import { formatHour } from "@/lib";
 
 export const createColumns = (
   setIsOpenModal: (open: boolean) => void,
@@ -37,33 +38,35 @@ export const createColumns = (
       id: "sessionName",
       accessorKey: "id",
       header: translations.tables.header.sessionName,
-      cell: ({ row }) => (
-        <div className="">
-          {row.original.courseName} - {row.original.coacheeName}{" "}
-          {moment(row.original.date).format("DD/MM/YYYY")}
-        </div>
-      ),
+      cell: ({ row }) => <div className="">{row.original.sessionName}</div>,
     },
     {
       id: "sessionType",
       accessorKey: "courseName",
       header: translations.tables.header.sessionType,
-      cell: ({ row }) => <div className="">{row.original.courseName}</div>,
+      cell: ({ row }) => (
+        <div className="text-center">{row.original.courseName}</div>
+      ),
     },
     {
       id: "sessionDate",
       accessorKey: "date",
       header: translations.tables.header.sessionDate,
-      cell: ({ row }) => (
-        <div className="">{moment(row.original.date).format("DD/MM/YYYY")}</div>
-      ),
+      cell: ({ row }) => {
+        return (
+          <div className="text-center" style={{ width: "100px" }}>
+            {formatHour(row.original.startDate)} -{" "}
+            {formatHour(row.original.endDate)}
+          </div>
+        );
+      },
     },
     {
       id: "sessionTime",
       accessorKey: "duration",
       header: translations.tables.header.sessionTime,
       cell: ({ row }) => (
-        <div className="">
+        <div className="text-center">
           {row.original.duration} {translations.tables.cell.minutesDuration}
         </div>
       ),
@@ -122,6 +125,8 @@ export function NotesAppointmentTable({
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [appointmentData, setAppointmentData] = useState<AppointmentDetailV2>();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  console.log("Notes Data", data);
 
   const table = useReactTable({
     data: data,

@@ -79,7 +79,7 @@ function NoteDetailLayout() {
               {/* Form Service */}
               <div className="flex-col flex mt-4 min-w-[250px]">
                 <span className="text-base">
-                  {translations.title.sessionDate}
+                  {translations.title.sessionAppointmentDate}
                 </span>
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">

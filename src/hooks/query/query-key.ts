@@ -16,6 +16,7 @@ export const CoachKey = {
 
 export const CoacheeKey = {
   coacheeList: "coachee.list",
+  coacheeMappingList: "coachee.mappingList",
   coacheeCreate: "coachee.create",
 };
 
