@@ -48,6 +48,7 @@ export const useEditNotesUtils = ({
   const [textOptions, setTextOptions] = useState("");
   const [textWayForward, setTextWayForward] = useState("");
   const [textNotes, setTextNotes] = useState("");
+  const [textFile, setTextFile] = useState("");
   const [file, setFile] = useState<any>(null);
 
   const { mutateAsync: uploadFile } = useUploadFileQuery();
@@ -55,7 +56,7 @@ export const useEditNotesUtils = ({
   const onSaveNotes = async () => {
     try {
       let fileData = null;
-      if (file) {
+      if (file !== null) {
         const resFileUpload = await uploadFile(file);
         fileData = resFileUpload.data;
       }
@@ -67,7 +68,7 @@ export const useEditNotesUtils = ({
         options: textOptions,
         wayForward: textWayForward,
         notes: textNotes,
-        file: fileData,
+        file: fileData ? fileData : textFile,
       };
 
       onFirestoreUpdateNotes({
@@ -106,7 +107,7 @@ export const useEditNotesUtils = ({
     setTextOptions(fsNotes?.options);
     setTextWayForward(fsNotes?.wayForward);
     setTextNotes(fsNotes?.notes);
-    setFile(fsNotes?.file);
+    setTextFile(fsNotes?.file);
   }, [fsNotes]);
 
   return {
@@ -123,7 +124,7 @@ export const useEditNotesUtils = ({
       sessionDate: fsNotes?.startDate,
       sessionName: fsNotes?.courseName,
       sessionCoachee: fsNotes?.coacheeName,
-      noteFile: file,
+      noteFile: textFile,
     },
     event: {
       onSaveNotes,
