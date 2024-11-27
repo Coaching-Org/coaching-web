@@ -40,7 +40,7 @@ function UsersLayout() {
         </CardHeader>
         <CardContent>
           <UsersTable
-            data={userRole === "admin" ? data : dataMapping}
+            data={dataMapping}
             setSearch={setSearch}
             search={search}
           />

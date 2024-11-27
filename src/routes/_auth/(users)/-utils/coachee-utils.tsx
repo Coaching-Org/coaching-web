@@ -57,7 +57,7 @@ export const useCoacheeUtils = () => {
         };
       });
 
-      setListCoachee(transformData);
+      setListCoacheeMapping(transformData);
     }
   }, [dataMapping?.data, fsTotalUserAppointment]);
 
