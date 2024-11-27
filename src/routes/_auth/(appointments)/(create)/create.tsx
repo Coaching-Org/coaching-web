@@ -21,6 +21,7 @@ import { useCreateAppointmentUtils } from "./-utils/create.utils";
 import { useLanguage } from "@/components/language.provider";
 import { useAuth } from "@/auth";
 import { Label } from "@/components/ui/label";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -38,6 +39,7 @@ function AppointmentCreateLayout() {
       onCoacheeSelect,
       onChangeCoachee,
       setCoacheeKeyword,
+      setCoachKeyword,
     },
     state: {
       timeSlots,
@@ -49,6 +51,8 @@ function AppointmentCreateLayout() {
       isButtonDisabled,
       loading,
       coacheeDataMapping,
+      coachData,
+      loadingCoach,
     },
   } = useCreateAppointmentUtils();
 
@@ -78,12 +82,18 @@ function AppointmentCreateLayout() {
                   </Label>
                   <div className="text-xs">
                     <Combobox
-                      data={[]}
-                      defaultValue={{
-                        label: coachName || "",
-                        value: coachId || "",
-                      }}
-                      disabled={true}
+                      data={coachData || []}
+                      defaultValue={
+                        userRole !== "admin"
+                          ? {
+                              label: coachName || "",
+                              value: coachId || "",
+                            }
+                          : { label: "", value: "" }
+                      }
+                      disabled={userRole !== "admin"}
+                      onSearch={(e) => setCoachKeyword(e.target.value)}
+                      loading={loadingCoach}
                     />
                   </div>
                 </div>

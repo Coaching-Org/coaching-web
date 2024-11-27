@@ -15,12 +15,13 @@ interface fsAppointmentProps extends PostAppointmentRequest {
 export const useCreateAppointmentFirestoreUtils = () => {
   const addFirestoreAppointments = async (data: fsAppointmentProps) => {
     const id = uuidv4();
+    console.log("Create Session", data);
     try {
       await setDoc(doc(firestoreDb, fsCollectionKey.appointments, id), {
         id,
         ...data,
         status: "pending",
-        sessionName: `${data.courseName} - ${data.coacheeName} ${moment(new Date()).format("DD/MM/YYYY")}`,
+        sessionName: `${data.courseName} - ${data.coacheeName} ${moment(data.startDate).format("DD/MM/YYYY")}`,
         createdAt: Timestamp.fromDate(new Date()),
         updatedAt: Timestamp.fromDate(new Date()),
         import: false,

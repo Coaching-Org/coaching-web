@@ -1,19 +1,19 @@
 import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
+import { useNotesListQuery } from "@/hooks/query/notes/notes.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
+import { NoteListDetail } from "@/interfaces/notes/get-notes.type";
 import { useDebounce } from "@/lib";
 import { useEffect, useState } from "react";
 
-export const useAppointmentsUtils = () => {
+export const useNoteListUtils = () => {
   const { userId } = useAuth();
-  const [appointmentData, setAppointmentData] = useState<
-    AppointmentDetailV2[] | AppointmentDetail[] | null
-  >();
+  const [notesData, setNotesData] = useState<NoteListDetail[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
+  const { data: NotesListData, refetch } = useNotesListQuery(
     { page: 1, perPage: 10, keyword: search },
     true
   );
@@ -30,7 +30,7 @@ export const useAppointmentsUtils = () => {
           value: userId,
         },
       ]);
-      setAppointmentData(response);
+      setNotesData(response);
     } catch (error) {
       throw error;
     }
@@ -41,19 +41,19 @@ export const useAppointmentsUtils = () => {
   }, []);
 
   useEffect(() => {
-    if (AppointmentListData?.data) {
-      setAppointmentData(AppointmentListData.data);
+    if (NotesListData?.data) {
+      setNotesData(NotesListData.data);
     }
-  }, [AppointmentListData?.data]);
+  }, [NotesListData?.data]);
 
   useEffect(() => {
     refetch();
   }, [debouncedSearch]);
 
-  console.log("Session Appointment Data", AppointmentListData);
+  console.log("Session Notes Data", NotesListData);
 
   return {
-    state: { data: appointmentData, search },
+    state: { data: notesData, search },
     event: { setSearch },
   };
 };

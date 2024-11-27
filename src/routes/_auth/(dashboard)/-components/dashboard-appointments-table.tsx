@@ -96,7 +96,7 @@ export function DashboardAppointmentsTable({
   search,
 }: {
   data: AppointmentDetailV2[];
-  setSearch?: (value: string) => void;
+  setSearch: (value: string) => void;
   search?: string;
 }) {
   const { translations } = useLanguage();
@@ -135,12 +135,8 @@ export function DashboardAppointmentsTable({
       <div className="flex items-center py-4">
         <Input
           placeholder={translations.placeholder.searchAppointments}
-          value={
-            (table.getColumn("sessionName")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("sessionName")?.setFilterValue(event.target.value)
-          }
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
       </div>
