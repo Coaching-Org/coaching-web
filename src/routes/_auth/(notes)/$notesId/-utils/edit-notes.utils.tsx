@@ -78,7 +78,7 @@ export const useEditNotesUtils = ({
       /**
        * TODO: Uncomment this when the backend is ready
        */
-      // await postNotes(notesData);
+      // postNotes(notesData);
       toast({
         title: "Success",
         description: "Notes saved successfully",

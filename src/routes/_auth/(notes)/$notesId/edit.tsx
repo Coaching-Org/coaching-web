@@ -199,7 +199,6 @@ function EdiNotesLayout() {
           </div>
         </CardContent>
         <CardFooter className="justify-end">
-          {/* Add validation for GROW*/}
           <Button onClick={onSaveNotes} disabled={isButtonDisabled}>
             {translations.button.action.save}
           </Button>
