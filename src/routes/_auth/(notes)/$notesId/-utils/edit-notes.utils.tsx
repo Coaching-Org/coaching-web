@@ -21,6 +21,8 @@ export const useEditNotesUtils = ({
   const { toast } = useToast();
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
+  const [deleteFileStatus, setDeleteFileStatus] = useState(false);
+
   const {
     event: { onFirestoreUpdateNotes },
   } = useUpdateNotesFirestoreUtils({ notesId });
@@ -56,9 +58,11 @@ export const useEditNotesUtils = ({
   const onSaveNotes = async () => {
     try {
       let fileData = null;
-      if (file !== null) {
+      if (file !== null && file !== "") {
         const resFileUpload = await uploadFile(file);
         fileData = resFileUpload.data;
+      } else if (file === "") {
+        fileData = "";
       }
 
       const notesData = {
@@ -68,7 +72,12 @@ export const useEditNotesUtils = ({
         options: textOptions,
         wayForward: textWayForward,
         notes: textNotes,
-        file: fileData ? fileData : textFile,
+        file:
+          fileData !== null && fileData !== ""
+            ? fileData
+            : fileData === ""
+              ? ""
+              : textFile,
       };
 
       onFirestoreUpdateNotes({
@@ -125,6 +134,7 @@ export const useEditNotesUtils = ({
       sessionName: fsNotes?.courseName,
       sessionCoachee: fsNotes?.coacheeName,
       noteFile: textFile,
+      deleteFileStatus,
     },
     event: {
       onSaveNotes,
@@ -134,6 +144,7 @@ export const useEditNotesUtils = ({
       setTextWayForward,
       setTextNotes,
       setFile,
+      setDeleteFileStatus,
     },
   };
 };

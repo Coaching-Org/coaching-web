@@ -15,7 +15,7 @@ import moment from "moment";
 import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
 import { useEditNotesUtils } from "./-utils/edit-notes.utils";
 import { useLanguage } from "@/components/language.provider";
-import { Download } from "lucide-react";
+import { Download, RemoveFormatting, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/(notes)/$notesId/edit")({
   component: EdiNotesLayout,
@@ -36,6 +36,7 @@ function EdiNotesLayout() {
       sessionName,
       sessionCoachee,
       noteFile,
+      deleteFileStatus,
     },
     event: {
       onSaveNotes,
@@ -45,6 +46,7 @@ function EdiNotesLayout() {
       setTextWayForward,
       setTextNotes,
       setFile,
+      setDeleteFileStatus,
     },
   } = useEditNotesUtils({ edit: true, notesId });
 
@@ -157,44 +159,58 @@ function EdiNotesLayout() {
                 onChange={(e) => setTextNotes(e.target.value)}
               />
             </div>
-            <div className="mt-4">
-              <Label>
-                <span className="text-red-500">*</span>
-                {translations.title.notesFile}
-              </Label>
-              <Button
-                variant={"link"}
-                onClick={() => window.open(noteFile, "_blank")}
-                className="text-center gap-2"
-              >
-                Download File <Download />
-              </Button>
-              {/* <Input
-                type="file"
-                disabled
-                multiple={false}
-                accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
-                onChange={(e) => {
-                  const formData = new FormData();
-                  const files = e.target?.files?.[0];
-                  formData.append("file", files as any, files?.name);
-                  // handleUploadFile(formData);
-                  setFile(formData);
-                  // if (files) {
-                  //   const validFiles = Array.from(files).filter(
-                  //     (file) => file.size <= 5 * 1024 * 1024
-                  //   );
-                  //   if (validFiles.length !== files.length) {
-                  //     alert("File size exceeds 5MB");
-                  //   }
+            <div className="mt-4 flex flex-col justify-between">
+              <div>
+                <Label>
+                  <span className="text-red-500">*</span>
+                  {translations.title.notesFile}
+                </Label>
+                {deleteFileStatus && (
+                  <Input
+                    type="file"
+                    multiple={false}
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
+                    onChange={(e) => {
+                      const formData = new FormData();
+                      const files = e.target?.files?.[0];
+                      formData.append("file", files as any, files?.name);
+                      // handleUploadFile(formData);
+                      setFile(formData);
+                      // if (files) {
+                      //   const validFiles = Array.from(files).filter(
+                      //     (file) => file.size <= 5 * 1024 * 1024
+                      //   );
+                      //   if (validFiles.length !== files.length) {
+                      //     alert("File size exceeds 5MB");
+                      //   }
 
-                  //   formData.append("file", validFiles[0]);
+                      //   formData.append("file", validFiles[0]);
 
-                  //   setFile(validFiles);
-                  //   handleUploadFile(validFiles[0]);
-                  // }
-                }}
-              /> */}
+                      //   setFile(validFiles);
+                      //   handleUploadFile(validFiles[0]);
+                      // }
+                    }}
+                  />
+                )}
+              </div>
+              {!deleteFileStatus && (
+                <div className="flex flex-row ">
+                  <Button
+                    variant={"link"}
+                    onClick={() => window.open(noteFile, "_blank")}
+                    className="text-center gap-2"
+                  >
+                    Download File <Download />
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setDeleteFileStatus(true)}
+                    className="text-center gap-2"
+                  >
+                    <Trash2 className="text-red-500" />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
