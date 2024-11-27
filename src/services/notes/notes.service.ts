@@ -4,10 +4,10 @@ import { GetNotesRequest } from "@/interfaces/notes/get-notes.type";
 
 export class NotesServices extends HttpService {
   static postNotes(params: PostNotesRequest) {
-    return this.post("/v1/notes", params);
+    return this.post("/v1/appointment-notes", params);
   }
 
   static getNotesList(params: GetNotesRequest, signal?: AbortSignal) {
-    return this.get("/v1/notes", { params, signal });
+    return this.get("/v1/appointment-notes", { params, signal });
   }
 }
