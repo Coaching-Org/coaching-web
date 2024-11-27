@@ -150,7 +150,10 @@ export const useCreateAppointmentUtils = () => {
     refetchCoach();
   }, [debouncedCoachKeyword]);
 
-  console.log("isLoadingCoach", isLoadingCoach);
+  // useEffect(() => {
+  //   console.log("coachKeyword Changed", coachKeyword);
+  //   console.log("isLoadingCoach", isLoadingCoach);
+  // }, [coachKeyword, isLoadingCoach]);
 
   return {
     state: {

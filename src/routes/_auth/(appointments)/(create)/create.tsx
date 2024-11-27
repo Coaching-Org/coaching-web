@@ -54,16 +54,6 @@ function AppointmentCreateLayout() {
     },
   } = useCreateAppointmentUtils();
 
-  console.log("result query", coachData);
-  console.log("loadingCoach", loadingCoach);
-
-  // const memoizedCoachData = useMemo(() => {
-  //   return coachData.map((item) => ({
-  //     label: item.name,
-  //     value: item.id,
-  //   }));
-  // }, [coachData]);
-
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
       {/* Padding Card => 32 */}
