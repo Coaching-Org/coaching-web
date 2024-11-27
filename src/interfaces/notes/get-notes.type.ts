@@ -13,9 +13,11 @@ export interface NoteListDetail {
   date: string;
   coacheeName: string;
   coachName: string;
-  SessionName: string;
+  sessionName: string;
   courseName: string;
   sessionTime: number;
+  startDate: string;
+  endDate: string;
 }
 
 export interface GetNotesRequest {
