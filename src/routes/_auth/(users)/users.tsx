@@ -16,7 +16,7 @@ function UsersLayout() {
   const navigate = Route.useNavigate();
   const { userRole } = useAuth();
   const {
-    state: { data, search },
+    state: { data, dataMapping, search },
     event: { setSearch },
   } = useCoacheeUtils();
   return (
@@ -39,7 +39,11 @@ function UsersLayout() {
           )}
         </CardHeader>
         <CardContent>
-          <UsersTable data={data} setSearch={setSearch} search={search} />
+          <UsersTable
+            data={dataMapping}
+            setSearch={setSearch}
+            search={search}
+          />
         </CardContent>
       </Card>
     </div>

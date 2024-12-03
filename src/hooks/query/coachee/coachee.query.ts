@@ -37,6 +37,32 @@ export const useCoacheeListQuery = ({
   });
 };
 
+export const useCoacheeMappingListQuery = ({
+  enabled,
+  params,
+}: {
+  enabled: boolean;
+  params: ParamsPaginationRequest;
+}): UseQueryResult<GetCoacheeResponse, Error> => {
+  return useQuery({
+    queryKey: [CoacheeKey.coacheeMappingList],
+    queryFn: async ({ signal }) => {
+      try {
+        const response = await CoacheeServices.getCoacheeMappingList(
+          signal,
+          params
+        );
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+    enabled: enabled || false,
+  });
+};
+
 export const useCreateCoacheeQuery = (): UseMutationResult<
   PostCoacheeResponse,
   Error,

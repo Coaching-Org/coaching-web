@@ -55,8 +55,8 @@
     "header": {
       "sessionName": "Session Name",
       "sessionType": "Session Type",
-      "sessionDate": "Created Date",
-      "sessionTime": "Session Time",
+      "sessionDate": "Session Time",
+      "sessionTime": "Duration",
       "action": "Action"
     },
     "cell": {

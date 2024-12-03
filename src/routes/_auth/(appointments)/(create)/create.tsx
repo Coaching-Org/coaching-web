@@ -29,6 +29,7 @@ export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
 
 function AppointmentCreateLayout() {
   const { translations } = useLanguage();
+  const navigate = useNavigate();
   const { userRole } = useAuth();
   const {
     event: {
@@ -49,6 +50,7 @@ function AppointmentCreateLayout() {
       coachName,
       isButtonDisabled,
       loading,
+      coacheeDataMapping,
       coachData,
       loadingCoach,
     },
@@ -107,10 +109,15 @@ function AppointmentCreateLayout() {
                   <div className="text-xs">
                     <Combobox
                       data={
-                        coacheeData?.map((item) => ({
-                          label: item.name,
-                          value: item.id,
-                        })) || []
+                        userRole === "admin"
+                          ? coacheeData?.map((item) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))
+                          : coacheeDataMapping?.map((item) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))
                       }
                       // data={coacheeData}
                       onValueChange={onCoacheeSelect}

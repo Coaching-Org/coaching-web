@@ -1,8 +1,11 @@
 import { useAuth } from "@/auth";
 import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
+import {
+  useCoacheeListQuery,
+  useCoacheeMappingListQuery,
+} from "@/hooks/query/coachee/coachee.query";
 import { useCoachListQuery } from "@/hooks/query/coach/coach.query";
-import { useCoacheeListQuery } from "@/hooks/query/coachee/coachee.query";
 import { useToast } from "@/hooks/use-toast";
 import { CoacheeDetail } from "@/interfaces";
 import { useDebounce } from "@/lib";
@@ -11,7 +14,7 @@ import { Timestamp } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
 export const useCreateAppointmentUtils = () => {
-  const { userId, userName } = useAuth();
+  const { userId, userName, userRole } = useAuth();
   const { toast } = useToast();
   const {
     event: { onFirestoreSaveAppointments },
@@ -26,6 +29,7 @@ export const useCreateAppointmentUtils = () => {
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
   const [coachKeyword, setCoachKeyword] = useState<string>("");
   const [coacheeData, setCoacheeData] = useState<any[]>([]);
+  const [coacheeDataMapping, setCoacheeDataMapping] = useState<any[]>([]);
   const [coachData, setCoachData] = useState<any[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
@@ -37,6 +41,11 @@ export const useCreateAppointmentUtils = () => {
     params: { page: 1, perPage: 10, keyword: coacheeKeyword },
   });
 
+  const { data: dataMapping, refetch: refetchMapping } =
+    useCoacheeMappingListQuery({
+      params: { page: 1, perPage: 50, keyword: search },
+      enabled: true,
+    });
   const {
     data: coachDataQuery,
     refetch: refetchCoach,
@@ -114,7 +123,7 @@ export const useCreateAppointmentUtils = () => {
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     if (data?.data) {
       setCoacheeData(data.data);
     }
@@ -130,6 +139,12 @@ export const useCreateAppointmentUtils = () => {
     // }
   }, [data?.data, coacheeKeyword]);
 
+  useEffect(() => {
+    if (dataMapping?.data) {
+      setCoacheeDataMapping(dataMapping.data);
+    }
+  }, [dataMapping?.data]);
+
   const isButtonDisabled =
     selectedCoachee === null ||
     selectedTimeSlot === "" ||
@@ -138,6 +153,7 @@ export const useCreateAppointmentUtils = () => {
 
   useEffect(() => {
     refetch();
+    refetchMapping();
   }, [debouncedSearch, debouncedCoacheeKeyword]);
 
   useEffect(() => {
@@ -161,6 +177,7 @@ export const useCreateAppointmentUtils = () => {
       selectedDate,
       selectedTimeSlot,
       coacheeData,
+      coacheeDataMapping,
       coachName: userName,
       coachId: userId,
       isButtonDisabled,

@@ -16,6 +16,7 @@ export const CoachKey = {
 
 export const CoacheeKey = {
   coacheeList: "coachee.list",
+  coacheeMappingList: "coachee.mappingList",
   coacheeCreate: "coachee.create",
 };
 
@@ -30,4 +31,11 @@ export const NotesKey = {
 
 export const SharedKey = {
   fileUpload: "shared.fileUpload",
+};
+
+export const ExportKey = {
+  exportAppointments: "export.appointments",
+  exportNotes: "export.notes",
+  exportAllCoaches: "export.allCoaches",
+  exportCoachesAppointments: "export.coachesAppointments",
 };

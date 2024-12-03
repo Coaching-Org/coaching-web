@@ -26,6 +26,9 @@ import {
 import { cn } from "@/lib/utils";
 import { CoachDetail } from "@/interfaces";
 import moment from "moment";
+import { useExportUtils } from "@/hooks/functions";
+import { Download } from "lucide-react";
+import { useAuth } from "@/auth";
 
 export const columns: ColumnDef<CoachDetail>[] = [
   {
@@ -92,10 +95,38 @@ export function CoachTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const {
+    event: { getExportCoachesAppointments },
+  } = useExportUtils();
+  const { userRole } = useAuth();
+
+  React.useEffect(() => {
+    if (userRole !== "admin") {
+      setColumnVisibility({ actions: false });
+    }
+  }, [userRole]);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: [
+      ...columns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <div>
+            <Button
+              onClick={() =>
+                getExportCoachesAppointments({ coachId: row.original.id })
+              }
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+          </div>
+        ),
+      },
+    ],
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

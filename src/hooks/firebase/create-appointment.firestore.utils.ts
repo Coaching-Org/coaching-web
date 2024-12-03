@@ -21,7 +21,7 @@ export const useCreateAppointmentFirestoreUtils = () => {
         id,
         ...data,
         status: "pending",
-        sessionName: `${data.courseName} - ${data.coacheeName} ${moment(data.startDate).format("DD/MM/YYYY")}`,
+        sessionName: `${data.courseName} - ${data.coacheeName} ${moment(new Date(data.startDate)).format("DD/MM/YYYY")}`,
         createdAt: Timestamp.fromDate(new Date()),
         updatedAt: Timestamp.fromDate(new Date()),
         import: false,

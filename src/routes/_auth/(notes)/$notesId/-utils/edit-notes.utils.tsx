@@ -21,6 +21,8 @@ export const useEditNotesUtils = ({
   const { toast } = useToast();
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
+  const [deleteFileStatus, setDeleteFileStatus] = useState(false);
+
   const {
     event: { onFirestoreUpdateNotes },
   } = useUpdateNotesFirestoreUtils({ notesId });
@@ -48,6 +50,7 @@ export const useEditNotesUtils = ({
   const [textOptions, setTextOptions] = useState("");
   const [textWayForward, setTextWayForward] = useState("");
   const [textNotes, setTextNotes] = useState("");
+  const [textFile, setTextFile] = useState("");
   const [file, setFile] = useState<any>(null);
 
   const { mutateAsync: uploadFile } = useUploadFileQuery();
@@ -55,9 +58,11 @@ export const useEditNotesUtils = ({
   const onSaveNotes = async () => {
     try {
       let fileData = null;
-      if (file) {
+      if (file !== null && file !== "") {
         const resFileUpload = await uploadFile(file);
         fileData = resFileUpload.data;
+      } else if (file === "") {
+        fileData = "";
       }
 
       const notesData = {
@@ -67,7 +72,12 @@ export const useEditNotesUtils = ({
         options: textOptions,
         wayForward: textWayForward,
         notes: textNotes,
-        file: fileData,
+        file:
+          fileData !== null && fileData !== ""
+            ? fileData
+            : fileData === ""
+              ? ""
+              : textFile,
       };
 
       onFirestoreUpdateNotes({
@@ -78,7 +88,7 @@ export const useEditNotesUtils = ({
       /**
        * TODO: Uncomment this when the backend is ready
        */
-      // await postNotes(notesData);
+      // postNotes(notesData);
       toast({
         title: "Success",
         description: "Notes saved successfully",
@@ -106,6 +116,7 @@ export const useEditNotesUtils = ({
     setTextOptions(fsNotes?.options);
     setTextWayForward(fsNotes?.wayForward);
     setTextNotes(fsNotes?.notes);
+    setTextFile(fsNotes?.file);
   }, [fsNotes]);
 
   return {
@@ -122,6 +133,8 @@ export const useEditNotesUtils = ({
       sessionDate: fsNotes?.startDate,
       sessionName: fsNotes?.courseName,
       sessionCoachee: fsNotes?.coacheeName,
+      noteFile: textFile,
+      deleteFileStatus,
     },
     event: {
       onSaveNotes,
@@ -131,6 +144,7 @@ export const useEditNotesUtils = ({
       setTextWayForward,
       setTextNotes,
       setFile,
+      setDeleteFileStatus,
     },
   };
 };
