@@ -32,7 +32,7 @@ function CoachLayout() {
           </div>
           <div>
             {userRole === "admin" && (
-              <Button onClick={() => getExportAllCoaches()} className="mr-2">
+              <Button onClick={getExportAllCoaches} className="mr-2">
                 <Download className="mr-2 h-4 w-4" /> Export Coaches
               </Button>
             )}

@@ -46,7 +46,7 @@ function NotesLayout() {
             </CardTitle>
           </div>
           {userRole === "admin" && (
-            <Button onClick={() => getExportNotes()}>
+            <Button onClick={getExportNotes}>
               <Download className="mr-2 h-4 w-4" /> Export Notes
             </Button>
           )}
