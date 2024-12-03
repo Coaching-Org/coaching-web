@@ -27,6 +27,8 @@ export const UserKey = {
 export const NotesKey = {
   notesCreate: "notes.create",
   notesList: "notes.list",
+  notesDetail: "notes.detail",
+  notesUpdate: "notes.update",
 };
 
 export const SharedKey = {
