@@ -16,8 +16,8 @@ export interface NoteListDetail {
   sessionName: string;
   courseName: string;
   sessionTime: number;
-  startDate?: string;
-  endDate?: string;
+  appointmentStartDate?: string;
+  appointmentEndDate?: string;
 }
 
 export interface GetNotesRequest {

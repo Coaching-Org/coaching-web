@@ -112,11 +112,17 @@ export const useCreateAppointmentUtils = () => {
         fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
       });
       /** Change to Backend Server */
-      mutateAsync(data)
-        .then((res) => console.log("Created Session", res))
+      await mutateAsync({
+        ...data,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      })
+        .then((res) => {
+          console.log("Created Session", res);
+          navigate({ to: "/appointments" });
+        })
         .catch((error) => console.error("Failed to create"));
       toast({ title: "Appointment created successfully", variant: "success" });
-      navigate({ to: "/appointments" });
     } catch (error) {
       console.error("error: ", error);
       toast({ title: "Appointment creation failed", variant: "destructive" });
@@ -217,7 +223,7 @@ const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
   while (baseDate.getHours() < 17) {
     const startDate = new Date(baseDate);
     const endDate = new Date(baseDate);
-    endDate.setMinutes(baseDate.getMinutes() + 30);
+    endDate.setMinutes(baseDate.getMinutes() + 60);
 
     const formatTime = (date: Date) => {
       return date.toLocaleTimeString("en-US", {
@@ -229,13 +235,13 @@ const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
 
     slots.push({
       id: `${startDate}-${endDate}`,
-      duration: "30 min",
+      duration: "60 min",
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       label: `${formatTime(startDate)} - ${formatTime(endDate)}`,
     });
 
-    baseDate.setMinutes(baseDate.getMinutes() + 30);
+    baseDate.setMinutes(baseDate.getMinutes() + 60);
   }
   return slots;
 };
