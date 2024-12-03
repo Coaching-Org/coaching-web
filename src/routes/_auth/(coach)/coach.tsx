@@ -16,7 +16,8 @@ function CoachLayout() {
   const navigate = Route.useNavigate();
   const { userRole } = useAuth();
   const {
-    state: { data },
+    state: { data, search },
+    event: { setSearch },
   } = useCoachUtils();
 
   const {
@@ -42,7 +43,11 @@ function CoachLayout() {
           </div>
         </CardHeader>
         <CardContent>
-          <CoachTable data={data?.data || []} />
+          <CoachTable
+            data={data?.data || []}
+            search={search}
+            setSearch={setSearch}
+          />
         </CardContent>
       </Card>
     </div>

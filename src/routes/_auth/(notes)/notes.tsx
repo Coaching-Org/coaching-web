@@ -10,6 +10,7 @@ import { useLanguage } from "@/components/language.provider";
 import { Download } from "lucide-react";
 import { useExportUtils } from "@/hooks/functions";
 import { useAuth } from "@/auth";
+import { useNoteListUtils } from "./-utils/notes.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -19,8 +20,10 @@ function NotesLayout() {
   const navigate = useNavigate();
   const { translations } = useLanguage();
   const {
-    state: { data },
-  } = useAppointmentsUtils();
+    state: { data, search },
+    event: { setSearch },
+  } = useNoteListUtils();
+
   const {
     state: { fsNotes },
   } = useListNotesFirestoreUtils();
@@ -52,7 +55,11 @@ function NotesLayout() {
           )}
         </CardHeader>
         <CardContent>
-          <NotesAppointmentTable data={(fsNotes as any) || []} />
+          <NotesAppointmentTable
+            data={data}
+            search={search}
+            setSearch={setSearch}
+          />
         </CardContent>
       </Card>
     </div>
