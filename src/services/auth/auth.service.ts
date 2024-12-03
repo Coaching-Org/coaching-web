@@ -11,6 +11,6 @@ export class AuthServices extends HttpService {
   }
 
   static logout(signal?: AbortSignal) {
-    return this.post("/auth/logout", {}, { signal });
+    return this.get("/auth/logout", { signal });
   }
 }

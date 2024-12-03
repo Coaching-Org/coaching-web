@@ -57,6 +57,6 @@ export const useLogoutQuery = (): UseQueryResult<any, Error> => {
       await AuthServices.logout(signal);
     },
     retry: 0,
-    enabled: true,
+    enabled: false,
   });
 };
