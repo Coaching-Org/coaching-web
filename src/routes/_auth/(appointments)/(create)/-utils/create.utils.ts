@@ -103,14 +103,6 @@ export const useCreateAppointmentUtils = () => {
     };
 
     try {
-      onFirestoreSaveAppointments({
-        ...data,
-        coachName: userName,
-        coacheeName: selectedCoacheeName,
-        courseName: "Professional Coaching",
-        status: "pending",
-        fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
-      });
       /** Change to Backend Server */
       await mutateAsync({
         ...data,
@@ -119,10 +111,21 @@ export const useCreateAppointmentUtils = () => {
       })
         .then((res) => {
           console.log("Created Session", res);
+          onFirestoreSaveAppointments({
+            ...data,
+            coachName: userName,
+            coacheeName: selectedCoacheeName,
+            courseName: "Professional Coaching",
+            status: "pending",
+            fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
+          });
+          toast({
+            title: "Appointment created successfully",
+            variant: "success",
+          });
           navigate({ to: "/appointments" });
         })
         .catch((error) => console.error("Failed to create"));
-      toast({ title: "Appointment created successfully", variant: "success" });
     } catch (error) {
       console.error("error: ", error);
       toast({ title: "Appointment creation failed", variant: "destructive" });

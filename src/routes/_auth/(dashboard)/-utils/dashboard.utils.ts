@@ -18,7 +18,7 @@ export const useDashboardUtils = () => {
   const debouncedSearch = useDebounce(search, 500);
 
   const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
-    { page: 1, perPage: 10, keyword: search, status: "pending" },
+    { page: 1, perPage: 50, keyword: search, status: "pending" },
     true
   );
   const {

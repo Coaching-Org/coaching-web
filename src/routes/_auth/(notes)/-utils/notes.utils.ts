@@ -14,7 +14,7 @@ export const useNoteListUtils = () => {
   const debouncedSearch = useDebounce(search, 500);
 
   const { data: NotesListData, refetch } = useNotesListQuery(
-    { page: 1, perPage: 10, keyword: search },
+    { page: 1, perPage: 50, keyword: search },
     true
   );
   const {

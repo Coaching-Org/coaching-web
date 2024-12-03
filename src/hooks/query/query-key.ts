@@ -7,6 +7,7 @@ export const AuthKey = {
 export const AppointmentKey = {
   appointmentsList: "appointments.list",
   appointmentsCreate: "appointments.create",
+  appointmentsDetail: "appointments.detail",
 };
 
 export const CoachKey = {

@@ -3,9 +3,11 @@ import { useCoachingContext } from "@/hooks/context";
 import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
 import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
 import { useUpdateAppointmentFirestoreUtils } from "@/hooks/firebase/update-appointment.firestore.utils";
+import { useAppointmentDetailQuery } from "@/hooks/query/appointments/appointments.query";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
+import { PostNotesRequestV2 } from "@/interfaces/notes/post-notes.type";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -52,6 +54,10 @@ export const useNotesUtils = ({
   const [file, setFile] = useState<any>(null);
 
   const { mutateAsync: uploadFile } = useUploadFileQuery();
+  const { data: dataAppointmentDetail } = useAppointmentDetailQuery(
+    { appointmentId: Number(notesId) },
+    true
+  );
 
   const onSaveNotes = async () => {
     try {
@@ -71,31 +77,45 @@ export const useNotesUtils = ({
         file: fileData,
       };
 
-      onFirestoreSaveNotes({
+      const transformNotesData: PostNotesRequestV2 = {
         ...notesData,
-        appointmentId: appointmentDetail?.id,
-        coachId: userId,
-        coachName: userName,
-        coacheeId: appointmentDetail?.coacheeId,
-        coacheeName: appointmentDetail?.coacheeName,
-        courseId: appointmentDetail?.courseId,
-        courseName: appointmentDetail?.courseName,
-        startDate: appointmentDetail?.startDate,
-        endDate: appointmentDetail?.endDate,
-        sessionName: appointmentDetail?.sessionName || "",
-      });
+        appointmentId: Number(notesId),
+        coachId: Number(userId),
+        coacheeId: Number(dataAppointmentDetail?.data.coacheeId),
+        files: fileData ?? "",
+        willWayForward: textWayForward,
+      };
 
-      onFirestoreUpdateAppointment({ status: "done" });
       /**
        * TODO: Uncomment this when the backend is ready
        */
-      // await postNotes(notesData);
-      toast({
-        title: "Success",
-        description: "Notes saved successfully",
-        variant: "success",
-      });
-      navigate({ to: "/notes" });
+      postNotes(transformNotesData as any)
+        .then((res) => {
+          onFirestoreSaveNotes({
+            ...notesData,
+            appointmentId: appointmentDetail?.id,
+            coachId: userId,
+            coachName: userName,
+            coacheeId: appointmentDetail?.coacheeId,
+            coacheeName: appointmentDetail?.coacheeName,
+            courseId: appointmentDetail?.courseId,
+            courseName: appointmentDetail?.courseName,
+            startDate: appointmentDetail?.startDate,
+            endDate: appointmentDetail?.endDate,
+            sessionName: appointmentDetail?.sessionName || "",
+          });
+
+          onFirestoreUpdateAppointment({ status: "done" });
+          toast({
+            title: "Success",
+            description: "Notes saved successfully",
+            variant: "success",
+          });
+          navigate({ to: "/notes" });
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
     } catch (error) {
       toast({
         title: "Error",
@@ -123,9 +143,9 @@ export const useNotesUtils = ({
       contextCoacheeName,
       contextCourseName,
       contextDate,
-      sessionDate: appointmentDetail?.startDate,
-      sessionName: appointmentDetail?.courseName,
-      sessionCoachee: appointmentDetail?.coacheeName,
+      sessionDate: dataAppointmentDetail?.data.appointmentStartTime,
+      sessionName: dataAppointmentDetail?.data.sessionName,
+      sessionCoachee: dataAppointmentDetail?.data.coachee,
     },
     event: {
       onSaveNotes,
