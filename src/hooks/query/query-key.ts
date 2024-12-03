@@ -31,3 +31,10 @@ export const NotesKey = {
 export const SharedKey = {
   fileUpload: "shared.fileUpload",
 };
+
+export const ExportKey = {
+  exportAppointments: "export.appointments",
+  exportNotes: "export.notes",
+  exportAllCoaches: "export.allCoaches",
+  exportCoachesAppointments: "export.coachesAppointments",
+};

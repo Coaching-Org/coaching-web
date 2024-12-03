@@ -49,7 +49,7 @@ function AuthLayout() {
   const handleLogout = () => {
     auth.logout().then(() => {
       router.invalidate().finally(() => {
-        navigate({ to: "/" });
+        navigate({ to: "/login" });
       });
     });
   };
