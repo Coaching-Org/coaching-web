@@ -43,7 +43,7 @@ function AppointmentsLayout() {
           </div>
           <div>
             {userRole === "admin" && (
-              <Button onClick={() => getExportAppointment()} className="mr-2">
+              <Button onClick={getExportAppointment} className="mr-2">
                 <Download className="mr-2 h-4 w-4" /> Export Sessions
               </Button>
             )}
