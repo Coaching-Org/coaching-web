@@ -40,9 +40,6 @@ function NoteDetailLayout() {
       textOptions,
       textWayForward,
       textNotes,
-      contextCoacheeName,
-      contextCourseName,
-      contextDate,
       sessionDate,
       sessionName,
       sessionCoachee,
@@ -172,7 +169,7 @@ function NoteDetailLayout() {
               <Input
                 type="file"
                 multiple={false}
-                accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip"
+                accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip,.csv"
                 onChange={(e) => {
                   const formData = new FormData();
                   const files = e.target?.files?.[0];

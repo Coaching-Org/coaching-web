@@ -9,6 +9,15 @@ import {
   GetNotesRequest,
   GetNotesResponse,
 } from "@/interfaces/notes/get-notes.type";
+import {
+  GetNoteDetailsRequest,
+  GetNoteDetailsResponse,
+} from "@/interfaces/notes/get-detail-note.type";
+import {
+  PatchNotesParams,
+  PatchNotesRequest,
+  PatchNotesResponse,
+} from "@/interfaces/notes/patch-notes.type";
 
 export const usePostNotesQuery = () => {
   return useMutation<PostNotesResponse, Error, PostNotesRequest>({
@@ -44,3 +53,41 @@ export const useNotesListQuery = (
     retry: 0,
     enabled: enabled || false,
   });
+
+export const useNoteDetailQuery = (
+  opts: GetNoteDetailsRequest,
+  enabled: boolean
+): UseQueryResult<GetNoteDetailsResponse> =>
+  useQuery({
+    queryKey: [NotesKey.notesDetail],
+    queryFn: async ({ signal }) => {
+      try {
+        const response = await NotesServices.getNoteDetails(opts, signal);
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+    enabled: enabled || false,
+  });
+
+export const useUpdateNoteQuery = () => {
+  return useMutation<PatchNotesResponse, Error, PatchNotesRequest>({
+    mutationKey: [NotesKey.notesUpdate],
+    mutationFn: async (params) => {
+      try {
+        const response = await NotesServices.updateNote(
+          { notesId: Number(params.notesId) },
+          params
+        );
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+  });
+};

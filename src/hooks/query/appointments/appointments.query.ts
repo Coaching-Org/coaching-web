@@ -9,6 +9,10 @@ import {
   PostAppointmentRequest,
   PostAppointmentResponse,
 } from "@/interfaces/appointment/post-appointment.type";
+import {
+  GetAppointmentDetailRequest,
+  GetAppointmentDetailResponse,
+} from "@/interfaces";
 
 export const useAppointmentsListQuery = (
   opts: GetAppointmentsListRequest,
@@ -52,3 +56,25 @@ export const useCreateAppointmentQuery = () => {
     },
   });
 };
+
+export const useAppointmentDetailQuery = (
+  opts: GetAppointmentDetailRequest,
+  enabled: boolean
+): UseQueryResult<GetAppointmentDetailResponse> =>
+  useQuery({
+    queryKey: [AppointmentKey.appointmentsDetail],
+    queryFn: async ({ signal }) => {
+      try {
+        const response = await AppointmentsServices.getAppointmentDetail(
+          opts,
+          signal
+        );
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+    enabled: enabled || false,
+  });

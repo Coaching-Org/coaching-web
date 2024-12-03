@@ -11,3 +11,15 @@ export interface PostNotesRequest {
 export interface PostNotesResponse {
   message: string;
 }
+
+export interface PostNotesRequestV2 {
+  appointmentId: number;
+  coachId: number;
+  coacheeId: number;
+  files: string;
+  goals: string;
+  options: string;
+  reality: string;
+  willWayForward: string;
+  notes: string;
+}

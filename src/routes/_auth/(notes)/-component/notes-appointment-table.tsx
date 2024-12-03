@@ -54,8 +54,11 @@ export const createColumns = (
       cell: ({ row }) => {
         return (
           <div className="text-center" style={{ width: "100px" }}>
-            {row.original.startDate && formatHour(row.original.startDate)} -{" "}
-            {row.original.endDate && formatHour(row.original.endDate)}
+            {row.original.appointmentStartDate &&
+              formatHour(row.original.appointmentStartDate)}
+            {" - "}
+            {row.original.appointmentEndDate &&
+              formatHour(row.original.appointmentEndDate)}
           </div>
         );
       },
