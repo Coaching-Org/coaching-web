@@ -7,6 +7,10 @@ import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.util
 import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
 import { NotesAppointmentTable } from "./-component/notes-appointment-table";
 import { useLanguage } from "@/components/language.provider";
+import { Download } from "lucide-react";
+import { useExportUtils } from "@/hooks/functions";
+import { useAuth } from "@/auth";
+import { useNoteListUtils } from "./-utils/notes.utils";
 
 export const Route = createFileRoute("/_auth/(notes)/notes")({
   component: NotesLayout,
@@ -16,11 +20,19 @@ function NotesLayout() {
   const navigate = useNavigate();
   const { translations } = useLanguage();
   const {
-    state: { data },
-  } = useAppointmentsUtils();
+    state: { data, search },
+    event: { setSearch },
+  } = useNoteListUtils();
+
   const {
     state: { fsNotes },
   } = useListNotesFirestoreUtils();
+
+  const {
+    event: { getExportNotes },
+  } = useExportUtils();
+
+  const { userRole } = useAuth();
 
   return (
     <div className="gap-4 lg:p-6">
@@ -36,9 +48,18 @@ function NotesLayout() {
               {translations.description.notesDescription}
             </CardTitle>
           </div>
+          {userRole === "admin" && (
+            <Button onClick={() => getExportNotes()}>
+              <Download className="mr-2 h-4 w-4" /> Export Notes
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
-          <NotesAppointmentTable data={(fsNotes as any) || []} />
+          <NotesAppointmentTable
+            data={data}
+            search={search}
+            setSearch={setSearch}
+          />
         </CardContent>
       </Card>
     </div>

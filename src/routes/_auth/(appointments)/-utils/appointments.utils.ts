@@ -1,20 +1,20 @@
 import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
-import { AppointmentDetailV2 } from "@/interfaces";
+import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
 import { useDebounce } from "@/lib";
 import { useEffect, useState } from "react";
 
 export const useAppointmentsUtils = () => {
   const { userId } = useAuth();
   const [appointmentData, setAppointmentData] = useState<
-    AppointmentDetailV2[] | null
+    AppointmentDetailV2[] | AppointmentDetail[] | null
   >();
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
 
   const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
-    { page: 1, perPage: 10, keyword: search },
+    { page: 1, perPage: 50, keyword: search },
     true
   );
   const {
@@ -37,8 +37,14 @@ export const useAppointmentsUtils = () => {
   };
 
   useEffect(() => {
-    fetchAppointment();
+    // fetchAppointment();
   }, []);
+
+  useEffect(() => {
+    if (AppointmentListData?.data) {
+      setAppointmentData(AppointmentListData.data);
+    }
+  }, [AppointmentListData?.data]);
 
   useEffect(() => {
     refetch();

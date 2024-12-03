@@ -26,6 +26,9 @@ import {
 import { cn } from "@/lib/utils";
 import { CoachDetail } from "@/interfaces";
 import moment from "moment";
+import { useExportUtils } from "@/hooks/functions";
+import { Download } from "lucide-react";
+import { useAuth } from "@/auth";
 
 export const columns: ColumnDef<CoachDetail>[] = [
   {
@@ -72,24 +75,19 @@ export const columns: ColumnDef<CoachDetail>[] = [
   {
     accessorKey: "numberOfAppointments",
     header: "Appointments",
-    cell: ({ row }) => (
-      <div
-        className={cn(
-          {
-            "text-primary": row.getValue("status") === "approved",
-            "text-yellow-500": row.getValue("status") === "pending",
-            "text-red-500": row.getValue("status") === "rejected",
-          },
-          "capitalize"
-        )}
-      >
-        {row.getValue("numberOfAppointments")}
-      </div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("numberOfAppointments")}</div>,
   },
 ];
 
-export function CoachTable({ data }: { data: CoachDetail[] }) {
+export function CoachTable({
+  data,
+  search,
+  setSearch,
+}: {
+  data: CoachDetail[];
+  search?: string;
+  setSearch: (search: string) => void;
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -97,10 +95,38 @@ export function CoachTable({ data }: { data: CoachDetail[] }) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const {
+    event: { getExportCoachesAppointments },
+  } = useExportUtils();
+  const { userRole } = useAuth();
+
+  React.useEffect(() => {
+    if (userRole !== "admin") {
+      setColumnVisibility({ actions: false });
+    }
+  }, [userRole]);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: [
+      ...columns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <div>
+            <Button
+              onClick={() =>
+                getExportCoachesAppointments({ coachId: row.original.id })
+              }
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+          </div>
+        ),
+      },
+    ],
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -122,10 +148,8 @@ export function CoachTable({ data }: { data: CoachDetail[] }) {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter users..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -180,10 +204,6 @@ export function CoachTable({ data }: { data: CoachDetail[] }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows?.length} of{" "}
-          {table.getFilteredRowModel().rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { FileTextIcon } from "@radix-ui/react-icons";
 import { loadLanguage, useLanguage } from "@/components/language.provider";
+import { useLogoutQuery } from "@/hooks/query/auth/auth.query";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
@@ -45,11 +46,16 @@ function AuthLayout() {
   const [currentPath, setCurrentPath] = useState(
     router.state.location.pathname
   );
+  const { refetch: refetchLogout } = useLogoutQuery();
 
   const handleLogout = () => {
+    document.cookie =
+      "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; HttpOnly; samesite=none;";
+
     auth.logout().then(() => {
       router.invalidate().finally(() => {
-        navigate({ to: "/" });
+        refetchLogout();
+        navigate({ to: "/login" });
       });
     });
   };

@@ -7,6 +7,7 @@ export const AuthKey = {
 export const AppointmentKey = {
   appointmentsList: "appointments.list",
   appointmentsCreate: "appointments.create",
+  appointmentsDetail: "appointments.detail",
 };
 
 export const CoachKey = {
@@ -26,8 +27,18 @@ export const UserKey = {
 
 export const NotesKey = {
   notesCreate: "notes.create",
+  notesList: "notes.list",
+  notesDetail: "notes.detail",
+  notesUpdate: "notes.update",
 };
 
 export const SharedKey = {
   fileUpload: "shared.fileUpload",
+};
+
+export const ExportKey = {
+  exportAppointments: "export.appointments",
+  exportNotes: "export.notes",
+  exportAllCoaches: "export.allCoaches",
+  exportCoachesAppointments: "export.coachesAppointments",
 };

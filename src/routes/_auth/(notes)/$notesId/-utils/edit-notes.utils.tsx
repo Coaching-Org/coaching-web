@@ -1,12 +1,14 @@
 import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
-import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
-import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
 import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
 import { useUpdateNotesFirestoreUtils } from "@/hooks/firebase/update-notes.firestore.utils";
-import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
+import {
+  useNoteDetailQuery,
+  useUpdateNoteQuery,
+} from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
 import { useToast } from "@/hooks/use-toast";
+import { PatchNotesRequest } from "@/interfaces/notes/patch-notes.type";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
@@ -17,7 +19,6 @@ export const useEditNotesUtils = ({
   edit?: boolean;
   notesId: string;
 }) => {
-  const { mutateAsync: postNotes } = usePostNotesQuery();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
@@ -32,17 +33,7 @@ export const useEditNotesUtils = ({
   } = useDetailNotesFirestoreUtils({ notesId });
 
   const {
-    stateContext: {
-      contextAppointmentId,
-      contextCoachId,
-      contextCoacheeId,
-      contextCourseId,
-      contextNotesId,
-      contextCoachName,
-      contextCoacheeName,
-      contextCourseName,
-      contextDate,
-    },
+    stateContext: { contextCoacheeName, contextCourseName, contextDate },
   } = useCoachingContext();
 
   const [textGoals, setTextGoals] = useState("");
@@ -54,6 +45,12 @@ export const useEditNotesUtils = ({
   const [file, setFile] = useState<any>(null);
 
   const { mutateAsync: uploadFile } = useUploadFileQuery();
+  const { mutateAsync: updateNote } = useUpdateNoteQuery();
+
+  const { data: noteDetail } = useNoteDetailQuery(
+    { notesId: notesId },
+    !!notesId
+  );
 
   const onSaveNotes = async () => {
     try {
@@ -80,22 +77,40 @@ export const useEditNotesUtils = ({
               : textFile,
       };
 
-      onFirestoreUpdateNotes({
-        ...fsNotes,
-        ...notesData,
-        appointmentId: fsNotes.appointmentId,
-      });
       /**
        * TODO: Uncomment this when the backend is ready
        */
-      // postNotes(notesData);
-      toast({
-        title: "Success",
-        description: "Notes saved successfully",
-        variant: "success",
-      });
-      navigate({ to: "/notes" });
+      const transformedNotesData: Partial<PatchNotesRequest> = {
+        ...notesData,
+        appointmentId: Number(noteDetail?.data.appointmentId),
+        willWayForward: textWayForward,
+        coacheeId: Number(noteDetail?.data.coacheeId),
+        coachId: Number(noteDetail?.data.coachId),
+        notesId: Number(noteDetail?.data.id),
+        files: notesData.file,
+      };
+      updateNote(transformedNotesData as any)
+        .then((res) => {
+          console.log("res", res);
+
+          onFirestoreUpdateNotes({
+            ...fsNotes,
+            ...notesData,
+            appointmentId: fsNotes?.appointmentId,
+          });
+
+          toast({
+            title: "Success",
+            description: "Notes saved successfully",
+            variant: "success",
+          });
+          navigate({ to: "/notes" });
+        })
+        .catch((err) => {
+          console.error("err", err);
+        });
     } catch (error) {
+      console.error("error", error);
       toast({
         title: "Error",
         description: "Failed to save notes",
@@ -111,13 +126,15 @@ export const useEditNotesUtils = ({
     textWayForward === "";
 
   useMemo(() => {
-    setTextGoals(fsNotes?.goals);
-    setTextReality(fsNotes?.reality);
-    setTextOptions(fsNotes?.options);
-    setTextWayForward(fsNotes?.wayForward);
-    setTextNotes(fsNotes?.notes);
-    setTextFile(fsNotes?.file);
-  }, [fsNotes]);
+    if (noteDetail?.data) {
+      setTextGoals(noteDetail?.data.goals);
+      setTextReality(noteDetail?.data.reality);
+      setTextOptions(noteDetail?.data.options);
+      setTextWayForward(noteDetail?.data.willWayForward);
+      setTextNotes(noteDetail?.data.notes);
+      setTextFile(noteDetail?.data.file);
+    }
+  }, [noteDetail?.data]);
 
   return {
     state: {
@@ -130,9 +147,9 @@ export const useEditNotesUtils = ({
       contextCoacheeName,
       contextCourseName,
       contextDate,
-      sessionDate: fsNotes?.startDate,
-      sessionName: fsNotes?.courseName,
-      sessionCoachee: fsNotes?.coacheeName,
+      sessionDate: noteDetail?.data?.appointmentStartTime,
+      sessionName: noteDetail?.data?.courseName,
+      sessionCoachee: noteDetail?.data?.coacheeName,
       noteFile: textFile,
       deleteFileStatus,
     },

@@ -87,7 +87,11 @@ function Login() {
       // in a real app, you'd want to use a more robust solution
       await sleep(1);
 
-      await navigate({ to: search.redirect || "/dashboard" });
+      if (resUser.role === "admin") {
+        await navigate({ to: search.redirect || "/appointments" });
+      } else {
+        await navigate({ to: search.redirect || "/dashboard" });
+      }
     } catch (error) {
       console.error("Error logging in: ", error);
     } finally {

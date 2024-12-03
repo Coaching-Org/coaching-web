@@ -5,6 +5,7 @@ import {
   useCoacheeListQuery,
   useCoacheeMappingListQuery,
 } from "@/hooks/query/coachee/coachee.query";
+import { useCoachListQuery } from "@/hooks/query/coach/coach.query";
 import { useToast } from "@/hooks/use-toast";
 import { CoacheeDetail } from "@/interfaces";
 import { useDebounce } from "@/lib";
@@ -26,11 +27,14 @@ export const useCreateAppointmentUtils = () => {
   const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
+  const [coachKeyword, setCoachKeyword] = useState<string>("");
   const [coacheeData, setCoacheeData] = useState<any[]>([]);
   const [coacheeDataMapping, setCoacheeDataMapping] = useState<any[]>([]);
+  const [coachData, setCoachData] = useState<any[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
   const debouncedCoacheeKeyword = useDebounce(coacheeKeyword, 500);
+  const debouncedCoachKeyword = useDebounce(coachKeyword, 500);
 
   const { data, refetch, isLoading } = useCoacheeListQuery({
     enabled: true,
@@ -42,6 +46,14 @@ export const useCreateAppointmentUtils = () => {
       params: { page: 1, perPage: 50, keyword: search },
       enabled: true,
     });
+  const {
+    data: coachDataQuery,
+    refetch: refetchCoach,
+    isLoading: isLoadingCoach,
+  } = useCoachListQuery({
+    enabled: true,
+    params: { page: 1, perPage: 10, keyword: coachKeyword },
+  });
 
   const timeSlots = useMemo(() => {
     if (!selectedDate) return [];
@@ -91,20 +103,29 @@ export const useCreateAppointmentUtils = () => {
     };
 
     try {
-      onFirestoreSaveAppointments({
-        ...data,
-        coachName: userName,
-        coacheeName: selectedCoacheeName,
-        courseName: "Professional Coaching",
-        status: "pending",
-        fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
-      });
       /** Change to Backend Server */
-      mutateAsync(data)
-        .then((res) => console.log("Created Session", res))
+      await mutateAsync({
+        ...data,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      })
+        .then((res) => {
+          console.log("Created Session", res);
+          onFirestoreSaveAppointments({
+            ...data,
+            coachName: userName,
+            coacheeName: selectedCoacheeName,
+            courseName: "Professional Coaching",
+            status: "pending",
+            fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
+          });
+          toast({
+            title: "Appointment created successfully",
+            variant: "success",
+          });
+          navigate({ to: "/appointments" });
+        })
         .catch((error) => console.error("Failed to create"));
-      toast({ title: "Appointment created successfully", variant: "success" });
-      navigate({ to: "/appointments" });
     } catch (error) {
       console.error("error: ", error);
       toast({ title: "Appointment creation failed", variant: "destructive" });
@@ -116,15 +137,15 @@ export const useCreateAppointmentUtils = () => {
       setCoacheeData(data.data);
     }
 
-    if (coacheeKeyword) {
-      const filteredData = coacheeData.filter((item: CoacheeDetail) =>
-        item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
-      );
-      setCoacheeData(filteredData);
-      // setCoacheeData(
-      //  filteredData.map((item) => ({ label: item.name, value: item.id }))
-      // );
-    }
+    // if (coacheeKeyword) {
+    //   const filteredData = coacheeData.filter((item: CoacheeDetail) =>
+    //     item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
+    //   );
+    //   setCoacheeData(filteredData);
+    //   setCoacheeData(
+    //    filteredData.map((item) => ({ label: item.name, value: item.id }))
+    //   );
+    // }
   }, [data?.data, coacheeKeyword]);
 
   useEffect(() => {
@@ -144,6 +165,21 @@ export const useCreateAppointmentUtils = () => {
     refetchMapping();
   }, [debouncedSearch, debouncedCoacheeKeyword]);
 
+  useEffect(() => {
+    if (coachDataQuery?.data) {
+      setCoachData(coachDataQuery.data);
+    }
+  }, [coachDataQuery?.data]);
+
+  useEffect(() => {
+    refetchCoach();
+  }, [debouncedCoachKeyword]);
+
+  // useEffect(() => {
+  //   console.log("coachKeyword Changed", coachKeyword);
+  //   console.log("isLoadingCoach", isLoadingCoach);
+  // }, [coachKeyword, isLoadingCoach]);
+
   return {
     state: {
       timeSlots,
@@ -155,6 +191,13 @@ export const useCreateAppointmentUtils = () => {
       coachId: userId,
       isButtonDisabled,
       loading: isLoading,
+      loadingCoach: isLoadingCoach,
+      coachData: useMemo(() => {
+        return coachDataQuery?.data?.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+      }, [coachDataQuery?.data]),
     },
     event: {
       onDateSelect,
@@ -163,6 +206,7 @@ export const useCreateAppointmentUtils = () => {
       onCoacheeSelect,
       onChangeCoachee,
       setCoacheeKeyword,
+      setCoachKeyword,
     },
   };
 };
@@ -182,7 +226,7 @@ const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
   while (baseDate.getHours() < 17) {
     const startDate = new Date(baseDate);
     const endDate = new Date(baseDate);
-    endDate.setMinutes(baseDate.getMinutes() + 30);
+    endDate.setMinutes(baseDate.getMinutes() + 60);
 
     const formatTime = (date: Date) => {
       return date.toLocaleTimeString("en-US", {
@@ -194,13 +238,13 @@ const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
 
     slots.push({
       id: `${startDate}-${endDate}`,
-      duration: "30 min",
+      duration: "60 min",
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       label: `${formatTime(startDate)} - ${formatTime(endDate)}`,
     });
 
-    baseDate.setMinutes(baseDate.getMinutes() + 30);
+    baseDate.setMinutes(baseDate.getMinutes() + 60);
   }
   return slots;
 };

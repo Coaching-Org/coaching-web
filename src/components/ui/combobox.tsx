@@ -33,7 +33,7 @@ interface ItemDetailProps {
   label: string | number;
 }
 
-export function Combobox({
+function ComboboxMemo({
   data,
   defaultValue,
   disabled = false,
@@ -46,6 +46,36 @@ export function Combobox({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [label, setLabel] = React.useState<string>("");
+
+  // Reset search when open
+  React.useEffect(() => {
+    const e = { target: { value: "" } } as React.ChangeEvent<HTMLInputElement>;
+    onSearch?.(e);
+  }, [open]);
+
+  const ItemList = React.useMemo(() => {
+    return data.map((item) => (
+      <CommandItem
+        key={item.value}
+        value={item.value.toString()}
+        onSelect={(currentValue) => {
+          setValue(currentValue === value ? "" : currentValue);
+          setLabel(item.label.toString());
+          setOpen(false);
+          onValueChange?.(currentValue);
+          onDataChange?.(item);
+        }}
+      >
+        <Check
+          className={cn(
+            "mr-2 h-4 w-4",
+            value === item.value ? "opacity-100" : "opacity-0"
+          )}
+        />
+        {item.label}
+      </CommandItem>
+    ));
+  }, [data]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -77,7 +107,8 @@ export function Combobox({
               </CommandEmpty>
 
               <CommandGroup>
-                {data.map((item) => (
+                {ItemList}
+                {/* {data.map((item) => (
                   <CommandItem
                     key={item.value}
                     value={item.value.toString()}
@@ -97,7 +128,7 @@ export function Combobox({
                     />
                     {item.label}
                   </CommandItem>
-                ))}
+                ))} */}
               </CommandGroup>
             </CommandList>
           )}
@@ -106,3 +137,5 @@ export function Combobox({
     </Popover>
   );
 }
+
+export const Combobox = React.memo(ComboboxMemo);

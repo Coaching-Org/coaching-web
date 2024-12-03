@@ -1,24 +1,20 @@
 import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
-import { useMeQuery } from "@/hooks/query/auth/auth.query";
+import { useNotesListQuery } from "@/hooks/query/notes/notes.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
+import { NoteListDetail } from "@/interfaces/notes/get-notes.type";
 import { useDebounce } from "@/lib";
-import { AuthServices } from "@/services/auth/auth.service";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 
-export const useDashboardUtils = () => {
+export const useNoteListUtils = () => {
   const { userId } = useAuth();
-  const [appointmentData, setAppointmentData] = useState<
-    AppointmentDetailV2[] | AppointmentDetail[] | null
-  >();
+  const [notesData, setNotesData] = useState<NoteListDetail[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
-    { page: 1, perPage: 50, keyword: search, status: "pending" },
+  const { data: NotesListData, refetch } = useNotesListQuery(
+    { page: 1, perPage: 50, keyword: search },
     true
   );
   const {
@@ -33,13 +29,8 @@ export const useDashboardUtils = () => {
           operator: "==",
           value: userId,
         },
-        {
-          field: "status",
-          operator: "!=",
-          value: "done",
-        },
       ]);
-      // setAppointmentData(response);
+      setNotesData(response);
     } catch (error) {
       throw error;
     }
@@ -50,19 +41,19 @@ export const useDashboardUtils = () => {
   }, []);
 
   useEffect(() => {
-    if (AppointmentListData?.data) {
-      setAppointmentData(AppointmentListData.data);
+    if (NotesListData?.data) {
+      setNotesData(NotesListData.data);
     }
-  }, [AppointmentListData?.data]);
+  }, [NotesListData?.data]);
 
   useEffect(() => {
     refetch();
   }, [debouncedSearch]);
 
-  console.log("Dashboard Appointment Data", AppointmentListData);
+  console.log("Session Notes Data", NotesListData);
 
   return {
-    state: { data: appointmentData, search },
+    state: { data: notesData, search },
     event: { setSearch },
   };
 };
