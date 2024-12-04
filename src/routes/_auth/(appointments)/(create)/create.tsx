@@ -53,6 +53,7 @@ function AppointmentCreateLayout() {
       coacheeDataMapping,
       coachData,
       loadingCoach,
+      isButtonLoading,
     },
   } = useCreateAppointmentUtils();
 
@@ -173,7 +174,8 @@ function AppointmentCreateLayout() {
             onClick={() => {
               onSubmitAppointment();
             }}
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || isButtonLoading}
+            loading={isButtonLoading}
           >
             {translations.button.action.create}
           </Button>
