@@ -25,6 +25,8 @@ export const useCreateAppointmentUtils = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
   const [selectedCoachee, setSelectedCoachee] = useState<number | null>(null);
   const [selectedCoacheeName, setSelectedCoacheeName] = useState<string>("");
+  const [selectedCoach, setSelectedCoach] = useState<number | null>(null);
+  const [selectedCoachName, setSelectedCoachName] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<number>(1);
   const [coacheeKeyword, setCoacheeKeyword] = useState<string>("");
   const [coachKeyword, setCoachKeyword] = useState<string>("");
@@ -89,6 +91,17 @@ export const useCreateAppointmentUtils = () => {
     setSelectedCoacheeName(label);
   };
 
+  const onChangeCoach = ({
+    value,
+    label,
+  }: {
+    value: string;
+    label: string;
+  }) => {
+    setSelectedCoach(Number(value));
+    setSelectedCoachName(label);
+  };
+
   const onSubmitAppointment = async () => {
     setIsButtonLoading(true);
     const splitDate = selectedTimeSlot?.split("-");
@@ -97,7 +110,8 @@ export const useCreateAppointmentUtils = () => {
 
     const data = {
       coacheeId: selectedCoachee !== null ? selectedCoachee : 0,
-      coachId: Number(userId),
+      coachId:
+        userRole === "admin" && selectedCoach ? selectedCoach : Number(userId),
       courseId: selectedCourse,
       endDate: String(endDate),
       startDate: String(startDate),
@@ -115,7 +129,10 @@ export const useCreateAppointmentUtils = () => {
           console.log("Created Session", res);
           onFirestoreSaveAppointments({
             ...data,
-            coachName: userName,
+            coachName:
+              userRole === "admin" && selectedCoachName !== ""
+                ? selectedCoachName
+                : userName,
             coacheeName: selectedCoacheeName,
             courseName: "Professional Coaching",
             status: "pending",
@@ -184,11 +201,6 @@ export const useCreateAppointmentUtils = () => {
     refetchCoach();
   }, [debouncedCoachKeyword]);
 
-  // useEffect(() => {
-  //   console.log("coachKeyword Changed", coachKeyword);
-  //   console.log("isLoadingCoach", isLoadingCoach);
-  // }, [coachKeyword, isLoadingCoach]);
-
   return {
     state: {
       timeSlots,
@@ -217,6 +229,7 @@ export const useCreateAppointmentUtils = () => {
       onChangeCoachee,
       setCoacheeKeyword,
       setCoachKeyword,
+      onChangeCoach,
     },
   };
 };

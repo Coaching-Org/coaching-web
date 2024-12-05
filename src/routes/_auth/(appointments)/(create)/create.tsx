@@ -8,20 +8,11 @@ import {
 } from "@/components/ui/card";
 import { Combobox } from "@/components/ui/combobox";
 import { DatePicker } from "@/components/ui/datepicker";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCreateAppointmentUtils } from "./-utils/create.utils";
 import { useLanguage } from "@/components/language.provider";
 import { useAuth } from "@/auth";
 import { Label } from "@/components/ui/label";
-import { useMemo } from "react";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateLayout,
@@ -40,6 +31,7 @@ function AppointmentCreateLayout() {
       onChangeCoachee,
       setCoacheeKeyword,
       setCoachKeyword,
+      onChangeCoach,
     },
     state: {
       timeSlots,
@@ -95,6 +87,7 @@ function AppointmentCreateLayout() {
                       disabled={userRole !== "admin"}
                       onSearch={(e) => setCoachKeyword(e.target.value)}
                       loading={loadingCoach}
+                      onDataChange={onChangeCoach}
                     />
                   </div>
                 </div>
