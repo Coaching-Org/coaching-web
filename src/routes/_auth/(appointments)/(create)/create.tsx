@@ -158,7 +158,7 @@ function AppointmentCreateForm() {
                                       onSearch={(e) => {
                                         setCoacheeKeyword(e);
                                       }}
-                                      placeholder="Select Coachee Admin"
+                                      placeholder="Select Coachee"
                                     />
                                   ) : (
                                     <ComboboxCustom
