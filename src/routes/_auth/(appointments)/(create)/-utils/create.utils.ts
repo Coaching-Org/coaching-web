@@ -241,7 +241,7 @@ interface TimeSlot {
   endDate: string;
   label: string;
 }
-const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
+export const generateTimeSlots = (selectedDate: Date): TimeSlot[] => {
   const slots: TimeSlot[] = [];
   const baseDate = new Date(selectedDate);
   baseDate.setHours(9, 0, 0, 0); // Set to 9 AM
