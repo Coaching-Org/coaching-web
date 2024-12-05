@@ -50,7 +50,7 @@ export function ModalAppointment({
                 {translations.title.sessionCoachee}
                 <div>
                   <span className="font-semibold mt-4 text-sm text-muted-foreground">
-                    {appointmentData.coachName}
+                    {appointmentData.coacheeName}
                   </span>
                 </div>
               </div>
