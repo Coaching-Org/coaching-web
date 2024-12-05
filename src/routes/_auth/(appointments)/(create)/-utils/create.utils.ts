@@ -35,10 +35,11 @@ export const useCreateAppointmentUtils = () => {
   const debouncedSearch = useDebounce(search, 500);
   const debouncedCoacheeKeyword = useDebounce(coacheeKeyword, 500);
   const debouncedCoachKeyword = useDebounce(coachKeyword, 500);
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
 
   const { data, refetch, isLoading } = useCoacheeListQuery({
     enabled: true,
-    params: { page: 1, perPage: 10, keyword: coacheeKeyword },
+    params: { page: 1, perPage: 50, keyword: coacheeKeyword },
   });
 
   const { data: dataMapping, refetch: refetchMapping } =
@@ -52,7 +53,7 @@ export const useCreateAppointmentUtils = () => {
     isLoading: isLoadingCoach,
   } = useCoachListQuery({
     enabled: true,
-    params: { page: 1, perPage: 10, keyword: coachKeyword },
+    params: { page: 1, perPage: 50, keyword: coachKeyword },
   });
 
   const timeSlots = useMemo(() => {
@@ -89,6 +90,7 @@ export const useCreateAppointmentUtils = () => {
   };
 
   const onSubmitAppointment = async () => {
+    setIsButtonLoading(true);
     const splitDate = selectedTimeSlot?.split("-");
     const startDate = new Date(splitDate[0]);
     const endDate = new Date(splitDate[1]);
@@ -125,10 +127,27 @@ export const useCreateAppointmentUtils = () => {
           });
           navigate({ to: "/appointments" });
         })
-        .catch((error) => console.error("Failed to create"));
+        .catch((error) => {
+          toast({
+            title: "Failed to create appointment",
+            variant: "destructive",
+            description:
+              "There is already an existing appointment scheduled for this date and time slot.",
+          });
+          console.error("Failed to create");
+        })
+        .finally(() => {
+          setIsButtonLoading(false);
+        });
     } catch (error) {
       console.error("error: ", error);
-      toast({ title: "Appointment creation failed", variant: "destructive" });
+      toast({
+        title: "Failed to create appointment",
+        variant: "destructive",
+        description:
+          "There is already an existing appointment scheduled for this date and time slot.",
+      });
+      setIsButtonLoading(false);
     }
   };
 
@@ -136,16 +155,6 @@ export const useCreateAppointmentUtils = () => {
     if (data?.data) {
       setCoacheeData(data.data);
     }
-
-    // if (coacheeKeyword) {
-    //   const filteredData = coacheeData.filter((item: CoacheeDetail) =>
-    //     item.name.toLowerCase().includes(coacheeKeyword.toLowerCase())
-    //   );
-    //   setCoacheeData(filteredData);
-    //   setCoacheeData(
-    //    filteredData.map((item) => ({ label: item.name, value: item.id }))
-    //   );
-    // }
   }, [data?.data, coacheeKeyword]);
 
   useEffect(() => {
@@ -198,6 +207,7 @@ export const useCreateAppointmentUtils = () => {
           value: item.id,
         }));
       }, [coachDataQuery?.data]),
+      isButtonLoading,
     },
     event: {
       onDateSelect,
