@@ -61,7 +61,7 @@ export const ComboboxCustom = ({
       </button>
 
       {isOpen && (
-        <div className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg border">
+        <div className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg border z-10">
           <div className="px-3 py-2">
             <input
               type="text"
