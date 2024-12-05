@@ -13,8 +13,10 @@ import {
 
 export function DatePicker({
   onDateSelect,
+  className,
 }: {
   onDateSelect: (date: Date | null) => void;
+  className?: string;
 }) {
   const [date, setDate] = React.useState<Date>();
   const [open, setOpen] = React.useState<boolean>(false);
@@ -25,12 +27,13 @@ export function DatePicker({
         <Button
           variant={"outline"}
           className={cn(
-            "w-[200px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            "w-[200px] justify-start text-left p-5",
+            !date && "text-muted-foreground",
+            className
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : "Pick a date"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
