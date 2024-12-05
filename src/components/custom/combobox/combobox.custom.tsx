@@ -8,6 +8,13 @@ interface ComboboxProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  loading?: boolean;
+  defaultValue?: Item | undefined | null;
+}
+
+interface Item {
+  value: string | number;
+  label: string;
 }
 
 export const ComboboxCustom = ({
@@ -17,6 +24,8 @@ export const ComboboxCustom = ({
   placeholder = "Select an option...",
   disabled = false,
   className = "",
+  loading = false,
+  defaultValue,
 }: ComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | number>("");
@@ -49,8 +58,10 @@ export const ComboboxCustom = ({
         disabled={disabled}
       >
         <span className="block truncate">
-          {data.find((item) => item.value === selectedValue)?.label ||
-            placeholder}
+          {defaultValue
+            ? defaultValue.label
+            : data.find((item) => item.value === selectedValue)?.label ||
+              placeholder}
         </span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <ChevronsUpDown

@@ -11,7 +11,7 @@ export const useCoachUtils = () => {
     isLoading: isLoadingCoach,
   } = useCoachListQuery({
     enabled: true,
-    params: { page: 1, perPage: 5, keyword: coachKeyword },
+    params: { page: 1, perPage: 50, keyword: coachKeyword },
   });
 
   /** Refetch when keyword change */

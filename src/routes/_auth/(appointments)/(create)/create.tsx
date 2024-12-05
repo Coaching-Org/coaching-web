@@ -16,13 +16,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useCoachUtils } from "./-utils/coach.utils";
 import { useCoacheeUtils } from "./-utils/coachee.utils";
 import { useFormUtils } from "./-utils/form.utils";
 import { ComboboxCustom } from "@/components/custom/";
-
-let renderCount = 0;
+import { useUserMappingUtils } from "./-utils/user-mapping.utils";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
   component: AppointmentCreateForm,
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/_auth/(appointments)/(create)/create")({
 
 function AppointmentCreateForm() {
   const { translations } = useLanguage();
-  const { userRole } = useAuth();
+  const { userRole, userId, userName } = useAuth();
   const {
     state: { coachData, isLoadingCoach },
     event: { setCoachKeyword },
@@ -40,9 +41,17 @@ function AppointmentCreateForm() {
     event: { setCoacheeKeyword },
   } = useCoacheeUtils();
   const {
+    state: { userMappingData, isLoadingUserMapping },
+    event: { setSearchUserMapping },
+  } = useUserMappingUtils();
+  const {
     event: { onFormSubmit },
-    state: { form, timeSlots },
+    state: { form, timeSlots, isLoadingForm, errors },
   } = useFormUtils();
+
+  const role = useMemo(() => {
+    return userRole;
+  }, [userRole]);
 
   return (
     <div className="gap-4 p-4 lg:gap-6 lg:p-6">
@@ -68,6 +77,10 @@ function AppointmentCreateForm() {
                         <FormField
                           control={form.control}
                           name="coach"
+                          rules={{
+                            required:
+                              role !== "admin" ? false : "This is required",
+                          }}
                           render={({ field }) => {
                             return (
                               <FormItem className="flex flex-col text-base">
@@ -90,8 +103,22 @@ function AppointmentCreateForm() {
                                     onSearch={(e) => {
                                       setCoachKeyword(e);
                                     }}
+                                    defaultValue={
+                                      role !== "admin"
+                                        ? {
+                                            label: userName || "",
+                                            value: userId || 0,
+                                          }
+                                        : undefined
+                                    }
+                                    disabled={role !== "admin"}
                                   />
                                 </FormControl>
+                                {errors.coach?.message && (
+                                  <FormMessage>
+                                    {errors.coach.message}
+                                  </FormMessage>
+                                )}
                               </FormItem>
                             );
                           }}
@@ -107,6 +134,7 @@ function AppointmentCreateForm() {
                         <FormField
                           control={form.control}
                           name="coachee"
+                          rules={{ required: "This is required" }}
                           render={({ field }) => {
                             return (
                               <FormItem className="flex flex-col text-base">
@@ -115,22 +143,47 @@ function AppointmentCreateForm() {
                                   {translations.title.sessionCoachee}
                                 </FormLabel>
                                 <FormControl>
-                                  <ComboboxCustom
-                                    className="max-w-[250px] min-w-[200px]"
-                                    data={
-                                      coacheeData?.map((item) => ({
-                                        label: item.name,
-                                        value: item.id,
-                                      })) || [{ label: "", value: "" }]
-                                    }
-                                    onSelect={(value) => {
-                                      field.onChange(value);
-                                    }}
-                                    onSearch={(e) => {
-                                      setCoacheeKeyword(e);
-                                    }}
-                                  />
+                                  {role === "admin" ? (
+                                    <ComboboxCustom
+                                      className="max-w-[250px] min-w-[200px]"
+                                      data={
+                                        coacheeData?.map((item) => ({
+                                          label: item.name,
+                                          value: item.id,
+                                        })) || [{ label: "", value: "" }]
+                                      }
+                                      onSelect={(value) => {
+                                        field.onChange(value);
+                                      }}
+                                      onSearch={(e) => {
+                                        setCoacheeKeyword(e);
+                                      }}
+                                      placeholder="Select Coachee Admin"
+                                    />
+                                  ) : (
+                                    <ComboboxCustom
+                                      className="max-w-[250px] min-w-[200px]"
+                                      data={
+                                        userMappingData?.map((item) => ({
+                                          label: item.name,
+                                          value: item.id,
+                                        })) || [{ label: "", value: "" }]
+                                      }
+                                      onSelect={(value) => {
+                                        field.onChange(value);
+                                      }}
+                                      onSearch={(e) => {
+                                        setSearchUserMapping(e);
+                                      }}
+                                      placeholder="Select Coachee"
+                                    />
+                                  )}
                                 </FormControl>
+                                {errors.coachee?.message && (
+                                  <FormMessage>
+                                    {errors.coachee.message}
+                                  </FormMessage>
+                                )}
                               </FormItem>
                             );
                           }}
@@ -150,6 +203,7 @@ function AppointmentCreateForm() {
                       <FormField
                         control={form.control}
                         name="date"
+                        rules={{ required: "This is required" }}
                         render={({ field }) => {
                           return (
                             <FormItem className="flex flex-col min-w-[250px] text-base">
@@ -163,6 +217,9 @@ function AppointmentCreateForm() {
                                   className="min-w-[250px]"
                                 />
                               </FormControl>
+                              {errors.date?.message && (
+                                <FormMessage>{errors.date.message}</FormMessage>
+                              )}
                             </FormItem>
                           );
                         }}
@@ -176,6 +233,7 @@ function AppointmentCreateForm() {
                       <FormField
                         control={form.control}
                         name="time"
+                        rules={{ required: "This is required" }}
                         render={({ field }) => {
                           return (
                             <FormItem className="flex flex-col text-base">
@@ -193,6 +251,9 @@ function AppointmentCreateForm() {
                                   onSelect={field.onChange}
                                 />
                               </FormControl>
+                              {errors.time?.message && (
+                                <FormMessage>{errors.time.message}</FormMessage>
+                              )}
                             </FormItem>
                           );
                         }}
@@ -204,7 +265,17 @@ function AppointmentCreateForm() {
               <div className="w-1/2"></div>
             </CardContent>
             <CardFooter className="justify-end">
-              <Button type="submit">{translations.button.action.create}</Button>
+              <Button
+                type="submit"
+                disabled={
+                  isLoadingCoach ||
+                  isLoadingCoachee ||
+                  isLoadingUserMapping ||
+                  isLoadingForm
+                }
+              >
+                {translations.button.action.create}
+              </Button>
             </CardFooter>
           </form>
         </Form>
