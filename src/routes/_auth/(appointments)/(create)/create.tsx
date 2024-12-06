@@ -112,6 +112,7 @@ function AppointmentCreateForm() {
                                         : undefined
                                     }
                                     disabled={role !== "admin"}
+                                    placeholder="Select Coach"
                                   />
                                 </FormControl>
                                 {errors.coach?.message && (
@@ -249,6 +250,7 @@ function AppointmentCreateForm() {
                                     value: item.id,
                                   }))}
                                   onSelect={field.onChange}
+                                  placeholder="Select Time"
                                 />
                               </FormControl>
                               {errors.time?.message && (

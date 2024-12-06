@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useClickOutside } from "./combobox.utils";
 
 interface ComboboxProps {
   data: Array<{ value: string | number; label: string }>;
@@ -31,6 +32,8 @@ export const ComboboxCustom = ({
   const [selectedValue, setSelectedValue] = useState<string | number>("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  const ref = useClickOutside({ isOpen, setIsOpen });
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -48,7 +51,7 @@ export const ComboboxCustom = ({
   );
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div ref={ref} className={`relative w-full ${className}`}>
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -60,8 +63,9 @@ export const ComboboxCustom = ({
         <span className="block truncate">
           {defaultValue
             ? defaultValue.label
-            : data.find((item) => item.value === selectedValue)?.label ||
-              placeholder}
+            : data.find((item) => item.value === selectedValue)?.label || (
+                <div className="text-gray-400">{placeholder}</div>
+              )}
         </span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <ChevronsUpDown
