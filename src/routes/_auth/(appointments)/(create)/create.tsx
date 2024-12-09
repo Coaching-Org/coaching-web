@@ -83,7 +83,7 @@ function AppointmentCreateForm() {
                           }}
                           render={({ field }) => {
                             return (
-                              <FormItem className="flex flex-col text-base">
+                              <FormItem className="flex flex-col text-sm">
                                 <FormLabel aria-required="true">
                                   <span className="text-red-500">*</span>
                                   {translations.title.sessionCoach}
@@ -138,7 +138,7 @@ function AppointmentCreateForm() {
                           rules={{ required: "This is required" }}
                           render={({ field }) => {
                             return (
-                              <FormItem className="flex flex-col text-base">
+                              <FormItem className="flex flex-col text-sm">
                                 <FormLabel aria-required="true">
                                   <span className="text-red-500">*</span>
                                   {translations.title.sessionCoachee}
@@ -207,7 +207,7 @@ function AppointmentCreateForm() {
                         rules={{ required: "This is required" }}
                         render={({ field }) => {
                           return (
-                            <FormItem className="flex flex-col min-w-[250px] text-base">
+                            <FormItem className="flex flex-col min-w-[250px] text-sm">
                               <FormLabel>
                                 <span className="text-red-500">*</span>
                                 {translations.title.sessionAppointmentDate}
@@ -237,7 +237,7 @@ function AppointmentCreateForm() {
                         rules={{ required: "This is required" }}
                         render={({ field }) => {
                           return (
-                            <FormItem className="flex flex-col text-base">
+                            <FormItem className="flex flex-col text-sm">
                               <FormLabel>
                                 <span className="text-red-500">*</span>
                                 {translations.title.sessionAppointmentTime}
