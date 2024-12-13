@@ -1,4 +1,9 @@
-import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { NotesKey } from "../query-key";
 import {
   PostNotesRequest,
@@ -18,6 +23,10 @@ import {
   PatchNotesRequest,
   PatchNotesResponse,
 } from "@/interfaces/notes/patch-notes.type";
+import {
+  DeleteNotesParamsType,
+  DeleteNotesResponseType,
+} from "@/interfaces/notes/delete-note.type";
 
 export const usePostNotesQuery = () => {
   return useMutation<PostNotesResponse, Error, PostNotesRequest>({
@@ -87,6 +96,28 @@ export const useUpdateNoteQuery = () => {
       } catch (error) {
         throw error;
       }
+    },
+    retry: 0,
+  });
+};
+
+export const useDeleteNoteQuery = () => {
+  const queryClient = useQueryClient();
+  return useMutation<DeleteNotesResponseType, Error, DeleteNotesParamsType>({
+    mutationKey: [NotesKey.notesDelete],
+    mutationFn: async (params) => {
+      try {
+        const response = await NotesServices.deleteNote(params);
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({
+        queryKey: [NotesKey.notesList],
+      });
     },
     retry: 0,
   });

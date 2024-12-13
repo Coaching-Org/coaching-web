@@ -2,7 +2,12 @@ import {
   GetAppointmentsListRequest,
   GetAppointmentsListResponse,
 } from "@/services/appointments/appointments.type";
-import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { AppointmentKey } from "../query-key";
 import { AppointmentsServices } from "@/services/appointments/appointments.service";
 import {
@@ -13,6 +18,10 @@ import {
   GetAppointmentDetailRequest,
   GetAppointmentDetailResponse,
 } from "@/interfaces";
+import {
+  DeleteAppointmentParamsType,
+  DeleteAppointmentResponseType,
+} from "@/interfaces/appointment/delete-appointment.type";
 
 export const useAppointmentsListQuery = (
   opts: GetAppointmentsListRequest,
@@ -78,3 +87,29 @@ export const useAppointmentDetailQuery = (
     retry: 0,
     enabled: enabled || false,
   });
+
+export const useDeleteAppointmentQuery = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    DeleteAppointmentResponseType,
+    Error,
+    DeleteAppointmentParamsType
+  >({
+    mutationKey: [AppointmentKey.appointmentsDelete],
+    mutationFn: async (params: DeleteAppointmentParamsType) => {
+      try {
+        const response = await AppointmentsServices.deleteAppointment(params);
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({
+        queryKey: [AppointmentKey.appointmentsList],
+      });
+    },
+    retry: 0,
+  });
+};
