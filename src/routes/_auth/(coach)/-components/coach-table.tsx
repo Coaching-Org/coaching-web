@@ -27,8 +27,18 @@ import { cn } from "@/lib/utils";
 import { CoachDetail } from "@/interfaces";
 import moment from "moment";
 import { useExportUtils } from "@/hooks/functions";
-import { Download } from "lucide-react";
+import { Download, LockKeyhole, MoreHorizontal } from "lucide-react";
 import { useAuth } from "@/auth";
+import {
+  DropdownMenu,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ModalChangePassword } from "@/shared";
+import { useCoachTableUtils } from "./table/coach-table.utils";
 
 export const columns: ColumnDef<CoachDetail>[] = [
   {
@@ -106,6 +116,11 @@ export function CoachTable({
     }
   }, [userRole]);
 
+  const {
+    state: { isOpenChangePassword, currentEmail },
+    event: { setIsOpenChangePassword, setCurrentEmail },
+  } = useCoachTableUtils();
+
   const table = useReactTable({
     data,
     columns: [
@@ -114,15 +129,40 @@ export function CoachTable({
         id: "actions",
         header: "Actions",
         cell: ({ row }) => (
-          <div>
-            <Button
-              onClick={() =>
-                getExportCoachesAppointments({ coachId: row.original.id })
-              }
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => {
+                    setCurrentEmail(row.original.email);
+                    setIsOpenChangePassword(true);
+                  }}
+                >
+                  <LockKeyhole className="mr-2 h-4 w-4" />
+                  Set Password
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    getExportCoachesAppointments({ coachId: row.original.id })
+                  }
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Export
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ),
       },
@@ -223,6 +263,13 @@ export function CoachTable({
           </Button>
         </div>
       </div>
+      <ModalChangePassword
+        isOpen={isOpenChangePassword}
+        email={currentEmail}
+        onOpenChange={() => {
+          setIsOpenChangePassword(false);
+        }}
+      />
     </div>
   );
 }
