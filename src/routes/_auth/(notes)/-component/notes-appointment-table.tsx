@@ -28,11 +28,24 @@ import { Link } from "@tanstack/react-router";
 import { useLanguage } from "@/components/language.provider";
 import { formatHour } from "@/lib";
 import { NoteListDetail } from "@/interfaces/notes/get-notes.type";
+import { ModalDeleteNote } from "@/shared";
+import { useNotesTableUtils } from "./notes-table/notes-table.utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { BookUser, Eraser, MoreHorizontal } from "lucide-react";
 
-export const createColumns = (
-  setIsOpenModal?: (open: boolean) => void,
-  setAppointmentData?: (data: AppointmentDetailV2) => void
-): ColumnDef<NoteListDetail>[] => {
+export const createColumns = ({
+  setIsOpenModalDeleteNote,
+  setNotesId,
+}: {
+  setIsOpenModalDeleteNote: (open: boolean) => void;
+  setNotesId: (id: string | number) => void;
+}): ColumnDef<NoteListDetail>[] => {
   const { translations } = useLanguage();
   return [
     {
@@ -79,7 +92,41 @@ export const createColumns = (
       header: translations.tables.header.action,
       cell: ({ row }) => (
         <div className="">
-          <Link
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => {}}>
+                <Link
+                  to={`/$notesId/edit`}
+                  onClick={() => console.log(row.original)}
+                  params={{
+                    notesId: row.original.id.toString(),
+                  }}
+                >
+                  <Button variant="ghost" className="-m-4">
+                    <BookUser className="mr-2 h-4 w-4" />
+                    Detail
+                  </Button>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setNotesId(row.original.id);
+                  setIsOpenModalDeleteNote(true);
+                }}
+              >
+                <Eraser className="mr-2 h-4 w-4" />
+                Delete Note
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* <Link
             to={`/$notesId/edit`}
             onClick={() => console.log(row.original)}
             params={{
@@ -89,17 +136,7 @@ export const createColumns = (
             <Button variant="link" className="-m-4 underline">
               {translations.tables.cell.viewNotes}
             </Button>
-          </Link>
-          {/* <Button
-          variant="link"
-          className="-m-4 underline"
-          onClick={() => {
-            setIsOpenModal(true);
-            setAppointmentData(row.original);
-          }}
-        >
-          View Notes
-        </Button> */}
+          </Link> */}
         </div>
       ),
     },
@@ -132,11 +169,14 @@ export function NotesAppointmentTable({
   const [appointmentData, setAppointmentData] = useState<AppointmentDetailV2>();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  console.log("Notes Data", data);
+  const {
+    state: { isOpenModalDeleteNote, notesId },
+    event: { setIsOpenModalDeleteNote, setNotesId },
+  } = useNotesTableUtils();
 
   const table = useReactTable({
     data: data,
-    columns: createColumns(),
+    columns: createColumns({ setIsOpenModalDeleteNote, setNotesId }),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -254,6 +294,13 @@ export function NotesAppointmentTable({
         isOpen={isOpenModal}
         onOpenChange={setIsOpenModal}
         appointmentData={appointmentData as any}
+      />
+
+      {/* Modal Delete Note */}
+      <ModalDeleteNote
+        isOpen={isOpenModalDeleteNote}
+        onOpenChange={() => setIsOpenModalDeleteNote(false)}
+        notesId={notesId}
       />
     </div>
   );
