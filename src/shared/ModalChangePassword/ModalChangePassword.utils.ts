@@ -32,15 +32,16 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export const useChangePasswordProfileUtils = ({
+export const useModalChangePasswordUtils = ({
   onOpenChange,
+  email,
 }: {
   onOpenChange: (open: boolean) => void;
+  email: string;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { userEmail } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,9 +69,9 @@ export const useChangePasswordProfileUtils = ({
     setIsLoading(true);
 
     try {
-      if (userEmail) {
+      if (email) {
         changePassword({
-          email: userEmail,
+          email: email,
           newPassword: data.password,
         })
           .then(() => {
@@ -105,7 +106,13 @@ export const useChangePasswordProfileUtils = ({
     reset();
     setShowPassword(false);
     setShowConfirmPassword(false);
-  }, [onOpenChange]);
+  }, [email, onOpenChange]);
+
+  useEffect(() => {
+    reset();
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+  }, []);
 
   return {
     state: {
