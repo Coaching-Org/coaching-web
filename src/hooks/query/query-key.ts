@@ -2,6 +2,7 @@ export const AuthKey = {
   authLogin: "auth.login",
   authMe: "auth.me",
   authLogout: "auth.logout",
+  authResetPassword: "auth.resetPassword",
 };
 
 export const AppointmentKey = {
