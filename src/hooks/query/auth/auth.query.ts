@@ -7,7 +7,11 @@ import {
 import { AuthKey } from "../query-key";
 import { AuthServices } from "@/services/auth/auth.service";
 import { PostLoginRequest, PostLoginResponse } from "@/services/auth/auth.type";
-import { AuthMeResponse } from "@/interfaces";
+import {
+  AuthMeResponse,
+  AuthResetPasswordRequest,
+  AuthResetPasswordResponse,
+} from "@/interfaces";
 
 export const useLoginQuery = (): UseMutationResult<
   PostLoginResponse,
@@ -58,5 +62,29 @@ export const useLogoutQuery = (): UseQueryResult<any, Error> => {
     },
     retry: 0,
     enabled: false,
+  });
+};
+
+export const useResetPasswordQuery = (): UseMutationResult<
+  AuthResetPasswordResponse,
+  Error,
+  AuthResetPasswordRequest
+> => {
+  return useMutation<
+    AuthResetPasswordResponse,
+    Error,
+    AuthResetPasswordRequest
+  >({
+    mutationKey: [AuthKey.authResetPassword],
+    mutationFn: async (params: AuthResetPasswordRequest) => {
+      try {
+        const response = await AuthServices.resetPassword(params);
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
   });
 };

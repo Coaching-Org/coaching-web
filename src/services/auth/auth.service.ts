@@ -1,3 +1,4 @@
+import { AuthResetPasswordRequest } from "@/interfaces/auth";
 import { HttpService } from "../HttpServices";
 import { PostLoginRequest } from "./auth.type";
 
@@ -12,5 +13,9 @@ export class AuthServices extends HttpService {
 
   static logout(signal?: AbortSignal) {
     return this.get("/auth/logout", { signal });
+  }
+
+  static resetPassword(params: AuthResetPasswordRequest, signal?: AbortSignal) {
+    return this.post("/v1/users/reset-password", params, { signal });
   }
 }
