@@ -19,14 +19,6 @@ function DashboardLayout() {
     state: { data, search, appointmentStatusData },
     event: { setSearch },
   } = useDashboardUtils();
-  const {
-    state: {
-      fsData,
-      fsTotalAppointment,
-      fsApprovedAppointment,
-      fsPendingAppointment,
-    },
-  } = useAppointmentsFirestoreUtils();
 
   return (
     <div className="gap-4 lg:gap-6 lg:p-6">
