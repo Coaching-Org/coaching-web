@@ -17,6 +17,8 @@ import {
 import {
   GetAppointmentDetailRequest,
   GetAppointmentDetailResponse,
+  GetAppointmentStatusParams,
+  GetAppointmentStatusResponse,
 } from "@/interfaces";
 import {
   DeleteAppointmentParamsType,
@@ -113,3 +115,25 @@ export const useDeleteAppointmentQuery = () => {
     retry: 0,
   });
 };
+
+export const useAppointmentStatusQuery = (
+  opts: GetAppointmentStatusParams,
+  enabled: boolean
+): UseQueryResult<GetAppointmentStatusResponse> =>
+  useQuery({
+    queryKey: [AppointmentKey.appointmentsStatus],
+    queryFn: async ({ signal }) => {
+      try {
+        const response = await AppointmentsServices.getAppointmentStatus(
+          opts,
+          signal
+        );
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    retry: 0,
+    enabled: enabled || false,
+  });

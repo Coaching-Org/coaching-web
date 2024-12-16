@@ -1,7 +1,10 @@
 import { PostAppointmentRequest } from "@/interfaces/appointment/post-appointment.type";
 import { HttpService } from "../HttpServices";
 import { GetAppointmentsListRequest } from "./appointments.type";
-import { GetAppointmentDetailRequest } from "@/interfaces";
+import {
+  GetAppointmentDetailRequest,
+  GetAppointmentStatusParams,
+} from "@/interfaces";
 import { DeleteAppointmentParamsType } from "@/interfaces/appointment/delete-appointment.type";
 
 export class AppointmentsServices extends HttpService {
@@ -30,5 +33,12 @@ export class AppointmentsServices extends HttpService {
     return this.delete(`/v1/appointments/${params.sessionId}`, {
       signal,
     });
+  }
+
+  static getAppointmentStatus(
+    params: GetAppointmentStatusParams,
+    signal?: AbortSignal
+  ) {
+    return this.get(`/v1/appointments/status/${params.coachId}`, { signal });
   }
 }

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_auth/(dashboard)/dashboard")({
 function DashboardLayout() {
   const { translations } = useLanguage();
   const {
-    state: { data, search },
+    state: { data, search, appointmentStatusData },
     event: { setSearch },
   } = useDashboardUtils();
   const {
@@ -46,7 +46,7 @@ function DashboardLayout() {
               )}
             >
               <p className={cn("text-black text-4xl text-center")}>
-                {fsTotalAppointment}
+                {appointmentStatusData?.totalCount || 0}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
                 {translations.description.dashboardTotalAppointment}
@@ -59,7 +59,7 @@ function DashboardLayout() {
               )}
             >
               <p className={cn("text-green-400 text-4xl text-center")}>
-                {fsApprovedAppointment}
+                {appointmentStatusData?.doneCount || 0}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
                 {translations.description.dashboardDoneAppointment}
@@ -72,7 +72,7 @@ function DashboardLayout() {
               )}
             >
               <p className={cn("text-orange-400 text-4xl text-center")}>
-                {fsPendingAppointment}
+                {appointmentStatusData?.pendingCount || 0}
               </p>
               <p className={cn("text-muted-foreground text-center")}>
                 {translations.description.dashboardPendingAppointment}
