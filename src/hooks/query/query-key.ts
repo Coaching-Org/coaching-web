@@ -10,6 +10,7 @@ export const AppointmentKey = {
   appointmentsCreate: "appointments.create",
   appointmentsDetail: "appointments.detail",
   appointmentsDelete: "appointments.delete",
+  appointmentsStatus: "appointments.status",
 };
 
 export const CoachKey = {

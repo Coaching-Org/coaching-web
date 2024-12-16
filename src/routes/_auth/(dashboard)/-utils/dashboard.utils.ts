@@ -1,6 +1,9 @@
 import { useAuth } from "@/auth";
 import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
-import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
+import {
+  useAppointmentsListQuery,
+  useAppointmentStatusQuery,
+} from "@/hooks/query/appointments/appointments.query";
 import { useMeQuery } from "@/hooks/query/auth/auth.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
 import { useDebounce } from "@/lib";
@@ -20,6 +23,10 @@ export const useDashboardUtils = () => {
   const { data: AppointmentListData, refetch } = useAppointmentsListQuery(
     { page: 1, perPage: 50, keyword: search, status: "pending" },
     true
+  );
+  const { data: appointmentStatusData } = useAppointmentStatusQuery(
+    { coachId: !!userId ? userId : 0 },
+    !!userId
   );
   const {
     event: { getFsAppointmentList },
@@ -62,7 +69,11 @@ export const useDashboardUtils = () => {
   console.log("Dashboard Appointment Data", AppointmentListData);
 
   return {
-    state: { data: appointmentData, search },
+    state: {
+      data: appointmentData,
+      search,
+      appointmentStatusData: appointmentStatusData?.data,
+    },
     event: { setSearch },
   };
 };
