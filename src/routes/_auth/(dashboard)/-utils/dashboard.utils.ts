@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import {
   useAppointmentsListQuery,
   useAppointmentStatusQuery,
@@ -28,33 +27,6 @@ export const useDashboardUtils = () => {
     { coachId: !!userId ? userId : 0 },
     !!userId
   );
-  const {
-    event: { getFsAppointmentList },
-  } = useAppointmentsFirestoreUtils();
-
-  const fetchAppointment = async () => {
-    try {
-      const response = await getFsAppointmentList([
-        {
-          field: "coachId",
-          operator: "==",
-          value: userId,
-        },
-        {
-          field: "status",
-          operator: "!=",
-          value: "done",
-        },
-      ]);
-      // setAppointmentData(response);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    // fetchAppointment();
-  }, []);
 
   useEffect(() => {
     if (AppointmentListData?.data) {

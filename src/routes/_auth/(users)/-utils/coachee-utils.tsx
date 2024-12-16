@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import {
   useCoacheeListQuery,
   useCoacheeMappingListQuery,

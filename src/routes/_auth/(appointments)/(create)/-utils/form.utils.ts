@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/auth";
 import { z } from "zod";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
-import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase/create-appointment.firestore.utils";
-import { Timestamp } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -25,23 +23,6 @@ type IFormData = {
   value: string | number;
   label: string;
 };
-
-// const formSchema = z.object({
-//   date: z.date().nullable(),
-//   time: z.string().nullable(),
-//   coach: z
-//     .object({
-//       value: z.string(),
-//       label: z.string(),
-//     })
-//     .nullable(),
-//   coachee: z
-//     .object({
-//       value: z.string(),
-//       label: z.string(),
-//     })
-//     .nullable(),
-// });
 
 export const useFormUtils = () => {
   const [isLoadingForm, setIsLoadingForm] = useState(false);
@@ -67,9 +48,6 @@ export const useFormUtils = () => {
     formState: { errors },
   } = form;
 
-  const {
-    event: { onFirestoreSaveAppointments },
-  } = useCreateAppointmentFirestoreUtils();
   const { mutateAsync: createAppointment } = useCreateAppointmentQuery();
 
   const onFormSubmit = async (value: IFormInput) => {
@@ -96,19 +74,9 @@ export const useFormUtils = () => {
       endDate: endDate ? endDate?.toISOString() : "",
     };
 
-    const transformFirestoreData = {
-      ...data,
-      coachName: userRole === "admin" && coach ? coach?.label : userName,
-      coacheeName: coachee?.label,
-      courseName: "Professional Coaching",
-      status: "pending",
-      fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
-    };
-
     try {
       createAppointment(transformData)
         .then((res) => {
-          onFirestoreSaveAppointments(transformFirestoreData);
           toast({
             title: "Appointment created successfully",
             variant: "success",

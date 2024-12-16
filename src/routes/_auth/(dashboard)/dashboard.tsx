@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { DashboardAppointmentsTable } from "./-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useDashboardUtils } from "./-utils/dashboard.utils";
 import { useLanguage } from "@/components/language.provider";
 

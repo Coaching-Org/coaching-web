@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import { useCreateAppointmentQuery } from "@/hooks/query/appointments/appointments.query";
 import {
   useCoacheeListQuery,
@@ -16,9 +15,6 @@ import { useEffect, useMemo, useState } from "react";
 export const useCreateAppointmentUtils = () => {
   const { userId, userName, userRole } = useAuth();
   const { toast } = useToast();
-  const {
-    event: { onFirestoreSaveAppointments },
-  } = useCreateAppointmentFirestoreUtils();
   const navigate = useNavigate();
   const { mutateAsync } = useCreateAppointmentQuery();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -126,18 +122,6 @@ export const useCreateAppointmentUtils = () => {
         endDate: endDate.toISOString(),
       })
         .then((res) => {
-          console.log("Created Session", res);
-          onFirestoreSaveAppointments({
-            ...data,
-            coachName:
-              userRole === "admin" && selectedCoachName !== ""
-                ? selectedCoachName
-                : userName,
-            coacheeName: selectedCoacheeName,
-            courseName: "Professional Coaching",
-            status: "pending",
-            fsSessionDate: Timestamp.fromDate(new Date(splitDate[0])),
-          });
           toast({
             title: "Appointment created successfully",
             variant: "success",

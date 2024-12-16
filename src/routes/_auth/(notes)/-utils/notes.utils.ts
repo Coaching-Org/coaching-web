@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
 import { useNotesListQuery } from "@/hooks/query/notes/notes.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
@@ -17,28 +16,6 @@ export const useNoteListUtils = () => {
     { page: 1, perPage: 50, keyword: search },
     true
   );
-  const {
-    event: { getFsAppointmentList },
-  } = useAppointmentsFirestoreUtils();
-
-  const fetchAppointment = async () => {
-    try {
-      const response = await getFsAppointmentList([
-        {
-          field: "coachId",
-          operator: "==",
-          value: userId,
-        },
-      ]);
-      setNotesData(response);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    // fetchAppointment();
-  }, []);
 
   useEffect(() => {
     if (NotesListData?.data) {
