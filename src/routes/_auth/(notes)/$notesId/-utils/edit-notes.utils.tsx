@@ -1,7 +1,5 @@
 import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
-import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
-import { useUpdateNotesFirestoreUtils } from "@/hooks/firebase/update-notes.firestore.utils";
 import {
   useNoteDetailQuery,
   useUpdateNoteQuery,
@@ -23,14 +21,6 @@ export const useEditNotesUtils = ({
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
   const [deleteFileStatus, setDeleteFileStatus] = useState(false);
-
-  const {
-    event: { onFirestoreUpdateNotes },
-  } = useUpdateNotesFirestoreUtils({ notesId });
-
-  const {
-    state: { notesData: fsNotes },
-  } = useDetailNotesFirestoreUtils({ notesId });
 
   const {
     stateContext: { contextCoacheeName, contextCourseName, contextDate },
@@ -91,14 +81,6 @@ export const useEditNotesUtils = ({
       };
       updateNote(transformedNotesData as any)
         .then((res) => {
-          console.log("res", res);
-
-          onFirestoreUpdateNotes({
-            ...fsNotes,
-            ...notesData,
-            appointmentId: fsNotes?.appointmentId,
-          });
-
           toast({
             title: "Success",
             description: "Notes saved successfully",

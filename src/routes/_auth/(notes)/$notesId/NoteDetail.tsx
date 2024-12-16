@@ -17,7 +17,6 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { useNotesUtils } from "./-utils/notes.utils";
-import { useCreateAppointmentFirestoreUtils } from "@/hooks/firebase";
 import moment from "moment";
 import { useLanguage } from "@/components/language.provider";
 

@@ -1,8 +1,5 @@
 import { useAuth } from "@/auth";
 import { useCoachingContext } from "@/hooks/context";
-import { useCreateNotesFirestoreUtils } from "@/hooks/firebase/create-notes.firestore.utils";
-import { useDetailAppointmentFirestoreUtils } from "@/hooks/firebase/detail-appointment.firestore.utils";
-import { useUpdateAppointmentFirestoreUtils } from "@/hooks/firebase/update-appointment.firestore.utils";
 import { useAppointmentDetailQuery } from "@/hooks/query/appointments/appointments.query";
 import { usePostNotesQuery } from "@/hooks/query/notes/notes.query";
 import { useUploadFileQuery } from "@/hooks/query/shared/file.query";
@@ -22,15 +19,6 @@ export const useNotesUtils = ({
   const { toast } = useToast();
   const navigate = useNavigate();
   const { userId, userName } = useAuth();
-  const {
-    event: { onFirestoreSaveNotes },
-  } = useCreateNotesFirestoreUtils();
-  const {
-    state: { appointmentDetail },
-  } = useDetailAppointmentFirestoreUtils();
-  const {
-    event: { onFirestoreUpdateAppointment },
-  } = useUpdateAppointmentFirestoreUtils({ appointmentId: notesId });
 
   const {
     stateContext: {
@@ -91,21 +79,6 @@ export const useNotesUtils = ({
        */
       postNotes(transformNotesData as any)
         .then((res) => {
-          onFirestoreSaveNotes({
-            ...notesData,
-            appointmentId: appointmentDetail?.id,
-            coachId: userId,
-            coachName: userName,
-            coacheeId: appointmentDetail?.coacheeId,
-            coacheeName: appointmentDetail?.coacheeName,
-            courseId: appointmentDetail?.courseId,
-            courseName: appointmentDetail?.courseName,
-            startDate: appointmentDetail?.startDate,
-            endDate: appointmentDetail?.endDate,
-            sessionName: appointmentDetail?.sessionName || "",
-          });
-
-          onFirestoreUpdateAppointment({ status: "done" });
           toast({
             title: "Success",
             description: "Notes saved successfully",

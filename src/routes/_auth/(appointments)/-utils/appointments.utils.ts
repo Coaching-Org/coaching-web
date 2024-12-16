@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
 import { useDebounce } from "@/lib";
@@ -17,28 +16,6 @@ export const useAppointmentsUtils = () => {
     { page: 1, perPage: 50, keyword: search },
     true
   );
-  const {
-    event: { getFsAppointmentList },
-  } = useAppointmentsFirestoreUtils();
-
-  const fetchAppointment = async () => {
-    try {
-      const response = await getFsAppointmentList([
-        {
-          field: "coachId",
-          operator: "==",
-          value: userId,
-        },
-      ]);
-      setAppointmentData(response);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    // fetchAppointment();
-  }, []);
 
   useEffect(() => {
     if (AppointmentListData?.data) {

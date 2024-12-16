@@ -7,7 +7,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAppointmentsUtils } from "./-utils/appointments.utils";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import { useLanguage } from "@/components/language.provider";
 import { useExportUtils } from "@/hooks/functions";
 import { useAuth } from "@/auth";

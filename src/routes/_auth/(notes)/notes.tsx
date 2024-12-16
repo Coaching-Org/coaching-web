@@ -4,7 +4,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DashboardAppointmentsTable } from "../(dashboard)/-components/dashboard-appointments-table";
 import { DashboardUpcomingAppointments } from "@/interfaces/dashboard";
 import { useAppointmentsUtils } from "../(appointments)/-utils/appointments.utils";
-import { useListNotesFirestoreUtils } from "@/hooks/firebase/list-notes.firestore.utils";
 import { NotesAppointmentTable } from "./-component/notes-appointment-table";
 import { useLanguage } from "@/components/language.provider";
 import { Download } from "lucide-react";
@@ -23,10 +22,6 @@ function NotesLayout() {
     state: { data, search },
     event: { setSearch },
   } = useNoteListUtils();
-
-  const {
-    state: { fsNotes },
-  } = useListNotesFirestoreUtils();
 
   const {
     event: { getExportNotes },
