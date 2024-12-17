@@ -13,12 +13,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useChangePasswordUtils } from "./change-password.utils";
+import { useChangePasswordProfileUtils } from "./change-password.utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 
-export function ModalChangePassword({
+export function ModalChangePasswordProfile({
   isOpen,
   onOpenChange,
 }: {
@@ -40,7 +40,7 @@ export function ModalChangePassword({
       setShowPassword,
       setShowConfirmPassword,
     },
-  } = useChangePasswordUtils({ onOpenChange });
+  } = useChangePasswordProfileUtils({ onOpenChange });
 
   return (
     isOpen && (

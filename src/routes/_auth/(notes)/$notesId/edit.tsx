@@ -12,7 +12,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useNotesUtils } from "./-utils/notes.utils";
 import moment from "moment";
-import { useDetailNotesFirestoreUtils } from "@/hooks/firebase/detail-notes.firestore.utils";
 import { useEditNotesUtils } from "./-utils/edit-notes.utils";
 import { useLanguage } from "@/components/language.provider";
 import { Download, RemoveFormatting, Trash2 } from "lucide-react";
@@ -49,10 +48,6 @@ function EdiNotesLayout() {
       setDeleteFileStatus,
     },
   } = useEditNotesUtils({ edit: true, notesId });
-
-  const {
-    state: { notesData },
-  } = useDetailNotesFirestoreUtils({ notesId });
 
   return (
     <div className="gap-4 lg:p-6">

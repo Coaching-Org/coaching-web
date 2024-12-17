@@ -14,7 +14,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useProfileUtils } from "./-utils/profile.utils";
 import { useAuth } from "@/auth";
-import { ModalChangePassword } from "./-components/";
+import { ModalChangePasswordProfile } from "./-components/";
 
 export const Route = createFileRoute("/_auth/(profile)/profile")({
   component: ProfileLayout,
@@ -80,7 +80,7 @@ function ProfileLayout() {
           </Button>
         </CardFooter>
       </Card>
-      <ModalChangePassword
+      <ModalChangePasswordProfile
         isOpen={showPasswordField}
         onOpenChange={() => setShowPasswordField(false)}
       />

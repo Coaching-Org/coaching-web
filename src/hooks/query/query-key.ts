@@ -9,6 +9,8 @@ export const AppointmentKey = {
   appointmentsList: "appointments.list",
   appointmentsCreate: "appointments.create",
   appointmentsDetail: "appointments.detail",
+  appointmentsDelete: "appointments.delete",
+  appointmentsStatus: "appointments.status",
 };
 
 export const CoachKey = {
@@ -31,6 +33,7 @@ export const NotesKey = {
   notesList: "notes.list",
   notesDetail: "notes.detail",
   notesUpdate: "notes.update",
+  notesDelete: "notes.delete",
 };
 
 export const SharedKey = {

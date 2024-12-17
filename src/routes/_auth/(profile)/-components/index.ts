@@ -1,1 +1,1 @@
-export * from "./modal-change-password/ModalChangePassword";
+export * from "./modal-change-password/ModalChangePasswordProfile";

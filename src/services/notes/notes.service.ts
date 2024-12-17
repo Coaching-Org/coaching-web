@@ -6,6 +6,7 @@ import {
   PatchNotesParams,
   PatchNotesRequest,
 } from "@/interfaces/notes/patch-notes.type";
+import { DeleteNotesParamsType } from "@/interfaces/notes/delete-note.type";
 
 export class NotesServices extends HttpService {
   static postNotes(params: PostNotesRequest) {
@@ -22,5 +23,9 @@ export class NotesServices extends HttpService {
 
   static updateNote(params: PatchNotesParams, body: PatchNotesRequest) {
     return this.patch(`/v1/appointment-notes/${params.notesId}`, body);
+  }
+
+  static deleteNote(params: DeleteNotesParamsType, signal?: AbortSignal) {
+    return this.delete(`/v1/appointment-notes/${params.notesId}`, { signal });
   }
 }

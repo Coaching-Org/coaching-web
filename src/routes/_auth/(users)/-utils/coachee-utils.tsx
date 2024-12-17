@@ -1,5 +1,4 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
 import {
   useCoacheeListQuery,
   useCoacheeMappingListQuery,
@@ -13,10 +12,6 @@ export const useCoacheeUtils = () => {
   const [listCoacheeMapping, setListCoacheeMapping] = useState<any[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
-
-  const {
-    state: { fsTotalUserAppointment },
-  } = useAppointmentsFirestoreUtils();
 
   const { data, refetch } = useCoacheeListQuery({
     params: { page: 1, perPage: 50, keyword: search },
@@ -34,32 +29,24 @@ export const useCoacheeUtils = () => {
       const transformData = data.data.map((item: any) => {
         return {
           ...item,
-          numberOfAppointments:
-            fsTotalUserAppointment.find(
-              (appointment: any) => appointment.coacheeId === item.id
-            )?.total || 0,
         };
       });
 
       setListCoachee(transformData);
     }
-  }, [data?.data, fsTotalUserAppointment]);
+  }, [data?.data]);
 
   useEffect(() => {
     if (dataMapping?.data && dataMapping?.data.length > 0) {
       const transformData = dataMapping.data.map((item: any) => {
         return {
           ...item,
-          numberOfAppointments:
-            fsTotalUserAppointment.find(
-              (appointment: any) => appointment.coacheeId === item.id
-            )?.total || 0,
         };
       });
 
       setListCoacheeMapping(transformData);
     }
-  }, [dataMapping?.data, fsTotalUserAppointment]);
+  }, [dataMapping?.data]);
 
   useEffect(() => {
     refetch();

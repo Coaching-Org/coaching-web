@@ -1,6 +1,8 @@
 import { useAuth } from "@/auth";
-import { useAppointmentsFirestoreUtils } from "@/hooks/firebase";
-import { useAppointmentsListQuery } from "@/hooks/query/appointments/appointments.query";
+import {
+  useAppointmentsListQuery,
+  useAppointmentStatusQuery,
+} from "@/hooks/query/appointments/appointments.query";
 import { useMeQuery } from "@/hooks/query/auth/auth.query";
 import { AppointmentDetail, AppointmentDetailV2 } from "@/interfaces";
 import { useDebounce } from "@/lib";
@@ -21,33 +23,10 @@ export const useDashboardUtils = () => {
     { page: 1, perPage: 50, keyword: search, status: "pending" },
     true
   );
-  const {
-    event: { getFsAppointmentList },
-  } = useAppointmentsFirestoreUtils();
-
-  const fetchAppointment = async () => {
-    try {
-      const response = await getFsAppointmentList([
-        {
-          field: "coachId",
-          operator: "==",
-          value: userId,
-        },
-        {
-          field: "status",
-          operator: "!=",
-          value: "done",
-        },
-      ]);
-      // setAppointmentData(response);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    // fetchAppointment();
-  }, []);
+  const { data: appointmentStatusData } = useAppointmentStatusQuery(
+    { coachId: !!userId ? userId : 0 },
+    !!userId
+  );
 
   useEffect(() => {
     if (AppointmentListData?.data) {
@@ -62,7 +41,11 @@ export const useDashboardUtils = () => {
   console.log("Dashboard Appointment Data", AppointmentListData);
 
   return {
-    state: { data: appointmentData, search },
+    state: {
+      data: appointmentData,
+      search,
+      appointmentStatusData: appointmentStatusData?.data,
+    },
     event: { setSearch },
   };
 };

@@ -26,11 +26,29 @@ import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
 import { useLanguage } from "@/components/language.provider";
 import { formatHour } from "@/lib";
+import { ModalDeleteSession } from "@/shared";
+import { BookUser, Eraser, LockKeyhole, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuSeparator,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Download } from "lucide-react";
+import { useAppointmentsTableUtils } from "./appointments-table/appointments-table.utils";
 
-export const createColumns = (
-  setIsOpenModal: (open: boolean) => void,
-  setAppointmentData: (data: AppointmentDetailV2) => void
-): ColumnDef<AppointmentDetailV2>[] => {
+export const createColumns = ({
+  setIsOpenModal,
+  setAppointmentData,
+  setSessionId,
+  setIsOpenModalDeleteSession,
+}: {
+  setIsOpenModal: (open: boolean) => void;
+  setAppointmentData: (data: AppointmentDetailV2) => void;
+  setSessionId: (id: string | number) => void;
+  setIsOpenModalDeleteSession: (open: boolean) => void;
+}): ColumnDef<AppointmentDetailV2>[] => {
   const { translations } = useLanguage();
   return [
     {
@@ -72,7 +90,36 @@ export const createColumns = (
       header: translations.tables.header.action,
       cell: ({ row }) => (
         <div className="">
-          <Button
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => {
+                  setIsOpenModal(true);
+                  setAppointmentData(row.original);
+                }}
+              >
+                <BookUser className="mr-2 h-4 w-4" />
+                Detail
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setSessionId(row.original.id);
+                  setIsOpenModalDeleteSession(true);
+                }}
+              >
+                <Eraser className="mr-2 h-4 w-4" />
+                Delete Session
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* <Button
             variant="link"
             className="-m-4 underline"
             onClick={() => {
@@ -81,7 +128,7 @@ export const createColumns = (
             }}
           >
             {translations.tables.cell.viewDetails}
-          </Button>
+          </Button> */}
         </div>
       ),
     },
@@ -113,10 +160,19 @@ export function DashboardAppointmentsTable({
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [appointmentData, setAppointmentData] = useState<AppointmentDetailV2>();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const {
+    state: { isOpenModalDeleteSession, sessionId },
+    event: { setIsOpenModalDeleteSession, setSessionId },
+  } = useAppointmentsTableUtils();
 
   const table = useReactTable({
     data: data,
-    columns: createColumns(setIsOpenModal, setAppointmentData),
+    columns: createColumns({
+      setIsOpenModal,
+      setAppointmentData,
+      setSessionId,
+      setIsOpenModalDeleteSession,
+    }),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -234,6 +290,15 @@ export function DashboardAppointmentsTable({
         isOpen={isOpenModal}
         onOpenChange={setIsOpenModal}
         appointmentData={appointmentData as any}
+      />
+
+      {/* Modal Delete Session */}
+      <ModalDeleteSession
+        isOpen={isOpenModalDeleteSession}
+        onOpenChange={() => {
+          setIsOpenModalDeleteSession(false);
+        }}
+        sessionId={sessionId}
       />
     </div>
   );
