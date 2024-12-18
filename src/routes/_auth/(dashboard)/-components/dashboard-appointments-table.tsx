@@ -119,16 +119,6 @@ export const createColumns = ({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* <Button
-            variant="link"
-            className="-m-4 underline"
-            onClick={() => {
-              setIsOpenModal(true);
-              setAppointmentData(row.original);
-            }}
-          >
-            {translations.tables.cell.viewDetails}
-          </Button> */}
         </div>
       ),
     },
