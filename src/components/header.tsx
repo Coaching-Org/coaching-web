@@ -85,6 +85,10 @@ export default function Header({ handleLogout, children }: IHeaderProps) {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Sign Out</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled className="text-xs text-neutral-500">
+              v2.0.1
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
