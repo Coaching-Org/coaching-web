@@ -96,7 +96,7 @@ export const ComboboxCustom = ({
                 }`}
                 onClick={() => handleSelect(item.value, item.label)}
               >
-                <span className="block truncate">{item.label}</span>
+                <span className="block truncate text-black">{item.label}</span>
                 {selectedValue === item.value && (
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                     <Check

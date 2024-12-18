@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { useCoachingContext } from "@/hooks/context";
 import { AppointmentDetailV2 } from "@/interfaces";
 import { ModalAppointment } from "../../(appointments)/-components/modal-appointment";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useLanguage } from "@/components/language.provider";
 import { formatHour } from "@/lib";
 import { NoteListDetail } from "@/interfaces/notes/get-notes.type";
@@ -47,6 +47,7 @@ export const createColumns = ({
   setNotesId: (id: string | number) => void;
 }): ColumnDef<NoteListDetail>[] => {
   const { translations } = useLanguage();
+  const navigate = useNavigate();
   return [
     {
       id: "sessionName",
@@ -100,19 +101,16 @@ export const createColumns = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => {}}>
-                <Link
-                  to={`/$notesId/edit`}
-                  onClick={() => console.log(row.original)}
-                  params={{
-                    notesId: row.original.id.toString(),
-                  }}
-                >
-                  <Button variant="ghost" className="-m-4">
-                    <BookUser className="mr-2 h-4 w-4" />
-                    Detail
-                  </Button>
-                </Link>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate({
+                    to: "/$notesId/edit",
+                    params: { notesId: row.original.id.toString() },
+                  });
+                }}
+              >
+                <BookUser className="mr-2 h-4 w-4" />
+                Detail
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -126,17 +124,6 @@ export const createColumns = ({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* <Link
-            to={`/$notesId/edit`}
-            onClick={() => console.log(row.original)}
-            params={{
-              notesId: row.original.id.toString(),
-            }}
-          >
-            <Button variant="link" className="-m-4 underline">
-              {translations.tables.cell.viewNotes}
-            </Button>
-          </Link> */}
         </div>
       ),
     },
