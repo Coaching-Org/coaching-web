@@ -159,6 +159,10 @@ function EdiNotesLayout() {
                 <Label>
                   <span className="text-red-500">*</span>
                   {translations.title.notesFile}
+                  <span className="text-xs text-muted-foreground">
+                    {" "}
+                    (max file size 10MB)
+                  </span>
                 </Label>
                 {deleteFileStatus && (
                   <Input
