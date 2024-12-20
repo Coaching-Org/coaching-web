@@ -20,7 +20,7 @@ const formSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         {
           message:
-            "Password must contain at least \n 1 symbol, \n 1 number, \n 1 uppercase, \n 1 lowercase, \n and be at least 8 characters long.",
+            "Password must contain at least \n 1 of these symbols (@$!%*?&), \n 1 number, \n 1 uppercase, \n 1 lowercase, \n and be at least 8 characters long.",
         }
       ),
     confirmPassword: z
